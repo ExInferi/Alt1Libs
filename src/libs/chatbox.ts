@@ -11,7 +11,7 @@ const reader = new ChatboxReader();
  */
 
 // Interval for looking for the chatbox every second
-function findChat(start: boolean = true, callback: () => void): void {
+function findChat(start = true, callback: () => void) {
 	const looking = setInterval(() => {
 		// Cancel the interval if the app is not opened in alt1 or not running
 		if (!window.alt1 || !start) {
@@ -38,7 +38,7 @@ function findChat(start: boolean = true, callback: () => void): void {
  */
 
 // Highlight the chatbox currently being read from
-function highlightChatbox(start: boolean = true): void {
+function highlightChatbox(start = true) {
 	// There's no use for this if there isn't a position found
 	if (!start || !reader.pos) return;
 	// Get the position and dimensions of the chatbox
@@ -60,7 +60,7 @@ function highlightChatbox(start: boolean = true): void {
 }
 
 // Create selection options for which chatbox to read from
-function selectChatbox(start: boolean = true, selector: string = 'body'): void {
+function selectChatbox(start = true, selector= 'body') {
 	// Check if the chatbox position is found
 	if (!start || !reader.pos) return;
 	// Create new selection options
@@ -92,29 +92,32 @@ function selectChatbox(start: boolean = true, selector: string = 'body'): void {
 }
 
 // Update the page with the chat text being read
-function updatePage(chat: ChatLine[], selector: string = 'body'): void {
+function updatePage(chat: ChatLine[], selector= 'body') {
 	// Filter out chat lines with no text fragments
 	const filteredChat = chat.filter((line) => line.fragments.length > 0);
 	// Cancel if there's no chat text to display
 	if (!filteredChat.length) return;
-
-	// Get the all the lines of chat text from the chatbox
-	const text = filteredChat
-		.map((line) => {
-			// Map through the fragments of the chat line and give them their original color
-			return line.fragments
-				.map((frag) => {
-					const { color, text } = frag;
-					return `<span style="color: rgb(${[...color]})">${text}</span>`;
-				})
-				.join('');
-		})
-		.join('<br>');
-
-	// Create paragraph to display the chat text
-	const p = document.createElement('p');
+  // Create paragraph to display the chat text
+  const p = document.createElement('p');
 	p.style.margin = '0'; // Removing any default margins for better readability
-	p.innerHTML = text;
+  
+	// Get the all the lines of chat text from the chatbox
+  const text = filteredChat
+  .map((line) => {
+    // Map through the fragments of the chat line and give them their original color
+    return line.fragments
+    .map((frag) => {
+      const { color, text } = frag;
+      const s = document.createElement('span');
+      s.style.color = `rgb(${[...color]})`;
+      s.textContent = text; // Use textContent to sanitize the text
+      return s.outerHTML; // Return the outerHTML of the created span element
+    })
+    .join('');
+  })
+  .join('<br>');
+  
+  p.innerHTML = text;
 	document.querySelector(selector).appendChild(p);
 
 	// Scroll to the last appended child
@@ -123,7 +126,7 @@ function updatePage(chat: ChatLine[], selector: string = 'body'): void {
 
 // Interval for reading the chatbox every half-tick
 let readingInterval: ReturnType<typeof setInterval> | null = null;
-function readChat(start: boolean = true, selector?: string): void {
+function readChat(start = true, selector?: string) {
 	// Cancel if there's no chatbox position or the start flag is false
 	if (!start || !reader.pos) {
 		clearInterval(readingInterval);
@@ -143,7 +146,7 @@ function readChat(start: boolean = true, selector?: string): void {
 }
 
 // Starter function for the chatbox reading
-function chatbox(start: boolean = true, selector?: string): void {
+function chatbox(start = true, selector?: string) {
 	// Clear the output if a selector is provided
 	if (selector) {
 		const output = document.querySelector(selector);

@@ -30,7 +30,7 @@ if (!window.alt1) {
 }
 
 // Helper function to disable buttons when a lib is currently active
-function toggleButtons(halt: boolean): void {
+function toggleButtons(halt: boolean) {
 	const buttons = document.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
 
 	buttons.forEach((button) => {
