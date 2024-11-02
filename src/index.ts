@@ -19,6 +19,16 @@ import './icon.png';
 // Main element
 const main = document.querySelector('main') as HTMLElement;
 
+// Let alt1 know about the app
+A1.identifyApp('appconfig.json');
+
+// If the app is not running in alt1, display a message to install the app
+if (!window.alt1) {
+	// Create a base app URL, to make it work both in development and production
+	const appURL = window.location.href.replace(/index\..*/, '');
+	main.innerHTML = `Click <a href="alt1://addapp/${appURL}appconfig.json">here</a> to add this app to Alt1 Toolkit.`;
+}
+
 // Helper function to disable buttons when a lib is currently active
 function toggleButtons(halt: boolean): void {
 	const buttons = document.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
