@@ -1,0 +1,14 @@
+{
+	"appName": "Alt1Libs",
+	"description": "Example app for developing with the alt1 library",
+	"appUrl": "./index.html",
+	"configUrl": "./appconfig.json",
+	"iconUrl": "./icon.png",
+	"defaultWidth": 600,
+	"defaultHeight": 600,
+	"minWidth": 440,
+	"minHeight": 350,
+	"requestHandlers": [],
+	"activators": ["regex:(Read.*)", "regex:(Talk to.*)", "Rest"],
+	"permissions": "pixel,gamestate,overlay"
+}

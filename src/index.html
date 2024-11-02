@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+		<title>Alt1Libs Example apps</title>
+		<link rel="icon" type="favicon" href="icon.png" />
+		<link rel="stylesheet" type="text/css" href="https://runeapps.org/runeappslib.css" />
+		<link rel="stylesheet" type="text/css" href="https://runeapps.org/nis/nis.css" />
+		<style>
+			@font-face {
+				font-family: 'Cinzel';
+				font-style: normal;
+				font-display: swap;
+				font-weight: 400 900;
+				src: url(https://cdn.jsdelivr.net/fontsource/fonts/cinzel:vf@latest/latin-wght-normal.woff2)
+					format('woff2-variations');
+				unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+					U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+					U+FEFF, U+FFFD;
+			}
+
+			@font-face {
+				font-family: 'Noto Sans';
+				font-style: normal;
+				font-display: swap;
+				font-weight: 100 900;
+				font-stretch: 62.5% 100%;
+				src: url(https://cdn.jsdelivr.net/fontsource/fonts/noto-sans:vf@latest/latin-wdth-normal.woff2)
+					format('woff2-variations');
+				unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+					U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+					U+FEFF, U+FFFD;
+			}
+
+			:root {
+				--nis-col-gold: #e1b305;
+				--heading: 'Cinzel', trajan-pro-3, serif;
+				--font: 'Noto Sans', sans-serif;
+			}
+
+			body.nis {
+				font-family: var(--font);
+				height: 100vh;
+			}
+			
+			header {
+				height: 230px;
+				max-width: 600px;
+				margin-inline: auto;
+				box-sizing: border-box;
+			}
+
+			footer {
+				height: 95px;
+			}
+
+			header,
+			footer {
+				text-align: center;
+				padding: 1em;
+			}
+
+			h1 {
+				background-color: #ffd33f;
+				margin: 1em 0 0;
+				color: transparent;
+				-webkit-background-clip: text;
+				background-clip: text;
+				text-shadow: 1px 1px 0px rgb(0 0 0 / 10%);
+				font-family: var(--heading);
+			}
+
+			main {
+				height: calc(100vh - 325px);
+				overflow-y: auto;
+				font-weight: 350;
+				font-stretch: 90%;
+				letter-spacing: 0.25px;
+				text-shadow: 1px 1px 0px black;
+			}
+
+			.nisbutton {
+				display: inline-block;
+				border: none;
+			}
+
+			.nisbutton span {
+				text-transform: lowercase;
+				font-family: var(--heading);
+				font-weight: 650;
+				font-size: 0.9rem;
+				padding-inline: 0.5em;
+				line-height: 1px;
+				letter-spacing: 1px;
+				display: inherit;
+			}
+
+			.nisbutton:disabled {
+				filter: grayscale(1);
+			}
+
+			.nisbutton:disabled:hover {
+				background-position: 0px -100%;
+				cursor: not-allowed;
+			}
+
+			.nisbutton:disabled:hover::before {
+				background-position: 0px 0px;
+			}
+
+			.nisbutton:disabled:hover::after {
+				background-position: -12px 0px;
+			}
+
+			a {
+				color: var(--nis-col-url);
+				text-underline-offset: 0.2em;
+				text-decoration-color: #ffd33f55;
+				font-weight: bold;
+			}
+
+			a:hover {
+				color: var(--nis-col-urlhover);
+			}
+		</style>
+	</head>
+
+	<body class="nis">
+		<header>
+			<h1>Alt1Libs Example apps</h1>
+			<p>Click any of the below buttons to show the output for the library.</p>
+
+			<div class="nisseperator"></div>
+			<button class="nisbutton nissmallbutton" id="animal" data-active="false">
+				<span>Animal</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="bosstimer" data-active="false">
+				<span>Boss Timer</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="buffs" data-active="false">
+				<span>Buffs</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="chatbox" data-active="false">
+				<span>Chatbox</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="dialog" data-active="false">
+				<span>Dialog</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="dropsmenu" data-active="false">
+				<span>Drops Menu</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="targetmob" data-active="false">
+				<span>Target Mob</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="tooltip" data-active="false">
+				<span>Tooltip</span>
+			</button>
+			<div class="nisseperator"></div>
+		</header>
+		<main></main>
+		<footer>
+			<div class="nisseperator"></div>
+			<p>
+				For more information, visit the
+				<a href="https://github.com/ExInferi/Alt1Libs" target="_blank">Github repository</a>
+			</p>
+			<p>
+				©2024
+				<a href="https://exinferi.nl" target="_blank">Ex Inferi</a>
+			</p>
+		</footer>
+		<script src="./main.js"></script>
+	</body>
+</html>
