@@ -120,6 +120,9 @@ function updatePage(chat, selector = 'body') {
     // Cancel if there's no chat text to display
     if (!filteredChat.length)
         return;
+    // Create paragraph to display the chat text
+    const p = document.createElement('p');
+    p.style.margin = '0'; // Removing any default margins for better readability
     // Get the all the lines of chat text from the chatbox
     const text = filteredChat
         .map((line) => {
@@ -127,14 +130,14 @@ function updatePage(chat, selector = 'body') {
         return line.fragments
             .map((frag) => {
             const { color, text } = frag;
-            return `<span style="color: rgb(${[...color]})">${text}</span>`;
+            const s = document.createElement('span');
+            s.style.color = `rgb(${[...color]})`;
+            s.textContent = text; // Use textContent to sanitize the text
+            return s.outerHTML; // Return the outerHTML of the created span element
         })
             .join('');
     })
         .join('<br>');
-    // Create paragraph to display the chat text
-    const p = document.createElement('p');
-    p.style.margin = '0'; // Removing any default margins for better readability
     p.innerHTML = text;
     document.querySelector(selector).appendChild(p);
     // Scroll to the last appended child
@@ -4257,10 +4260,13 @@ var __webpack_exports__ = {};
   !*** ./index.ts ***!
   \******************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.html */ "./index.html");
 /* harmony import */ var _appconfig_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./appconfig.json */ "./appconfig.json");
 /* harmony import */ var _icon_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./icon.png */ "./icon.png");
+
 
 // Webpack imports for dist files
 
@@ -4268,6 +4274,14 @@ __webpack_require__.r(__webpack_exports__);
 
 // Main element
 const main = document.querySelector('main');
+// Let alt1 know about the app
+alt1_base__WEBPACK_IMPORTED_MODULE_4__.identifyApp('appconfig.json');
+// If the app is not running in alt1, display a message to install the app
+if (!window.alt1) {
+    // Create a base app URL, to make it work both in development and production
+    const appURL = window.location.href.replace(/index\..*/, '');
+    main.innerHTML = `Click <a href="alt1://addapp/${appURL}appconfig.json">here</a> to add this app to Alt1 Toolkit.`;
+}
 // Helper function to disable buttons when a lib is currently active
 function toggleButtons(halt) {
     const buttons = document.querySelectorAll('button');
