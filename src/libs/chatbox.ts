@@ -1,46 +1,72 @@
-// import * as A1 from '../../../alt1/dist/base';
-// import ChatboxReader, { ChatLine } from '../../../alt1/dist/chatbox';
 import * as A1 from 'alt1/base';
 import ChatboxReader, { ChatLine } from 'alt1/chatbox';
-// Create a new ChatboxReader instance
-const reader = new ChatboxReader();
+
 /**
  * By default, the ChatboxReader will be able to read the colors defined in the library's default colors array.
  * In a lot of cases, you will want to use your own definition of colors like this:
  * reader.readargs.colors = [A1.mixColor(255, 255, 255), A1.mixColor(0, 0, 0)];
+ *
+ * The reader can find multiple chatboxes on the screen, where the first one will be main chatbox,
+ * unless there are multiple chatboxes with the type "main" found. In that case, the last found chatbox
+ * with the type "main" will be the main chatbox.
  */
 
-// Interval for looking for the chatbox every second
-function findChat(start = true, callback: () => void) {
-	const looking = setInterval(() => {
-		// Cancel the interval if the app is not opened in alt1 or not running
-		if (!window.alt1 || !start) {
-			clearInterval(looking);
-			reader.pos = null;
-			return;
-		}
-		// Check if the chatbox position is found
-		if (reader.pos === null && start) {
-			reader.find();
-			console.log('Chatbox position not found, trying to find...');
-		} else {
-			clearInterval(looking);
-			console.log('Chatbox position found:', reader.pos);
-			callback(); // Callback to start the other functions after finding the chatbox
-		}
-	}, 1000);
-}
+// Create a new ChatboxReader instance
+const reader = new ChatboxReader();
 
+// Local boolean to check if we have a chatbox position
+let chatboxFound = false;
+
+// Starter function for the chatbox reading
+function chatbox(imgref: A1.ImgRef | null, selector?: string) {
+	// Cancel if there's no Alt1 Toolkit or no image reference
+	if (!window.alt1 || !imgref) {
+		// Clear the output in case this was a call to stop reading
+		if (selector) {
+			const output = document.querySelector(selector);
+			if (!output) throw new Error(`Selector '${selector}' not found`);
+			output.innerHTML = '';
+		}
+		return (chatboxFound = false);
+	}
+
+	if (!chatboxFound) {
+		// Try to find the chatbox position
+		reader.find(imgref);
+		if (reader.pos === null) {
+			return console.log('Chatbox position not found, trying to find...');
+		} else {
+			// Force the first "main" chatbox found to be the actual main chatbox
+			if (reader.pos.boxes[0].type === 'main') {
+				reader.pos.mainbox = reader.pos.boxes[0];
+			}
+			console.log('Chatbox position found:', reader.pos);
+			// Set the chatbox as found so future calls will not try to find it again
+			chatboxFound = true;
+			// Highlight the main chatbox
+			highlightChatbox();
+			// Create a selection dropdown for the chatboxes
+			selectChatbox(selector);
+		}
+	}
+
+	// Read the chatbox from the current screen
+	const chat: ChatLine[] | null = reader.read(imgref);
+
+	// Update the page with the read chat
+	if (chat && chat.length > 0) {
+		updatePage(chat, selector);
+	}
+}
 /**
- * The reader can find multiple chatboxes on the screen, where the first one will be main chatbox.
  * We can access the chatbox positions and use this to create an overlay on the chatbox that was found.
  * We can also have users specify the specific chatbox they'd like to read from.
  */
 
 // Highlight the chatbox currently being read from
-function highlightChatbox(start = true) {
+function highlightChatbox() {
 	// There's no use for this if there isn't a position found
-	if (!start || !reader.pos) return;
+	if (!reader.pos) return;
 	// Get the position and dimensions of the chatbox
 	const rect = reader.pos.mainbox.rect;
 	// The overlay functions exist within the global alt1 namespace
@@ -60,16 +86,18 @@ function highlightChatbox(start = true) {
 }
 
 // Create selection options for which chatbox to read from
-function selectChatbox(start = true, selector = 'body') {
+function selectChatbox(selector = 'body') {
 	// Check if the chatbox position is found
-	if (!start || !reader.pos) return;
+	if (!chatboxFound || !reader.pos) return;
+	// Define the parent element to append the select to
+	const parent = document.querySelector(selector) as HTMLElement;
 	// Create new selection options
 	const select = document.createElement('select');
 	select.className = 'nisdropdown';
-	select.style.position = 'fixed';
+	select.style.position = 'sticky';
+	select.style.top = '0';
 	// Go through all found chatboxes and create an option for each
 	reader.pos.boxes.map((box, index) => {
-		console.log(box);
 		const option = document.createElement('option');
 		option.value = index.toString();
 		option.text = `Chatbox ${index + 1}`;
@@ -77,6 +105,7 @@ function selectChatbox(start = true, selector = 'body') {
 		box.rect === reader.pos.mainbox.rect && (option.selected = true);
 		// Add the options to the select
 		select.appendChild(option);
+		console.log(reader.pos.mainbox.rect);
 	});
 	// Add an event listener to the select to change the chatbox being read from
 	select.addEventListener('change', (e) => {
@@ -88,7 +117,7 @@ function selectChatbox(start = true, selector = 'body') {
 		highlightChatbox();
 	});
 	// Append the select to the specified selector
-	document.querySelector(selector)?.appendChild(select);
+	parent.appendChild(select);
 }
 
 // Update the page with the chat text being read
@@ -122,48 +151,6 @@ function updatePage(chat: ChatLine[], selector = 'body') {
 
 	// Scroll to the last appended child
 	p.scrollIntoView({ behavior: 'smooth', block: 'end' });
-}
-
-// Interval for reading the chatbox every half-tick
-let readingInterval: ReturnType<typeof setInterval> | null = null;
-function readChat(start = true, selector?: string) {
-	// Cancel if there's no chatbox position or the start flag is false
-	if (!start || !reader.pos) {
-		clearInterval(readingInterval);
-		if (selector) {
-			const output = document.querySelector(selector);
-			if (output) output.innerHTML = '';
-		}
-	}
-	// Read the chatbox
-	else {
-		readingInterval = setInterval(() => {
-			const chat: ChatLine[] | null = reader.read();
-			// Update the page with the read chat
-			if (chat) updatePage(chat, selector);
-		}, 300);
-	}
-}
-
-// Starter function for the chatbox reading
-function chatbox(start = true, selector?: string) {
-	// Clear the output if a selector is provided
-	if (selector) {
-		const output = document.querySelector(selector);
-		if (output) {
-			output.innerHTML = '';
-		} else {
-			throw new Error('Selector not found');
-		}
-	}
-
-	// Go through the process of finding, highlighting, selecting, and reading the chatbox
-	findChat(start, () => {
-		highlightChatbox(start);
-		selectChatbox(start, selector);
-		readChat(start, selector);
-		console.log('Started reading chatbox.');
-	});
 }
 
 export default chatbox;
