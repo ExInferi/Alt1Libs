@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -37,32 +37,37 @@
 				--nis-col-gold: #e1b305;
 				--heading: 'Cinzel', trajan-pro-3, serif;
 				--font: 'Noto Sans', sans-serif;
+				--height-body: 100vh;
+				--height-header: 10rem;
+				--height-footer: 6rem;
+				--height-main: calc(var(--height-body) - var(--height-header) - var(--height-footer));
 			}
 
 			body.nis {
 				font-family: var(--font);
-				height: 100vh;
+				height: var(--height-body);
+				font-size: 0.8125rem;
 			}
-			
+
 			header {
-				height: 230px;
-				max-width: 600px;
-				margin-inline: auto;
-				box-sizing: border-box;
+				height: var(--height-header);
 			}
 
 			footer {
-				height: 95px;
+				height: var(--height-footer);
+				width: fit-content;
 			}
 
 			header,
 			footer {
+				box-sizing: border-box;
+				margin-inline: auto;
 				text-align: center;
-				padding: 1em;
+				padding: 0.5em 1em;
 			}
 
 			h1 {
-				background-color: #ffd33f;
+				background-color: var(--nis-col-gold);
 				margin: 1em 0 0;
 				color: transparent;
 				-webkit-background-clip: text;
@@ -72,12 +77,47 @@
 			}
 
 			main {
-				height: calc(100vh - 325px);
+				height: var(--height-main);
 				overflow-y: auto;
 				font-weight: 350;
 				font-stretch: 90%;
 				letter-spacing: 0.25px;
 				text-shadow: 1px 1px 0px black;
+			}
+
+			details > div {
+				max-height: 16rem;
+				contain: layout;
+				overflow-y: auto;
+			}
+
+			details select {
+				opacity: 0.75;
+			}
+
+			details select:where(:hover, :focus-within) {
+				opacity: 1;
+			}
+
+			summary {
+				font-size: 1rem;
+				padding: 1em;
+				color: var(--nis-col-url);
+			}
+
+			summary:hover {
+				cursor: default;
+				user-select: none;
+				color: var(--nis-col-urlhover);
+			}
+
+			summary::marker {
+				content: '⮚ ';
+				color: var(--nis-col-gold);
+			}
+
+			[open] summary::marker {
+				content: '⮛ ';
 			}
 
 			.nisbutton {
@@ -129,36 +169,45 @@
 	<body class="nis">
 		<header>
 			<h1>Alt1Libs Example apps</h1>
-			<p>Click any of the below buttons to show the output for the library.</p>
-
-			<div class="nisseperator"></div>
-			<button class="nisbutton nissmallbutton" id="animal" data-active="false">
-				<span>Animal</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="bosstimer" data-active="false">
-				<span>Boss Timer</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="buffs" data-active="false">
-				<span>Buffs</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="chatbox" data-active="false">
-				<span>Chatbox</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="dialog" data-active="false">
-				<span>Dialog</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="dropsmenu" data-active="false">
-				<span>Drops Menu</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="targetmob" data-active="false">
-				<span>Target Mob</span>
-			</button>
-			<button class="nisbutton nissmallbutton" id="tooltip" data-active="false">
-				<span>Tooltip</span>
-			</button>
+			<p>Click the buttons below to show the output for the libraries.</p>
+			<button class="nisbutton nissmallbutton" id="start"><span>Start</span></button>
+			<button class="nisbutton nissmallbutton" id="stop" disabled><span>Stop</span></button>
 			<div class="nisseperator"></div>
 		</header>
-		<main></main>
+		<main>
+			<details name="libs">
+				<summary>AnimalReader</summary>
+				<div id="animal"></div>
+			</details>
+			<details name="libs">
+				<summary>BossTimerReader</summary>
+				<div id="bosstimer"></div>
+			</details>
+			<details name="libs">
+				<summary>BuffReader</summary>
+				<div id="buffs"></div>
+			</details>
+			<details name="libs">
+				<summary>ChatboxReader</summary>
+				<div id="chatbox"></div>
+			</details>
+			<details name="libs">
+				<summary>DialogReader</summary>
+				<div id="dialog"></div>
+			</details>
+			<details name="libs">
+				<summary>DropsMenuReader</summary>
+				<div id="dropsmenu"></div>
+			</details>
+			<details name="libs">
+				<summary>TargetMobReader</summary>
+				<div id="targetmob"></div>
+			</details>
+			<details name="libs">
+				<summary>TooltipReader</summary>
+				<div id="tooltip"></div>
+			</details>
+		</main>
 		<footer>
 			<div class="nisseperator"></div>
 			<p>

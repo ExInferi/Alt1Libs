@@ -26,47 +26,69 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1/chatbox */ "../node_modules/alt1/dist/chatbox/index.js");
 /* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__);
-// import * as A1 from '../../../alt1/dist/base';
-// import ChatboxReader, { ChatLine } from '../../../alt1/dist/chatbox';
 
 
-// Create a new ChatboxReader instance
-const reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default())();
 /**
  * By default, the ChatboxReader will be able to read the colors defined in the library's default colors array.
  * In a lot of cases, you will want to use your own definition of colors like this:
  * reader.readargs.colors = [A1.mixColor(255, 255, 255), A1.mixColor(0, 0, 0)];
+ *
+ * The reader can find multiple chatboxes on the screen, where the first one will be main chatbox,
+ * unless there are multiple chatboxes with the type "main" found. In that case, the last found chatbox
+ * with the type "main" will be the main chatbox.
  */
-// Interval for looking for the chatbox every second
-function findChat(start = true, callback) {
-    const looking = setInterval(() => {
-        // Cancel the interval if the app is not opened in alt1 or not running
-        if (!window.alt1 || !start) {
-            clearInterval(looking);
-            reader.pos = null;
-            return;
+// Create a new ChatboxReader instance
+const reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default())();
+// Local boolean to check if we have a chatbox position
+let chatboxFound = false;
+// Starter function for the chatbox reading
+function chatbox(imgref, selector) {
+    // Cancel if there's no Alt1 Toolkit or no image reference
+    if (!window.alt1 || !imgref) {
+        // Clear the output in case this was a call to stop reading
+        if (selector) {
+            const output = document.querySelector(selector);
+            if (!output)
+                throw new Error(`Selector '${selector}' not found`);
+            output.innerHTML = '';
         }
-        // Check if the chatbox position is found
-        if (reader.pos === null && start) {
-            reader.find();
-            console.log('Chatbox position not found, trying to find...');
+        return (chatboxFound = false);
+    }
+    if (!chatboxFound) {
+        // Try to find the chatbox position
+        reader.find(imgref);
+        if (reader.pos === null) {
+            return console.log('Chatbox position not found, trying to find...');
         }
         else {
-            clearInterval(looking);
+            // Force the first "main" chatbox found to be the actual main chatbox
+            if (reader.pos.boxes[0].type === 'main') {
+                reader.pos.mainbox = reader.pos.boxes[0];
+            }
             console.log('Chatbox position found:', reader.pos);
-            callback(); // Callback to start the other functions after finding the chatbox
+            // Set the chatbox as found so future calls will not try to find it again
+            chatboxFound = true;
+            // Highlight the main chatbox
+            highlightChatbox();
+            // Create a selection dropdown for the chatboxes
+            selectChatbox(selector);
         }
-    }, 1000);
+    }
+    // Read the chatbox from the current screen
+    const chat = reader.read(imgref);
+    // Update the page with the read chat
+    if (chat && chat.length > 0) {
+        updatePage(chat, selector);
+    }
 }
 /**
- * The reader can find multiple chatboxes on the screen, where the first one will be main chatbox.
  * We can access the chatbox positions and use this to create an overlay on the chatbox that was found.
  * We can also have users specify the specific chatbox they'd like to read from.
  */
 // Highlight the chatbox currently being read from
-function highlightChatbox(start = true) {
+function highlightChatbox() {
     // There's no use for this if there isn't a position found
-    if (!start || !reader.pos)
+    if (!reader.pos)
         return;
     // Get the position and dimensions of the chatbox
     const rect = reader.pos.mainbox.rect;
@@ -82,17 +104,19 @@ function highlightChatbox(start = true) {
     3);
 }
 // Create selection options for which chatbox to read from
-function selectChatbox(start = true, selector = 'body') {
+function selectChatbox(selector = 'body') {
     // Check if the chatbox position is found
-    if (!start || !reader.pos)
+    if (!chatboxFound || !reader.pos)
         return;
+    // Define the parent element to append the select to
+    const parent = document.querySelector(selector);
     // Create new selection options
     const select = document.createElement('select');
     select.className = 'nisdropdown';
-    select.style.position = 'fixed';
+    select.style.position = 'sticky';
+    select.style.top = '0';
     // Go through all found chatboxes and create an option for each
     reader.pos.boxes.map((box, index) => {
-        console.log(box);
         const option = document.createElement('option');
         option.value = index.toString();
         option.text = `Chatbox ${index + 1}`;
@@ -100,6 +124,7 @@ function selectChatbox(start = true, selector = 'body') {
         box.rect === reader.pos.mainbox.rect && (option.selected = true);
         // Add the options to the select
         select.appendChild(option);
+        console.log(reader.pos.mainbox.rect);
     });
     // Add an event listener to the select to change the chatbox being read from
     select.addEventListener('change', (e) => {
@@ -111,7 +136,7 @@ function selectChatbox(start = true, selector = 'body') {
         highlightChatbox();
     });
     // Append the select to the specified selector
-    document.querySelector(selector)?.appendChild(select);
+    parent.appendChild(select);
 }
 // Update the page with the chat text being read
 function updatePage(chat, selector = 'body') {
@@ -143,57 +168,15 @@ function updatePage(chat, selector = 'body') {
     // Scroll to the last appended child
     p.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
-// Interval for reading the chatbox every half-tick
-let readingInterval = null;
-function readChat(start = true, selector) {
-    // Cancel if there's no chatbox position or the start flag is false
-    if (!start || !reader.pos) {
-        clearInterval(readingInterval);
-        if (selector) {
-            const output = document.querySelector(selector);
-            if (output)
-                output.innerHTML = '';
-        }
-    }
-    // Read the chatbox
-    else {
-        readingInterval = setInterval(() => {
-            const chat = reader.read();
-            // Update the page with the read chat
-            if (chat)
-                updatePage(chat, selector);
-        }, 300);
-    }
-}
-// Starter function for the chatbox reading
-function chatbox(start = true, selector) {
-    // Clear the output if a selector is provided
-    if (selector) {
-        const output = document.querySelector(selector);
-        if (output) {
-            output.innerHTML = '';
-        }
-        else {
-            throw new Error('Selector not found');
-        }
-    }
-    // Go through the process of finding, highlighting, selecting, and reading the chatbox
-    findChat(start, () => {
-        highlightChatbox(start);
-        selectChatbox(start, selector);
-        readChat(start, selector);
-        console.log('Started reading chatbox.');
-    });
-}
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (chatbox);
 
 
 /***/ }),
 
-/***/ "./appconfig.json":
-/*!************************!*\
-  !*** ./appconfig.json ***!
-  \************************/
+/***/ "./assets/appconfig.json":
+/*!*******************************!*\
+  !*** ./assets/appconfig.json ***!
+  \*******************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -201,10 +184,10 @@ module.exports = __webpack_require__.p + "appconfig.json";
 
 /***/ }),
 
-/***/ "./icon.png":
-/*!******************!*\
-  !*** ./icon.png ***!
-  \******************/
+/***/ "./assets/icon.png":
+/*!*************************!*\
+  !*** ./assets/icon.png ***!
+  \*************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -4253,7 +4236,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_alt1_base__;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!******************!*\
@@ -4264,8 +4247,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.html */ "./index.html");
-/* harmony import */ var _appconfig_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./appconfig.json */ "./appconfig.json");
-/* harmony import */ var _icon_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./icon.png */ "./icon.png");
+/* harmony import */ var _assets_appconfig_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/appconfig.json */ "./assets/appconfig.json");
+/* harmony import */ var _assets_icon_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/icon.png */ "./assets/icon.png");
 
 
 // Webpack imports for dist files
@@ -4274,78 +4257,74 @@ __webpack_require__.r(__webpack_exports__);
 
 // Main element
 const main = document.querySelector('main');
-// Let alt1 know about the app
-alt1_base__WEBPACK_IMPORTED_MODULE_4__.identifyApp('appconfig.json');
 // If the app is not running in alt1, display a message to install the app
 if (!window.alt1) {
     // Create a base app URL, to make it work both in development and production
     const appURL = window.location.href.replace(/index\..*/, '');
     main.innerHTML = `Click <a href="alt1://addapp/${appURL}appconfig.json">here</a> to add this app to Alt1 Toolkit.`;
 }
-// Helper function to disable buttons when a lib is currently active
-function toggleButtons(halt) {
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach((button) => {
-        if (!halt && button.dataset.active === 'false') {
-            button.disabled = true;
+else {
+    // Let alt1 know about the app
+    alt1_base__WEBPACK_IMPORTED_MODULE_4__.identifyApp('appconfig.json');
+    // Set up a screen capture at an interval, based on a button click
+    let screen = null;
+    // Set the interval to the recommended interval based on capture method, defaults to 600ms
+    let interval = alt1.captureInterval || 600;
+    let captureInterval = null;
+    // The set of functions to run on the screen capture
+    const run = () => {
+        (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_0__["default"])(screen, '#chatbox');
+    };
+    // The buttons to start and stop the screen capture
+    const startButton = document.querySelector('#start');
+    const stopButton = document.querySelector('#stop');
+    startButton.addEventListener('click', () => {
+        if (captureInterval) {
+            clearInterval(captureInterval);
         }
-        else {
-            button.disabled = false;
-        }
+        // First capture the screen, and then start the interval after a delay
+        screen = alt1_base__WEBPACK_IMPORTED_MODULE_4__.captureHoldFullRs();
+        run();
+        setTimeout(() => {
+            captureInterval = setInterval(() => {
+                screen = alt1_base__WEBPACK_IMPORTED_MODULE_4__.captureHoldFullRs();
+                run();
+            }, interval);
+        }, 1000);
+        stopButton.disabled = false;
+        startButton.disabled = true;
     });
+    stopButton.addEventListener('click', () => {
+        // Clear the interval and the screen capture
+        screen = null;
+        clearInterval(captureInterval);
+        // A final run to let the readers know the capture has stopped
+        run();
+        stopButton.disabled = true;
+        startButton.disabled = false;
+    });
+    // Animal reader output
+    const animalOutput = document.querySelector('#animal');
+    animalOutput.textContent = 'This has not been implemented yet.';
+    // Bosstimer reader output
+    const bosstimerOutput = document.querySelector('#bosstimer');
+    bosstimerOutput.textContent = 'This has not been implemented yet.';
+    // Buffs reader output
+    const buffsOutput = document.querySelector('#buffs');
+    buffsOutput.textContent = 'This has not been implemented yet.';
+    // Dialog reader output
+    const dialogOutput = document.querySelector('#dialog');
+    dialogOutput.textContent = 'This has not been implemented yet.';
+    // Dropsmenu reader output
+    const dropsmenuOutput = document.querySelector('#dropsmenu');
+    dropsmenuOutput.textContent = 'This has not been implemented yet.';
+    // Target mob reader output
+    const targetmobOutput = document.querySelector('#targetmob');
+    targetmobOutput.textContent = 'This has not been implemented yet.';
+    // Tooltip reader output
+    const tooltipOutput = document.querySelector('#tooltip');
+    tooltipOutput.textContent = 'This has not been implemented yet.';
 }
-// Animal reader
-const animalButton = document.querySelector('#animal');
-animalButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Bosstimer reader
-const bosstimerButton = document.querySelector('#bosstimer');
-bosstimerButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Buffs reader
-const buffsButton = document.querySelector('#buffs');
-buffsButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Chatbox reader
-const chatButton = document.querySelector('#chatbox');
-let chatboxHalted = true;
-chatButton.addEventListener('click', () => {
-    console.log('Button clicked, chatboxHalted:', chatboxHalted);
-    (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_0__["default"])(chatboxHalted, 'main');
-    chatboxHalted = !chatboxHalted;
-    chatButton.dataset.active = chatboxHalted ? 'false' : 'true';
-    // Disable the button while processing
-    toggleButtons(chatboxHalted);
-    chatButton.disabled = true;
-    chatButton.querySelector('span').textContent = 'Loading';
-    setTimeout(() => {
-        chatButton.disabled = false;
-        chatButton.querySelector('span').textContent = chatboxHalted ? 'Chatbox' : 'Stop';
-    }, 3000);
-});
-// Dialog reader
-const dialogButton = document.querySelector('#dialog');
-dialogButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Dropsmenu reader
-const dropsmenuButton = document.querySelector('#dropsmenu');
-dropsmenuButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Target mob reader
-const targetmobButton = document.querySelector('#targetmob');
-targetmobButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
-// Tooltip reader
-const tooltipButton = document.querySelector('#tooltip');
-tooltipButton.addEventListener('click', () => {
-    main.innerHTML = 'This has not been implemented yet.';
-});
 
 })();
 
