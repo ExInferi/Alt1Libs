@@ -4,25 +4,26 @@
 	"description": "Example apps for the alt1 library",
 	"version": "1.0.0",
 	"scripts": {
+		"lint": "prettier . -w",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"predeploy": "npm run build",
-		"deploy": "gh-pages -d dist",
-		"patch": "npm version patch && npm run deploy"
+		"deploy": "npm run build && gh-pages -d dist",
+		"patch": "npm version patch && npm run deploy",
+		"minor": "npm version minor && npm run deploy",
+		"major": "npm version major && npm run deploy"
 	},
 	"dependencies": {
 		"alt1": "^0.0.9"
 	},
 	"devDependencies": {
-		"@types/node": "^12.12.54",
+		"@types/node": "^22.9.0",
 		"css-loader": "^7.1.2",
-		"gh-pages": "^6.1.1",
+		"gh-pages": "^6.2.0",
 		"prettier": "^3.3.3",
-		"sharp": "^0.31.3",
 		"style-loader": "^4.0.0",
-		"ts-loader": "^9.3.1",
-		"typescript": "^5.1.3",
-		"webpack": "^5.65.0",
-		"webpack-cli": "^4.8.0"
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.6.3",
+		"webpack": "^5.96.1",
+		"webpack-cli": "^5.1.4"
 	}
 }

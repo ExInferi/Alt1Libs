@@ -60,7 +60,7 @@ function highlightChatbox(start = true) {
 }
 
 // Create selection options for which chatbox to read from
-function selectChatbox(start = true, selector= 'body') {
+function selectChatbox(start = true, selector = 'body') {
 	// Check if the chatbox position is found
 	if (!start || !reader.pos) return;
 	// Create new selection options
@@ -92,32 +92,32 @@ function selectChatbox(start = true, selector= 'body') {
 }
 
 // Update the page with the chat text being read
-function updatePage(chat: ChatLine[], selector= 'body') {
+function updatePage(chat: ChatLine[], selector = 'body') {
 	// Filter out chat lines with no text fragments
 	const filteredChat = chat.filter((line) => line.fragments.length > 0);
 	// Cancel if there's no chat text to display
 	if (!filteredChat.length) return;
-  // Create paragraph to display the chat text
-  const p = document.createElement('p');
+	// Create paragraph to display the chat text
+	const p = document.createElement('p');
 	p.style.margin = '0'; // Removing any default margins for better readability
-  
+
 	// Get the all the lines of chat text from the chatbox
-  const text = filteredChat
-  .map((line) => {
-    // Map through the fragments of the chat line and give them their original color
-    return line.fragments
-    .map((frag) => {
-      const { color, text } = frag;
-      const s = document.createElement('span');
-      s.style.color = `rgb(${[...color]})`;
-      s.textContent = text; // Use textContent to sanitize the text
-      return s.outerHTML; // Return the outerHTML of the created span element
-    })
-    .join('');
-  })
-  .join('<br>');
-  
-  p.innerHTML = text;
+	const text = filteredChat
+		.map((line) => {
+			// Map through the fragments of the chat line and give them their original color
+			return line.fragments
+				.map((frag) => {
+					const { color, text } = frag;
+					const s = document.createElement('span');
+					s.style.color = `rgb(${[...color]})`;
+					s.textContent = text; // Use textContent to sanitize the text
+					return s.outerHTML; // Return the outerHTML of the created span element
+				})
+				.join('');
+		})
+		.join('<br>');
+
+	p.innerHTML = text;
 	document.querySelector(selector).appendChild(p);
 
 	// Scroll to the last appended child

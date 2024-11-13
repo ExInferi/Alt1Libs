@@ -1,7 +1,7 @@
 {
 	"bracketSameLine": true,
 	"bracketSpacing": true,
-	"endOfLine": "lf",
+	"endOfLine": "crlf",
 	"experimentalTernaries": true,
 	"htmlWhitespaceSensitivity": "ignore",
 	"jsxSingleQuote": true,
