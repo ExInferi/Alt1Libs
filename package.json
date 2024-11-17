@@ -7,7 +7,7 @@
 		"lint": "prettier . -w",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"deploy": "npm run build && gh-pages -d dist",
+		"deploy": "git push && npm run build && gh-pages -d dist",
 		"patch": "npm version patch && npm run deploy",
 		"minor": "npm version minor && npm run deploy",
 		"major": "npm version major && npm run deploy"
