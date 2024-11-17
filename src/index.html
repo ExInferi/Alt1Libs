@@ -74,6 +74,7 @@
 				background-clip: text;
 				text-shadow: 1px 1px 0px rgb(0 0 0 / 10%);
 				font-family: var(--heading);
+				text-transform: uppercase;
 			}
 
 			main {
@@ -163,6 +164,16 @@
 			a:hover {
 				color: var(--nis-col-urlhover);
 			}
+
+			[data-found]::after {
+				content: attr(data-found);
+			}
+			[data-found="✔"] {
+				color: #0f0;
+			}
+			[data-found="✘"] {
+				color: #f00;
+			}
 		</style>
 	</head>
 
@@ -176,35 +187,35 @@
 		</header>
 		<main>
 			<details name="libs">
-				<summary>AnimalReader</summary>
+				<summary>AnimalReader: <span data-found="&#x2718;"></span></summary>
 				<div id="animal"></div>
 			</details>
 			<details name="libs">
-				<summary>BossTimerReader</summary>
+				<summary>BossTimerReader: <span data-found="&#x2718;"></span></summary>
 				<div id="bosstimer"></div>
 			</details>
 			<details name="libs">
-				<summary>BuffReader</summary>
+				<summary>BuffReader: <span data-found="&#x2718;"></span></summary>
 				<div id="buffs"></div>
 			</details>
 			<details name="libs">
-				<summary>ChatboxReader</summary>
+				<summary>ChatboxReader: <span data-found="&#x2718;"></span></summary>
 				<div id="chatbox"></div>
 			</details>
 			<details name="libs">
-				<summary>DialogReader</summary>
+				<summary>DialogReader: <span data-found="&#x2718;"></span></summary>
 				<div id="dialog"></div>
 			</details>
 			<details name="libs">
-				<summary>DropsMenuReader</summary>
+				<summary>DropsMenuReader: <span data-found="&#x2718;"></span></summary>
 				<div id="dropsmenu"></div>
 			</details>
 			<details name="libs">
-				<summary>TargetMobReader</summary>
+				<summary>TargetMobReader: <span data-found="&#x2718;"></span></summary>
 				<div id="targetmob"></div>
 			</details>
 			<details name="libs">
-				<summary>TooltipReader</summary>
+				<summary>TooltipReader: <span data-found="&#x2718;"></span></summary>
 				<div id="tooltip"></div>
 			</details>
 		</main>

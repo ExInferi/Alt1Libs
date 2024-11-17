@@ -1,5 +1,6 @@
 import * as A1 from 'alt1/base';
 import ChatboxReader, { ChatLine } from 'alt1/chatbox';
+import { foundPos, highlightRect } from './util';
 
 /**
  * By default, the ChatboxReader will be able to read the colors defined in the library's default colors array.
@@ -14,8 +15,8 @@ import ChatboxReader, { ChatLine } from 'alt1/chatbox';
 // Create a new ChatboxReader instance
 const reader = new ChatboxReader();
 
-// Local boolean to check if we have a chatbox position
-let chatboxFound = false;
+// Check if we have a chatbox position
+foundPos.chatbox = false;
 
 // Starter function for the chatbox reading
 function chatbox(imgref: A1.ImgRef | null, selector?: string) {
@@ -25,12 +26,12 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 		if (selector) {
 			const output = document.querySelector(selector);
 			if (!output) throw new Error(`Selector '${selector}' not found`);
-			output.innerHTML = '';
+			output.textContent = 'Press Start to begin reading';
 		}
-		return (chatboxFound = false);
+		return (foundPos.chatbox = false);
 	}
 
-	if (!chatboxFound) {
+	if (!foundPos.chatbox) {
 		// Try to find the chatbox position
 		reader.find(imgref);
 		if (reader.pos === null) {
@@ -42,9 +43,16 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 			}
 			console.log('Chatbox position found:', reader.pos);
 			// Set the chatbox as found so future calls will not try to find it again
-			chatboxFound = true;
-			// Highlight the main chatbox
-			highlightChatbox();
+			foundPos.chatbox = true;
+			// Highlight the main chatbox based on the found position
+			const { x, y, width, height } = reader.pos.mainbox.rect;
+			highlightRect(x, y, width, height);
+			// Clear the chatbox output before filling it with new chat
+			if (selector) {
+				const output = document.querySelector(selector);
+				if (!output) throw new Error(`Selector '${selector}' not found`);
+				output.textContent = '';
+			}
 			// Create a selection dropdown for the chatboxes
 			selectChatbox(selector);
 		}
@@ -59,36 +67,13 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 	}
 }
 /**
- * We can access the chatbox positions and use this to create an overlay on the chatbox that was found.
- * We can also have users specify the specific chatbox they'd like to read from.
+ * We can have users specify the specific chatbox they'd like to read from.
  */
-
-// Highlight the chatbox currently being read from
-function highlightChatbox() {
-	// There's no use for this if there isn't a position found
-	if (!reader.pos) return;
-	// Get the position and dimensions of the chatbox
-	const rect = reader.pos.mainbox.rect;
-	// The overlay functions exist within the global alt1 namespace
-	alt1.overLayRect(
-		// The color of the overlay, in this case golden yellow
-		A1.mixColor(255, 211, 63),
-		// The position and dimensions of the chatbox
-		rect.x,
-		rect.y,
-		rect.width,
-		rect.height,
-		// How long the overlay needs to be displayed in ms
-		2000,
-		// The width of the overlay in pixels
-		3,
-	);
-}
 
 // Create selection options for which chatbox to read from
 function selectChatbox(selector = 'body') {
 	// Check if the chatbox position is found
-	if (!chatboxFound || !reader.pos) return;
+	if (!foundPos.chatbox || !reader.pos) return;
 	// Define the parent element to append the select to
 	const parent = document.querySelector(selector) as HTMLElement;
 	// Create new selection options
@@ -114,7 +99,8 @@ function selectChatbox(selector = 'body') {
 		// Set the chatbox to read from the selected index
 		reader.pos.mainbox = reader.pos.boxes[index];
 		// Highlight the newly selected chatbox
-		highlightChatbox();
+		const { x, y, width, height } = reader.pos.mainbox.rect;
+		highlightRect(x, y, width, height);
 	});
 	// Append the select to the specified selector
 	parent.appendChild(select);
@@ -122,6 +108,8 @@ function selectChatbox(selector = 'body') {
 
 // Update the page with the chat text being read
 function updatePage(chat: ChatLine[], selector = 'body') {
+	const element = document.querySelector(selector);
+	
 	// Filter out chat lines with no text fragments
 	const filteredChat = chat.filter((line) => line.fragments.length > 0);
 	// Cancel if there's no chat text to display
@@ -147,7 +135,7 @@ function updatePage(chat: ChatLine[], selector = 'body') {
 		.join('<br>');
 
 	p.innerHTML = text;
-	document.querySelector(selector).appendChild(p);
+	element.appendChild(p);
 
 	// Scroll to the last appended child
 	p.scrollIntoView({ behavior: 'smooth', block: 'end' });

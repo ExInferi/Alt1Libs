@@ -1,5 +1,6 @@
 import * as A1 from 'alt1/base';
 import * as OCR from 'alt1/ocr';
+import { foundPos, FoundPos } from './libs/util';
 
 // imports for the libraries
 import animal from './libs/animal';
@@ -34,10 +35,19 @@ if (!window.alt1) {
 	let interval = alt1.captureInterval || 600;
 	let captureInterval: ReturnType<typeof setInterval> | null = null;
 
+	// Found state elements
+	const foundState = document.querySelectorAll('[data-found]') as NodeListOf<HTMLElement>;
 	// The set of functions to run on the screen capture
 	const run = () => {
 		chatbox(screen, '#chatbox');
-	};
+		target(screen, '#targetmob');
+
+		// Update the found state elements
+		foundState.forEach((element, index) => {
+			const key = Object.keys(foundPos)[index] as keyof FoundPos;
+			element.dataset.found = foundPos[key] ? '✔' : '✘';
+	});
+}
 
 	// The buttons to start and stop the screen capture
 	const startButton = document.querySelector('#start') as HTMLButtonElement;
@@ -87,6 +97,11 @@ if (!window.alt1) {
 
 	buffsOutput.textContent = 'This has not been implemented yet.';
 
+	// Chatbox reader output
+	const chatboxOutput = document.querySelector('#chatbox') as HTMLDivElement;
+
+	chatboxOutput.textContent = 'Press Start to begin reading';
+
 	// Dialog reader output
 	const dialogOutput = document.querySelector('#dialog') as HTMLDivElement;
 
@@ -100,10 +115,27 @@ if (!window.alt1) {
 	// Target mob reader output
 	const targetmobOutput = document.querySelector('#targetmob') as HTMLDivElement;
 
-	targetmobOutput.textContent = 'This has not been implemented yet.';
+	targetmobOutput.textContent = 'Press Start to begin reading';
 
 	// Tooltip reader output
 	const tooltipOutput = document.querySelector('#tooltip') as HTMLDivElement;
 
 	tooltipOutput.textContent = 'This has not been implemented yet.';
 }
+
+// Toggle details as name attribute is not supported in Chromium < 120
+document.addEventListener('DOMContentLoaded', () => {
+	const details = document.querySelectorAll('details[name="libs"]');
+
+	details.forEach((detail) => {
+		detail.querySelector('summary')?.addEventListener('click', (e) => {
+			e.preventDefault(); // Prevent default toggle behavior
+
+			// Close all other details
+			details.forEach((d) => d !== detail && d.removeAttribute('open'))
+
+			// Toggle current detail
+			detail.toggleAttribute('open');
+		});
+	});
+});
