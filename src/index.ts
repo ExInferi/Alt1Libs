@@ -29,6 +29,9 @@ if (!window.alt1) {
 	// Let alt1 know about the app
 	A1.identifyApp('appconfig.json');
 
+	// Add the user's app skin as theme to the document
+	document.documentElement.dataset.theme = alt1.skinName;
+
 	// Set up a screen capture at an interval, based on a button click
 	let screen: A1.ImgRef | null = null;
 	// Set the interval to the recommended interval based on capture method, defaults to 600ms

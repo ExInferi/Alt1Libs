@@ -43,6 +43,14 @@
 				--height-main: calc(var(--height-body) - var(--height-header) - var(--height-footer));
 			}
 
+			[data-theme='aluminum'] {
+				--nis-col-gold: #ad8803;
+				--nis-col-url: #222;
+				--nis-col-urlhover: #000;
+				--nis-col-std: #1a1914;
+				--nis-col-low: #555;
+				--nis-col-faded: #888;
+			}
 			body.nis {
 				font-family: var(--font);
 				height: var(--height-body);
@@ -86,6 +94,10 @@
 				text-shadow: 1px 1px 0px black;
 			}
 
+			[data-theme='aluminum'] main {
+				text-shadow: none;
+				font-weight: 500;
+			}
 			details > div {
 				max-height: 16rem;
 				contain: layout;
@@ -135,6 +147,17 @@
 				line-height: 1px;
 				letter-spacing: 1px;
 				display: inherit;
+			}
+
+			[data-theme='legacy'] .nisbutton {
+				text-shadow: 1px 1px 0px black;
+				color: var(--nis-col-std);
+			}
+
+			[data-theme='legacy'] .nisbutton span {
+				font-family: var(--font);
+				font-weight: 300;
+				text-transform: uppercase;
 			}
 
 			.nisbutton:disabled {
