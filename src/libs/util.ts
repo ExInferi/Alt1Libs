@@ -2,25 +2,25 @@ import * as A1 from 'alt1/base';
 
 // State tracking for positions
 type FoundPos = {
-  animal: boolean;
-  bosstimer: boolean;
-  buffs: boolean;
-  chatbox: boolean;
-  dialog: boolean;
-  dropsmenu: boolean;
-  targetmob: boolean;
-  tooltip: boolean;
+	animal: boolean;
+	bosstimer: boolean;
+	buffs: boolean;
+	chatbox: boolean;
+	dialog: boolean;
+	dropsmenu: boolean;
+	targetmob: boolean;
+	tooltip: boolean;
 };
 
 const foundPos: FoundPos = {
-  animal: false,
-  bosstimer: false,
-  buffs: false,
-  chatbox: false,
-  dialog: false,
-  dropsmenu: false,
-  targetmob: false,
-  tooltip: false,
+	animal: false,
+	bosstimer: false,
+	buffs: false,
+	chatbox: false,
+	dialog: false,
+	dropsmenu: false,
+	targetmob: false,
+	tooltip: false,
 };
 
 /**

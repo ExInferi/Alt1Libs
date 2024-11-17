@@ -35,19 +35,19 @@ function target(imgref: A1.ImgRef | null, selector?: string) {
 			return console.log('Target position not found, trying to find...');
 		} else {
 			console.log('Target position found:', reader.lastpos);
-      // Set the target as found so future calls will not try to find it again
+			// Set the target as found so future calls will not try to find it again
 			foundPos.targetmob = true;
-      // Destructure the x and y coordinates from the last position
+			// Destructure the x and y coordinates from the last position
 			const { x, y } = reader.lastpos;
 			// Highlight the target information based on the found position (offset needed)
 			highlightRect(x - 151, y - 16, 200, 44);
 		}
 	}
-  // Read the target information from the current screen
+	// Read the target information from the current screen
 	const mob: { hp: number; name: string } | null = reader.read(imgref);
 
 	if (mob) {
-    // Update the page with the read target information
+		// Update the page with the read target information
 		updatePage(mob, selector);
 	}
 }

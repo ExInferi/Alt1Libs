@@ -109,7 +109,7 @@ function selectChatbox(selector = 'body') {
 // Update the page with the chat text being read
 function updatePage(chat: ChatLine[], selector = 'body') {
 	const element = document.querySelector(selector);
-	
+
 	// Filter out chat lines with no text fragments
 	const filteredChat = chat.filter((line) => line.fragments.length > 0);
 	// Cancel if there's no chat text to display

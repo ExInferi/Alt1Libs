@@ -46,8 +46,8 @@ if (!window.alt1) {
 		foundState.forEach((element, index) => {
 			const key = Object.keys(foundPos)[index] as keyof FoundPos;
 			element.dataset.found = foundPos[key] ? '✔' : '✘';
-	});
-}
+		});
+	};
 
 	// The buttons to start and stop the screen capture
 	const startButton = document.querySelector('#start') as HTMLButtonElement;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			e.preventDefault(); // Prevent default toggle behavior
 
 			// Close all other details
-			details.forEach((d) => d !== detail && d.removeAttribute('open'))
+			details.forEach((d) => d !== detail && d.removeAttribute('open'));
 
 			// Toggle current detail
 			detail.toggleAttribute('open');
