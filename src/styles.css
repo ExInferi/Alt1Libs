@@ -159,7 +159,7 @@ summary::marker {
 	top: 0;
 	right: 0;
 	padding: 0;
-	margin: 3px;
+	margin: 12px 6px;
 	color: var(--nis-col-gold);
 	border: none;
 	font-size: 18px;
