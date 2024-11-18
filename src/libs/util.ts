@@ -54,4 +54,9 @@ function outputMessage(message: string, selector: string) {
 	output.textContent = message;
 }
 
-export { foundPos, FoundPos, highlightRect, outputMessage };
+// Helper function to return checkmark or cross based on boolean value
+function checkmark(c: boolean) {
+	return c ? '✔' : '✘';
+}
+
+export { foundPos, FoundPos, highlightRect, outputMessage, checkmark };
