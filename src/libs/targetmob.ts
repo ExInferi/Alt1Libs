@@ -1,6 +1,6 @@
 import TargetMobReader from 'alt1/targetmob';
 import * as A1 from 'alt1';
-import { foundPos, highlightRect } from './util';
+import { foundPos, highlightRect, outputMessage } from './util';
 /**
  * By default, the TargetMobReader will be able to read target information from the RuneScape interface.
  * The reader looks for the target information panel which shows:
@@ -21,18 +21,16 @@ function target(imgref: A1.ImgRef | null, selector?: string) {
 	// Cancel if there's no Alt1 Toolkit or no image reference
 	if (!window.alt1 || !imgref) {
 		// Clear the output in case this was a call to stop reading
-		if (selector) {
-			const output = document.querySelector(selector);
-			if (!output) throw new Error(`Selector '${selector}' not found`);
-			output.textContent = 'Press Start to begin reading';
-		}
+		if (selector) outputMessage('Press Start to begin reading', selector);
 		return (foundPos.targetmob = false);
 	}
 
 	if (!foundPos.targetmob) {
 		reader.read(imgref);
 		if (reader.lastpos === null) {
-			return console.log('Target position not found, trying to find...');
+			const message = 'Target position not found, trying to find...';
+			if (selector) outputMessage(message, selector);
+			return console.log(message);
 		} else {
 			console.log('Target position found:', reader.lastpos);
 			// Set the target as found so future calls will not try to find it again
@@ -54,8 +52,8 @@ function target(imgref: A1.ImgRef | null, selector?: string) {
 
 // Update the page with the read target information
 function updatePage(mob: { hp: number; name: string }, selector = 'body') {
-	const output = document.querySelector(selector);
-	if (!output) throw new Error(`Selector '${selector}' not found`);
-	output.textContent = `Name: ${mob.name}, HP: ${mob.hp}`;
+	const message = `Name: ${mob.name}, HP: ${mob.hp}`;
+	outputMessage(message, selector);
 }
+
 export default target;

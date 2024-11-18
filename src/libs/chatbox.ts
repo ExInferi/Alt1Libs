@@ -1,6 +1,6 @@
 import * as A1 from 'alt1/base';
 import ChatboxReader, { ChatLine } from 'alt1/chatbox';
-import { foundPos, highlightRect } from './util';
+import { foundPos, highlightRect, outputMessage } from './util';
 
 /**
  * By default, the ChatboxReader will be able to read the colors defined in the library's default colors array.
@@ -23,11 +23,7 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 	// Cancel if there's no Alt1 Toolkit or no image reference
 	if (!window.alt1 || !imgref) {
 		// Clear the output in case this was a call to stop reading
-		if (selector) {
-			const output = document.querySelector(selector);
-			if (!output) throw new Error(`Selector '${selector}' not found`);
-			output.textContent = 'Press Start to begin reading';
-		}
+		if (selector) outputMessage('Press Start to begin reading', selector);
 		return (foundPos.chatbox = false);
 	}
 
@@ -35,7 +31,9 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 		// Try to find the chatbox position
 		reader.find(imgref);
 		if (reader.pos === null) {
-			return console.log('Chatbox position not found, trying to find...');
+			const message = 'Chatbox position not found, trying to find...';
+			if (selector) outputMessage(message, selector);
+			return console.log(message);
 		} else {
 			// Force the first "main" chatbox found to be the actual main chatbox
 			if (reader.pos.boxes[0].type === 'main') {
@@ -48,11 +46,7 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 			const { x, y, width, height } = reader.pos.mainbox.rect;
 			highlightRect(x, y, width, height);
 			// Clear the chatbox output before filling it with new chat
-			if (selector) {
-				const output = document.querySelector(selector);
-				if (!output) throw new Error(`Selector '${selector}' not found`);
-				output.textContent = '';
-			}
+			if (selector) outputMessage('', selector);
 			// Create a selection dropdown for the chatboxes
 			selectChatbox(selector);
 		}

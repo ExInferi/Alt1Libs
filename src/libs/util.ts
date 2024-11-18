@@ -47,4 +47,11 @@ function highlightRect(x: number, y: number, width: number, height: number) {
 	);
 }
 
-export { foundPos, FoundPos, highlightRect };
+// Output a message to a specific selector to reduce code duplication
+function outputMessage(message: string, selector: string) {
+	const output = document.querySelector(selector);
+	if (!output) throw new Error(`Selector '${selector}' not found`);
+	output.textContent = message;
+}
+
+export { foundPos, FoundPos, highlightRect, outputMessage };
