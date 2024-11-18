@@ -59,4 +59,37 @@ function checkmark(c: boolean) {
 	return c ? '✔' : '✘';
 }
 
-export { foundPos, FoundPos, highlightRect, outputMessage, checkmark };
+// Calculate time difference
+function timeDiff(time: number) {
+	let ms = time;
+	// Handle tick edge case
+	const EPOCH = 62135596800000;
+	if (time > EPOCH) ms = Date.now() - (time - EPOCH);
+	if (ms <= 1) return 'Unknown';
+
+	// Time units in milliseconds
+	const SEC = 1000;
+	const MIN = SEC * 60;
+	const HOUR = MIN * 60;
+	const DAY = HOUR * 24;
+
+	// Handle zero seconds case
+	if (ms < SEC) return 'just now';
+
+	// Calculate each time unit with remainders
+	const days = Math.floor(ms / DAY);
+	const hours = Math.floor((ms % DAY) / HOUR);
+	const minutes = Math.floor((ms % HOUR) / MIN);
+	const seconds = Math.floor((ms % MIN) / SEC);
+
+	// Build time string with non-zero values
+	const parts = [];
+	if (days > 0) parts.push(`${days}d`);
+	if (hours > 0) parts.push(`${hours}h`);
+	if (minutes > 0) parts.push(`${minutes}m`);
+	if (seconds > 0) parts.push(`${seconds}s`);
+
+	return `${parts.join(' ')} ago`;
+}
+
+export { foundPos, FoundPos, highlightRect, outputMessage, checkmark, timeDiff };
