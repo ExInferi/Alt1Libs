@@ -33,7 +33,9 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://runeapps.org/runeappslib.css);"]);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://runeapps.org/nis/nis.css);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `@font-face {
+___CSS_LOADER_EXPORT___.push([module.id, `/* Imports */
+
+@font-face {
 	font-family: 'Cinzel';
 	font-style: normal;
 	font-display: swap;
@@ -58,6 +60,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@font-face {
 		U+FFFD;
 }
 
+/* Base styling */
 :root {
 	--nis-col-gold: #e1b305;
 	--heading: 'Cinzel', trajan-pro-3, serif;
@@ -77,14 +80,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@font-face {
 	--nis-col-faded: #888;
 }
 
+:root :has(header[style='display: none;']) {
+	--height-main: calc(var(--height-body) - var(--height-footer));
+}
+
 body.nis {
 	font-family: var(--font);
 	height: var(--height-body);
 	font-size: 0.8125rem;
 }
 
+main {
+	height: var(--height-main);
+	overflow-y: auto;
+	font-weight: 350;
+	font-stretch: 90%;
+	letter-spacing: 0.25px;
+	text-shadow: 1px 1px 0px black;
+}
+
+[data-theme='aluminum'] main {
+	text-shadow: none;
+	font-weight: 500;
+}
+
 header {
 	height: var(--height-header);
+	min-width: 25rem;
 }
 
 footer {
@@ -111,19 +133,30 @@ h1 {
 	text-transform: uppercase;
 }
 
-main {
-	height: var(--height-main);
-	overflow-y: auto;
-	font-weight: 350;
-	font-stretch: 90%;
-	letter-spacing: 0.25px;
-	text-shadow: 1px 1px 0px black;
+#settings {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	margin: 12px 6px;
+	color: var(--nis-col-gold);
+	border: none;
+	font-size: 18px;
+	line-height: 18px;
 }
 
-[data-theme='aluminum'] main {
-	text-shadow: none;
-	font-weight: 500;
+a {
+	color: var(--nis-col-url);
+	text-underline-offset: 0.2em;
+	text-decoration-color: #ffd33f55;
+	font-weight: bold;
 }
+
+a:hover {
+	color: var(--nis-col-urlhover);
+}
+
+/* Accordion */
 details > div {
 	max-height: 16rem;
 	contain: layout;
@@ -159,6 +192,19 @@ summary::marker {
 	content: '⮛ ';
 }
 
+[data-found]::after {
+	content: attr(data-found);
+}
+
+[data-found='✔'] {
+	color: #0f0;
+}
+
+[data-found='✘'] {
+	color: #f00;
+}
+
+/* Buttons */
 .nisbutton {
 	display: inline-block;
 	border: none;
@@ -186,22 +232,6 @@ summary::marker {
 	text-transform: uppercase;
 }
 
-#settings {
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 0;
-	margin: 3px;
-	color: var(--nis-col-gold);
-	border: none;
-	font-size: 18px;
-	line-height: 18px;
-}
-
-:root :has(header[style='display: none;']) {
-	--height-main: calc(var(--height-body) - var(--height-footer));
-}
-
 .nisbutton:disabled {
 	filter: grayscale(1);
 }
@@ -219,27 +249,20 @@ summary::marker {
 	background-position: -12px 0px;
 }
 
-a {
+/* Tables */
+table caption {
+	font-weight: 500;
+	font-size: 1rem;
+	padding: 0.5em;
+}
+
+.nistable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.nistable th {
 	color: var(--nis-col-url);
-	text-underline-offset: 0.2em;
-	text-decoration-color: #ffd33f55;
-	font-weight: bold;
-}
-
-a:hover {
-	color: var(--nis-col-urlhover);
-}
-
-[data-found]::after {
-	content: attr(data-found);
-}
-
-[data-found='✔'] {
-	color: #0f0;
-}
-
-[data-found='✘'] {
-	color: #f00;
 }
 `, ""]);
 // Exports
@@ -729,7 +752,7 @@ function chatbox(imgref, selector) {
             const message = 'Chatbox position not found, trying to find...';
             if (selector)
                 (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)(message, selector);
-            return console.log(message);
+            return;
         }
         else {
             // Force the first "main" chatbox found to be the actual main chatbox
@@ -780,7 +803,6 @@ function selectChatbox(selector = 'body') {
         box.rect === reader.pos.mainbox.rect && (option.selected = true);
         // Add the options to the select
         select.appendChild(option);
-        console.log(reader.pos.mainbox.rect);
     });
     // Add an event listener to the select to change the chatbox being read from
     select.addEventListener('change', (e) => {
@@ -791,6 +813,7 @@ function selectChatbox(selector = 'body') {
         // Highlight the newly selected chatbox
         const { x, y, width, height } = reader.pos.mainbox.rect;
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.highlightRect)(x, y, width, height);
+        console.log('Selected chat:', reader.pos.mainbox.rect);
     });
     // Append the select to the specified selector
     parent.appendChild(select);
@@ -874,7 +897,7 @@ function target(imgref, selector) {
             const message = 'Target position not found, trying to find...';
             if (selector)
                 (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)(message, selector);
-            return console.log(message);
+            return;
         }
         else {
             console.log('Target position found:', reader.lastpos);
@@ -912,9 +935,11 @@ function updatePage(mob, selector = 'body') {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   checkmark: () => (/* binding */ checkmark),
 /* harmony export */   foundPos: () => (/* binding */ foundPos),
 /* harmony export */   highlightRect: () => (/* binding */ highlightRect),
-/* harmony export */   outputMessage: () => (/* binding */ outputMessage)
+/* harmony export */   outputMessage: () => (/* binding */ outputMessage),
+/* harmony export */   timeDiff: () => (/* binding */ timeDiff)
 /* harmony export */ });
 /* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
 /* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_0__);
@@ -954,6 +979,44 @@ function outputMessage(message, selector) {
     if (!output)
         throw new Error(`Selector '${selector}' not found`);
     output.textContent = message;
+}
+// Helper function to return checkmark or cross based on boolean value
+function checkmark(c) {
+    return c ? '✔' : '✘';
+}
+// Calculate time difference
+function timeDiff(time) {
+    let ms = time;
+    // Handle tick edge case
+    const EPOCH = 62135596800000;
+    if (time > EPOCH)
+        ms = Date.now() - (time - EPOCH);
+    if (ms <= 1)
+        return 'Unknown';
+    // Time units in milliseconds
+    const SEC = 1000;
+    const MIN = SEC * 60;
+    const HOUR = MIN * 60;
+    const DAY = HOUR * 24;
+    // Handle zero seconds case
+    if (ms < SEC)
+        return 'just now';
+    // Calculate each time unit with remainders
+    const days = Math.floor(ms / DAY);
+    const hours = Math.floor((ms % DAY) / HOUR);
+    const minutes = Math.floor((ms % HOUR) / MIN);
+    const seconds = Math.floor((ms % MIN) / SEC);
+    // Build time string with non-zero values
+    const parts = [];
+    if (days > 0)
+        parts.push(`${days}d`);
+    if (hours > 0)
+        parts.push(`${hours}h`);
+    if (minutes > 0)
+        parts.push(`${minutes}m`);
+    if (seconds > 0)
+        parts.push(`${seconds}s`);
+    return `${parts.join(' ')} ago`;
 }
 
 
@@ -5222,6 +5285,17 @@ __webpack_require__.r(__webpack_exports__);
 
 // Main element
 const main = document.querySelector('main');
+// Update font size based on local storage
+window.addEventListener('load', () => {
+    // Get stored font size or default to 16
+    const storedFont = localStorage.getItem('libsFont');
+    const fontSize = storedFont ? JSON.parse(storedFont) : 16;
+    // Update root font size
+    const root = document.documentElement;
+    root.style.fontSize = `${fontSize}px`;
+    // Verify the change
+    console.log('Applied fontSize:', getComputedStyle(root).fontSize);
+});
 // If the app is not running in alt1, display a message to install the app
 if (!window.alt1) {
     // Create a base app URL, to make it work both in development and production
@@ -5247,7 +5321,7 @@ else {
         // Update the found state elements
         foundState.forEach((element, index) => {
             const key = Object.keys(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos)[index];
-            element.dataset.found = _libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos[key] ? '✔' : '✘';
+            element.dataset.found = (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos[key]);
         });
     };
     // The buttons to start and stop the screen capture
@@ -5302,38 +5376,71 @@ else {
     // Tooltip reader output
     const tooltipOutput = document.querySelector('#tooltip');
     tooltipOutput.textContent = 'This has not been implemented yet.';
-}
-// Settings for the app
-const settingsButton = document.querySelector('#settings');
-settingsButton.onclick = openSettings;
-function openSettings() {
-    const settingsPopup = window.open('', 'settings', 'width=100,height=200');
-    if (settingsPopup) {
-        // Get the current settings
-        const header = document.querySelector('header');
-        const isHeaderVisible = header.style.display !== 'none';
-        // Write the HTML content for the settings window
-        settingsPopup.document.write(`
+    // Settings for the app
+    const settingsButton = document.querySelector('#settings');
+    settingsButton.onclick = openSettings;
+    function openSettings() {
+        const settingsPopup = window.open('', 'settings', 'width=200,height=200');
+        if (settingsPopup) {
+            // Get the current settings
+            const header = document.querySelector('header');
+            const isHeaderVisible = header.style.display !== 'none';
+            const info = document.querySelector('#info');
+            const isInfoVisible = info.style.display !== 'none';
+            const libs = document.querySelector('#libs');
+            const isLibsVisible = libs.style.display !== 'none';
+            const root = document.documentElement;
+            const fontSize = parseInt(getComputedStyle(root).fontSize, 10);
+            // Write the HTML content for the settings window
+            settingsPopup.document.write(`
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <title>Settings</title>
 				<link rel="stylesheet" type="text/css" href="https://runeapps.org/nis/nis.css">
+				<style>
+					body.nis {
+						text-align: center;
+					}
+					label {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 0.5em;
+					white-space: nowrap;
+					}
+				</style>
       </head>
-      <body class="nis" style="text-align:center;">
+      <body class="nis">
         <h1>Settings</h1>
         <label for="header">
 					Show header
           <input type="checkbox" id="header" ${isHeaderVisible ? 'checked' : ''}>
         </label>
-
+				<label for="info">
+					Show info
+					<input type="checkbox" id="info" ${isInfoVisible ? 'checked' : ''}>
+				</label>
+				<label for="libs">
+					Show libraries
+					<input type="checkbox" id="libs" ${isLibsVisible ? 'checked' : ''}>
+				</label>
+				<label for="font">
+					Font size
+					<input type="range" id="font" min="8" max="28" step="2" value="${fontSize}">
+				</label>
 				<script>
-					// Access the checkbox elements
-					const checkboxes = document.querySelectorAll('[type="checkbox"]');
 					const settings = {
 						header: ${isHeaderVisible},
+						info: ${isInfoVisible},
+						libs: ${isLibsVisible},
+						font: ${fontSize},
 					};
+					// Access the font size range input
+					const fontInput = document.getElementById('font');
+					// Access the checkbox elements
+					const checkboxes = document.querySelectorAll('[type="checkbox"]');
 					
 					// Loop through each checkbox and add an event listener
 					checkboxes.forEach((checkbox) => {
@@ -5345,31 +5452,120 @@ function openSettings() {
 							window.opener.updateSettings(settings);
 						});
 					});
+					fontInput.addEventListener('input', function() {
+						const settingName = this.id;
+						const settingValue = this.value;
+						settings[settingName] = settingValue;
+						localStorage.libsFont = JSON.stringify(settingValue);
+						window.opener.updateSettings(settings);
+					});
 				</script>
       </body>
       </html>
     `);
-        settingsPopup.document.close();
+            settingsPopup.document.close();
+        }
     }
-}
-// Add a function to window to update the settings
-window.updateSettings = function (settings) {
-    const header = document.querySelector('header');
-    header.style.display = settings.header ? 'block' : 'none';
-};
-// Toggle details as name attribute is not supported in Chromium < 120
-document.addEventListener('DOMContentLoaded', () => {
-    const details = document.querySelectorAll('details[name="libs"]');
-    details.forEach((detail) => {
-        detail.querySelector('summary')?.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default toggle behavior
-            // Close all other details
-            details.forEach((d) => d !== detail && d.removeAttribute('open'));
-            // Toggle current detail
-            detail.toggleAttribute('open');
+    // Add a function to window to update the settings
+    window.updateSettings = function (settings) {
+        const header = document.querySelector('header');
+        header.style.display = settings.header ? 'block' : 'none';
+        const info = document.querySelector('#info');
+        info.style.display = settings.info ? 'block' : 'none';
+        const libs = document.querySelector('#libs');
+        libs.style.display = settings.libs ? 'block' : 'none';
+        const root = document.documentElement;
+        root.style.fontSize = `${settings.font}px`;
+    };
+    // Add detected information to table
+    function buildInfo() {
+        const now = Date.now();
+        const tbody = document.querySelector('#info tbody');
+        tbody.innerHTML = '';
+        // Bools in a separate object for easier access
+        const bool = {
+            g: alt1.permissionGameState,
+            i: alt1.permissionInstalled,
+            o: alt1.permissionOverlay,
+            p: alt1.permissionPixel,
+            l: alt1.rsLinked,
+            c: alt1.permissionGameState ? alt1.currentWorld > 0 : false,
+            h: alt1.permissionGameState ? alt1.lastWorldHop > 0 : false,
+        };
+        const info = {
+            // Version of Alt1 Toolkit
+            'Alt1 version': alt1.version,
+            // Window skin selected by user in settings
+            'Preferred theme': alt1.skinName,
+            // Capture method used by Alt1
+            'Capture method': alt1.captureMethod,
+            // Recommended interval based on capture method
+            'Recommended interval': `${alt1.captureInterval}ms`,
+            // App permissions
+            'App installed': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.i),
+            'GameState permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.g),
+            'Overlay permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.o),
+            'Pixel permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.p),
+            // Display how the app was opened
+            'App opened through': bool.i ? JSON.parse(alt1.openInfo).openMethod : 'App not installed',
+            // Informations about the screen(s) detected
+            'User screen(s)': `X: ${alt1.screenX}, Y: ${alt1.screenY}, Size: ${alt1.screenWidth}x${alt1.screenHeight}`,
+            // Information about the RuneScape client window
+            'RS window linked': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.l),
+            'RS window': bool.l ?
+                `X: ${alt1.rsX}, Y: ${alt1.rsY}, Size: ${alt1.rsWidth}x${alt1.rsHeight}`
+                : 'RS not linked',
+            'RS DPI scaling': bool.l ? `${alt1.rsScaling * 100}%` : 'RS not linked',
+            'RS active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(alt1.rsActive) : 'GameState required',
+            'RS last active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(alt1.rsLastActive) : 'GameState required',
+            'RS ping': bool.g ? `${alt1.rsPing}ms` : 'GameState required',
+            'RS FPS': bool.g ? Math.round(alt1.rsFps) : 'GameState required',
+            // Information about the world detection
+            'Current world': bool.g ?
+                bool.c ?
+                    `w${alt1.currentWorld}`
+                    : 'Unknown'
+                : 'GameState required',
+            'Last world hop': bool.g ?
+                bool.h ?
+                    (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(now - alt1.lastWorldHop)
+                    : 'Unknown'
+                : 'GameState required',
+        };
+        // Add the information to the table
+        for (const [key, value] of Object.entries(info)) {
+            const row = document.createElement('tr');
+            const th = document.createElement('th');
+            const td = document.createElement('td');
+            th.textContent = key;
+            td.textContent = value.toString();
+            row.appendChild(th);
+            row.appendChild(td);
+            tbody.appendChild(row);
+        }
+    }
+    // Built table on interval
+    const buildTable = setInterval(() => buildInfo(), 1000);
+    // Cleanup on closing the app
+    window.addEventListener('beforeunload', () => {
+        if (alt1.permissionInstalled)
+            alt1.clearBinds();
+        clearInterval(buildTable);
+    });
+    // Toggle details as name attribute is not supported in Chromium < 120
+    document.addEventListener('DOMContentLoaded', () => {
+        const details = document.querySelectorAll('details[name="libs"]');
+        details.forEach((detail) => {
+            detail.querySelector('summary')?.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default toggle behavior
+                // Close all other details
+                details.forEach((d) => d !== detail && d.removeAttribute('open'));
+                // Toggle current detail
+                detail.toggleAttribute('open');
+            });
         });
     });
-});
+}
 
 })();
 
