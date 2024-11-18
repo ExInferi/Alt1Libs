@@ -14,6 +14,7 @@ import tooltip from './libs/tooltip';
 
 // Webpack imports for dist files
 import './index.html';
+import './styles.css';
 import './assets/appconfig.json';
 import './assets/icon.png';
 
