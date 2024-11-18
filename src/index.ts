@@ -21,6 +21,18 @@ import './assets/icon.png';
 // Main element
 const main = document.querySelector('main') as HTMLElement;
 
+// Update font size based on local storage
+window.addEventListener('load', () => {
+	// Get stored font size or default to 16
+	const storedFont = localStorage.getItem('libsFont');
+	const fontSize = storedFont ? JSON.parse(storedFont) : 16;
+	// Update root font size
+	const root = document.documentElement;
+	root.style.fontSize = `${fontSize}px`;
+	// Verify the change
+	console.log('Applied fontSize:', getComputedStyle(root).fontSize);
+});
+
 // If the app is not running in alt1, display a message to install the app
 if (!window.alt1) {
 	// Create a base app URL, to make it work both in development and production
@@ -131,12 +143,19 @@ if (!window.alt1) {
 	settingsButton.onclick = openSettings;
 
 	function openSettings() {
-		const settingsPopup = window.open('', 'settings', 'width=100,height=200');
+		const settingsPopup = window.open('', 'settings', 'width=200,height=200');
 
 		if (settingsPopup) {
 			// Get the current settings
 			const header = document.querySelector('header') as HTMLElement;
 			const isHeaderVisible = header.style.display !== 'none';
+			const info = document.querySelector('#info') as HTMLTableElement;
+			const isInfoVisible = info.style.display !== 'none';
+			const libs = document.querySelector('#libs') as HTMLElement;
+			const isLibsVisible = libs.style.display !== 'none';
+			const root = document.documentElement as HTMLElement;
+			const fontSize = parseInt(getComputedStyle(root).fontSize, 10);
+			console.log(fontSize);
 
 			// Write the HTML content for the settings window
 			settingsPopup.document.write(`
@@ -146,20 +165,48 @@ if (!window.alt1) {
         <meta charset="UTF-8">
         <title>Settings</title>
 				<link rel="stylesheet" type="text/css" href="https://runeapps.org/nis/nis.css">
+				<style>
+					body.nis {
+						text-align: center;
+					}
+					label {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 0.5em;
+					white-space: nowrap;
+					}
+				</style>
       </head>
-      <body class="nis" style="text-align:center;">
+      <body class="nis">
         <h1>Settings</h1>
         <label for="header">
 					Show header
           <input type="checkbox" id="header" ${isHeaderVisible ? 'checked' : ''}>
         </label>
-
+				<label for="info">
+					Show info
+					<input type="checkbox" id="info" ${isInfoVisible ? 'checked' : ''}>
+				</label>
+				<label for="libs">
+					Show libraries
+					<input type="checkbox" id="libs" ${isLibsVisible ? 'checked' : ''}>
+				</label>
+				<label for="font">
+					Font size
+					<input type="range" id="font" min="8" max="28" step="2" value="${fontSize}">
+				</label>
 				<script>
-					// Access the checkbox elements
-					const checkboxes = document.querySelectorAll('[type="checkbox"]');
 					const settings = {
 						header: ${isHeaderVisible},
+						info: ${isInfoVisible},
+						libs: ${isLibsVisible},
+						font: ${fontSize},
 					};
+					// Access the font size range input
+					const fontInput = document.getElementById('font');
+					// Access the checkbox elements
+					const checkboxes = document.querySelectorAll('[type="checkbox"]');
 					
 					// Loop through each checkbox and add an event listener
 					checkboxes.forEach((checkbox) => {
@@ -171,6 +218,14 @@ if (!window.alt1) {
 							window.opener.updateSettings(settings);
 						});
 					});
+					fontInput.addEventListener('input', function() {
+						const settingName = this.id;
+						const settingValue = this.value;
+						settings[settingName] = settingValue;
+						console.log(settings);
+						localStorage.libsFont = JSON.stringify(settingValue);
+						window.opener.updateSettings(settings);
+					});
 				</script>
       </body>
       </html>
@@ -181,9 +236,20 @@ if (!window.alt1) {
 	}
 
 	// Add a function to window to update the settings
-	(window as any).updateSettings = function (settings: { header: boolean }) {
+	(window as any).updateSettings = function (settings: {
+		header: boolean;
+		info: boolean;
+		libs: boolean;
+		font: number;
+	}) {
 		const header = document.querySelector('header') as HTMLElement;
 		header.style.display = settings.header ? 'block' : 'none';
+		const info = document.querySelector('#info') as HTMLTableElement;
+		info.style.display = settings.info ? 'block' : 'none';
+		const libs = document.querySelector('#libs') as HTMLElement;
+		libs.style.display = settings.libs ? 'block' : 'none';
+		const root = document.documentElement as HTMLElement;
+		root.style.fontSize = `${settings.font}px`;
 	};
 
 	// Add detected information to table
@@ -269,7 +335,6 @@ if (!window.alt1) {
 
 	// Toggle details as name attribute is not supported in Chromium < 120
 	document.addEventListener('DOMContentLoaded', () => {
-		buildInfo();
 		const details = document.querySelectorAll('details[name="libs"]');
 
 		details.forEach((detail) => {

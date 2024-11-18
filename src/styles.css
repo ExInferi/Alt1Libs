@@ -73,6 +73,7 @@ main {
 
 header {
 	height: var(--height-header);
+	min-width: 25rem;
 }
 
 footer {
