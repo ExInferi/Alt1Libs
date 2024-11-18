@@ -1,3 +1,4 @@
+/* Imports */
 @import url('https://runeapps.org/runeappslib.css');
 @import url('https://runeapps.org/nis/nis.css');
 
@@ -26,6 +27,7 @@
 		U+FFFD;
 }
 
+/* Base styling */
 :root {
 	--nis-col-gold: #e1b305;
 	--heading: 'Cinzel', trajan-pro-3, serif;
@@ -45,10 +47,28 @@
 	--nis-col-faded: #888;
 }
 
+:root :has(header[style='display: none;']) {
+	--height-main: calc(var(--height-body) - var(--height-footer));
+}
+
 body.nis {
 	font-family: var(--font);
 	height: var(--height-body);
 	font-size: 0.8125rem;
+}
+
+main {
+	height: var(--height-main);
+	overflow-y: auto;
+	font-weight: 350;
+	font-stretch: 90%;
+	letter-spacing: 0.25px;
+	text-shadow: 1px 1px 0px black;
+}
+
+[data-theme='aluminum'] main {
+	text-shadow: none;
+	font-weight: 500;
 }
 
 header {
@@ -79,19 +99,30 @@ h1 {
 	text-transform: uppercase;
 }
 
-main {
-	height: var(--height-main);
-	overflow-y: auto;
-	font-weight: 350;
-	font-stretch: 90%;
-	letter-spacing: 0.25px;
-	text-shadow: 1px 1px 0px black;
+#settings {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	margin: 12px 6px;
+	color: var(--nis-col-gold);
+	border: none;
+	font-size: 18px;
+	line-height: 18px;
 }
 
-[data-theme='aluminum'] main {
-	text-shadow: none;
-	font-weight: 500;
+a {
+	color: var(--nis-col-url);
+	text-underline-offset: 0.2em;
+	text-decoration-color: #ffd33f55;
+	font-weight: bold;
 }
+
+a:hover {
+	color: var(--nis-col-urlhover);
+}
+
+/* Accordion */
 details > div {
 	max-height: 16rem;
 	contain: layout;
@@ -127,6 +158,19 @@ summary::marker {
 	content: '⮛ ';
 }
 
+[data-found]::after {
+	content: attr(data-found);
+}
+
+[data-found='✔'] {
+	color: #0f0;
+}
+
+[data-found='✘'] {
+	color: #f00;
+}
+
+/* Buttons */
 .nisbutton {
 	display: inline-block;
 	border: none;
@@ -154,22 +198,6 @@ summary::marker {
 	text-transform: uppercase;
 }
 
-#settings {
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 0;
-	margin: 12px 6px;
-	color: var(--nis-col-gold);
-	border: none;
-	font-size: 18px;
-	line-height: 18px;
-}
-
-:root :has(header[style='display: none;']) {
-	--height-main: calc(var(--height-body) - var(--height-footer));
-}
-
 .nisbutton:disabled {
 	filter: grayscale(1);
 }
@@ -185,27 +213,4 @@ summary::marker {
 
 .nisbutton:disabled:hover::after {
 	background-position: -12px 0px;
-}
-
-a {
-	color: var(--nis-col-url);
-	text-underline-offset: 0.2em;
-	text-decoration-color: #ffd33f55;
-	font-weight: bold;
-}
-
-a:hover {
-	color: var(--nis-col-urlhover);
-}
-
-[data-found]::after {
-	content: attr(data-found);
-}
-
-[data-found='✔'] {
-	color: #0f0;
-}
-
-[data-found='✘'] {
-	color: #f00;
 }
