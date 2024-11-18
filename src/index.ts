@@ -127,6 +127,66 @@ if (!window.alt1) {
 	tooltipOutput.textContent = 'This has not been implemented yet.';
 }
 
+// Settings for the app
+const settingsButton = document.querySelector('#settings') as HTMLButtonElement;
+settingsButton.onclick = openSettings;
+
+function openSettings() {
+	const settingsPopup = window.open('', 'settings', 'width=100,height=200');
+
+	if (settingsPopup) {
+		// Get the current settings
+		const header = document.querySelector('header') as HTMLElement;
+		const isHeaderVisible = header.style.display !== 'none';
+
+		// Write the HTML content for the settings window
+		settingsPopup.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Settings</title>
+				<link rel="stylesheet" type="text/css" href="https://runeapps.org/nis/nis.css">
+      </head>
+      <body class="nis" style="text-align:center;">
+        <h1>Settings</h1>
+        <label for="header">
+					Show header
+          <input type="checkbox" id="header" ${isHeaderVisible ? 'checked' : ''}>
+        </label>
+
+				<script>
+					// Access the checkbox elements
+					const checkboxes = document.querySelectorAll('[type="checkbox"]');
+					const settings = {
+						header: ${isHeaderVisible},
+					};
+					
+					// Loop through each checkbox and add an event listener
+					checkboxes.forEach((checkbox) => {
+						checkbox.addEventListener('change', function() {
+							const settingName = this.id;
+							const settingValue = this.checked;
+							settings[settingName] = settingValue;
+							// Call updateSettings function in the main window
+							window.opener.updateSettings(settings);
+						});
+					});
+				</script>
+      </body>
+      </html>
+    `);
+
+		settingsPopup.document.close();
+	}
+}
+
+// Add a function to window to update the settings
+(window as any).updateSettings = function (settings: { header: boolean }) {
+	const header = document.querySelector('header') as HTMLElement;
+	header.style.display = settings.header ? 'block' : 'none';
+};
+
 // Toggle details as name attribute is not supported in Chromium < 120
 document.addEventListener('DOMContentLoaded', () => {
 	const details = document.querySelectorAll('details[name="libs"]');

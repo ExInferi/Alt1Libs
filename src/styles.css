@@ -154,6 +154,22 @@ summary::marker {
 	text-transform: uppercase;
 }
 
+#settings {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
+	margin: 3px;
+	color: var(--nis-col-gold);
+	border: none;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+:root :has(header[style='display: none;']) {
+	--height-main: calc(var(--height-body) - var(--height-footer));
+}
+
 .nisbutton:disabled {
 	filter: grayscale(1);
 }
