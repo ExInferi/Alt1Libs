@@ -5352,30 +5352,14 @@ else {
         stopButton.disabled = true;
         startButton.disabled = false;
     });
-    // Animal reader output
-    const animalOutput = document.querySelector('#animal');
-    animalOutput.textContent = 'This has not been implemented yet.';
-    // Bosstimer reader output
-    const bosstimerOutput = document.querySelector('#bosstimer');
-    bosstimerOutput.textContent = 'This has not been implemented yet.';
-    // Buffs reader output
-    const buffsOutput = document.querySelector('#buffs');
-    buffsOutput.textContent = 'This has not been implemented yet.';
-    // Chatbox reader output
-    const chatboxOutput = document.querySelector('#chatbox');
-    chatboxOutput.textContent = 'Press Start to begin reading';
-    // Dialog reader output
-    const dialogOutput = document.querySelector('#dialog');
-    dialogOutput.textContent = 'This has not been implemented yet.';
-    // Dropsmenu reader output
-    const dropsmenuOutput = document.querySelector('#dropsmenu');
-    dropsmenuOutput.textContent = 'This has not been implemented yet.';
-    // Target mob reader output
-    const targetmobOutput = document.querySelector('#targetmob');
-    targetmobOutput.textContent = 'Press Start to begin reading';
-    // Tooltip reader output
-    const tooltipOutput = document.querySelector('#tooltip');
-    tooltipOutput.textContent = 'This has not been implemented yet.';
+    // Set initial libs text
+    const details = document.querySelectorAll('details[name="libs"] > div');
+    details.forEach((detail) => {
+        const implemented = detail.id === 'chatbox' || detail.id === 'targetmob';
+        implemented ?
+            (detail.textContent = 'Press Start to begin reading')
+            : (detail.textContent = 'This has not been implemented yet.');
+    });
     // Settings for the app
     const settingsButton = document.querySelector('#settings');
     settingsButton.onclick = openSettings;
