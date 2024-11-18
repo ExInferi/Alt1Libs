@@ -30,7 +30,7 @@ function target(imgref: A1.ImgRef | null, selector?: string) {
 		if (reader.lastpos === null) {
 			const message = 'Target position not found, trying to find...';
 			if (selector) outputMessage(message, selector);
-			return console.log(message);
+			return;
 		} else {
 			console.log('Target position found:', reader.lastpos);
 			// Set the target as found so future calls will not try to find it again

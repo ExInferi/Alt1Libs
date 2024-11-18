@@ -33,7 +33,7 @@ function chatbox(imgref: A1.ImgRef | null, selector?: string) {
 		if (reader.pos === null) {
 			const message = 'Chatbox position not found, trying to find...';
 			if (selector) outputMessage(message, selector);
-			return console.log(message);
+			return;
 		} else {
 			// Force the first "main" chatbox found to be the actual main chatbox
 			if (reader.pos.boxes[0].type === 'main') {
@@ -84,7 +84,6 @@ function selectChatbox(selector = 'body') {
 		box.rect === reader.pos.mainbox.rect && (option.selected = true);
 		// Add the options to the select
 		select.appendChild(option);
-		console.log(reader.pos.mainbox.rect);
 	});
 	// Add an event listener to the select to change the chatbox being read from
 	select.addEventListener('change', (e) => {
@@ -95,6 +94,7 @@ function selectChatbox(selector = 'body') {
 		// Highlight the newly selected chatbox
 		const { x, y, width, height } = reader.pos.mainbox.rect;
 		highlightRect(x, y, width, height);
+		console.log('Selected chat:', reader.pos.mainbox.rect);
 	});
 	// Append the select to the specified selector
 	parent.appendChild(select);
