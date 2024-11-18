@@ -155,7 +155,6 @@ if (!window.alt1) {
 			const isLibsVisible = libs.style.display !== 'none';
 			const root = document.documentElement as HTMLElement;
 			const fontSize = parseInt(getComputedStyle(root).fontSize, 10);
-			console.log(fontSize);
 
 			// Write the HTML content for the settings window
 			settingsPopup.document.write(`
@@ -222,7 +221,6 @@ if (!window.alt1) {
 						const settingName = this.id;
 						const settingValue = this.value;
 						settings[settingName] = settingValue;
-						console.log(settings);
 						localStorage.libsFont = JSON.stringify(settingValue);
 						window.opener.updateSettings(settings);
 					});
