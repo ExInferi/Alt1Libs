@@ -214,3 +214,19 @@ summary::marker {
 .nisbutton:disabled:hover::after {
 	background-position: -12px 0px;
 }
+
+/* Tables */
+table caption {
+	font-weight: 500;
+	font-size: 1rem;
+	padding: 0.5em;
+}
+
+.nistable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.nistable th {
+	color: var(--nis-col-url);
+}
