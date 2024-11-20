@@ -1,7 +1,6 @@
-/* Imports */
 @import url('https://runeapps.org/runeappslib.css');
 @import url('https://runeapps.org/nis/nis.css');
-
+/* Title + regular font */
 @font-face {
 	font-family: 'Cinzel';
 	font-style: normal;
@@ -73,7 +72,11 @@ main {
 
 header {
 	height: var(--height-header);
-	min-width: 25rem;
+	overflow: auto hidden;
+}
+
+hgroup {
+	white-space: nowrap;
 }
 
 footer {
@@ -90,14 +93,14 @@ footer {
 }
 
 h1 {
-	background-color: var(--nis-col-gold);
+	color: var(--nis-col-gold);
 	margin: 1em 0 0;
-	color: transparent;
-	-webkit-background-clip: text;
-	background-clip: text;
-	text-shadow: 1px 1px 0px rgb(0 0 0 / 10%);
+	text-shadow:
+		1px 1px 2px #210c,
+		-1px 0px 1px #feb6;
 	font-family: var(--heading);
-	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 520;
 }
 
 #settings {
@@ -175,6 +178,8 @@ summary::marker {
 .nisbutton {
 	display: inline-block;
 	border: none;
+	height: 1.625rem;
+	line-height: 1.625rem;
 }
 
 .nisbutton span {
@@ -183,7 +188,7 @@ summary::marker {
 	font-weight: 650;
 	font-size: 0.9rem;
 	padding-inline: 0.5em;
-	line-height: 1px;
+	line-height: 1.625rem;
 	letter-spacing: 1px;
 	display: inherit;
 }
