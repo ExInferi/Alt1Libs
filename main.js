@@ -33,8 +33,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://runeapps.org/runeappslib.css);"]);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://runeapps.org/nis/nis.css);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `/* Imports */
-
+___CSS_LOADER_EXPORT___.push([module.id, `/* Title + regular font */
 @font-face {
 	font-family: 'Cinzel';
 	font-style: normal;
@@ -106,7 +105,11 @@ main {
 
 header {
 	height: var(--height-header);
-	min-width: 25rem;
+	overflow: auto hidden;
+}
+
+hgroup {
+	white-space: nowrap;
 }
 
 footer {
@@ -123,14 +126,14 @@ footer {
 }
 
 h1 {
-	background-color: var(--nis-col-gold);
+	color: var(--nis-col-gold);
 	margin: 1em 0 0;
-	color: transparent;
-	-webkit-background-clip: text;
-	background-clip: text;
-	text-shadow: 1px 1px 0px rgb(0 0 0 / 10%);
+	text-shadow:
+		1px 1px 2px #210c,
+		-1px 0px 1px #feb6;
 	font-family: var(--heading);
-	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 520;
 }
 
 #settings {
@@ -208,6 +211,8 @@ summary::marker {
 .nisbutton {
 	display: inline-block;
 	border: none;
+	height: 1.625rem;
+	line-height: 1.625rem;
 }
 
 .nisbutton span {
@@ -216,7 +221,7 @@ summary::marker {
 	font-weight: 650;
 	font-size: 0.9rem;
 	padding-inline: 0.5em;
-	line-height: 1px;
+	line-height: 1.625rem;
 	letter-spacing: 1px;
 	display: inherit;
 }
@@ -5455,7 +5460,7 @@ else {
         const header = document.querySelector('header');
         header.style.display = settings.header ? 'block' : 'none';
         const info = document.querySelector('#info');
-        info.style.display = settings.info ? 'block' : 'none';
+        info.style.display = settings.info ? 'table' : 'none';
         const libs = document.querySelector('#libs');
         libs.style.display = settings.libs ? 'block' : 'none';
         const root = document.documentElement;
