@@ -214,7 +214,7 @@ if (!window.alt1) {
 		const header = document.querySelector('header') as HTMLElement;
 		header.style.display = settings.header ? 'block' : 'none';
 		const info = document.querySelector('#info') as HTMLTableElement;
-		info.style.display = settings.info ? 'block' : 'none';
+		info.style.display = settings.info ? 'table' : 'none';
 		const libs = document.querySelector('#libs') as HTMLElement;
 		libs.style.display = settings.libs ? 'block' : 'none';
 		const root = document.documentElement as HTMLElement;
