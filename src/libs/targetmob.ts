@@ -1,5 +1,5 @@
 import TargetMobReader from 'alt1/targetmob';
-import * as A1 from 'alt1';
+import * as A1 from 'alt1/base';
 import { foundPos, highlightRect, outputMessage } from './util';
 /**
  * By default, the TargetMobReader will be able to read target information from the RuneScape interface.
