@@ -315,6 +315,7 @@ function chatbox(imgref, selector) {
         // Clear the output in case this was a call to stop reading
         if (selector)
             (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)('Press Start to begin reading', selector);
+        reader.pos = null;
         return (_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.chatbox = false);
     }
     if (!_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.chatbox) {
@@ -475,6 +476,7 @@ function dialog(imgref, selector) {
         // Clear the output in case this was a call to stop reading
         if (selector)
             (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)('Press Start to begin reading', selector);
+        reader.pos = null;
         return (_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.dialog = false);
     }
     if (!_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.dialog) {
@@ -724,6 +726,7 @@ function target(imgref, selector) {
         // Clear the output in case this was a call to stop reading
         if (selector)
             (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)('Press Start to begin reading', selector);
+        reader.lastpos = null;
         return (_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.targetmob = false);
     }
     if (!_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.targetmob) {
