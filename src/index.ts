@@ -46,11 +46,17 @@ if (!window.alt1) {
 	// Add the user's app skin as theme to the document
 	document.documentElement.dataset.theme = alt1.skinName;
 
-	// Set up a screen capture at an interval, based on a button click
-	let screen: A1.ImgRef | null = null;
+	// Set up a screen capture and an interval for later recapture
+	let screen: A1.ImgRef | null = A1.captureHoldFullRs();
 	// Set the interval to the recommended interval based on capture method, defaults to 600ms
 	let interval = alt1.captureInterval || 600;
 	let captureInterval: ReturnType<typeof setInterval> | null = null;
+
+	// Check if the home button is found
+	const home = A1.webpackImages({ button: require('./assets/homebutton.data.png') });
+	await home.promise;
+	let homePos = A1.findSubimage(screen, home.raw.button);
+	let homeFound = homePos.length > 0;
 
 	// Found state elements
 	const foundState = document.querySelectorAll('[data-found]') as NodeListOf<HTMLElement>;
@@ -75,7 +81,7 @@ if (!window.alt1) {
 		if (captureInterval) {
 			clearInterval(captureInterval);
 		}
-		// First capture the screen, and then start the interval after a delay
+		// First capture the screen again, and then start the interval after a delay
 		screen = A1.captureHoldFullRs();
 		run();
 
@@ -91,8 +97,9 @@ if (!window.alt1) {
 
 	stopButton.addEventListener('click', () => {
 		// Clear the interval and the screen capture
-		screen = null;
 		clearInterval(captureInterval);
+		captureInterval = null;
+		screen = null;
 		// A final run to let the readers know the capture has stopped
 		run();
 
@@ -141,7 +148,11 @@ if (!window.alt1) {
 			c: alt1.permissionGameState ? alt1.currentWorld > 0 : false,
 			h: alt1.permissionGameState ? alt1.lastWorldHop > 0 : false,
 		};
-
+		// Recheck the home button
+		if (!captureInterval || !screen) screen = A1.captureHoldFullRs();
+		homePos = A1.findSubimage(screen, home.raw.button);
+		homeFound = homePos.length > 0;
+		// Information to display
 		const info = {
 			// Version of Alt1 Toolkit
 			'Alt1 version': alt1.version,
@@ -149,6 +160,8 @@ if (!window.alt1) {
 			'Preferred theme': alt1.skinName,
 			// Capture method used by Alt1
 			'Capture method': alt1.captureMethod,
+			// Capturing requires finding the home button
+			'Capture working': checkmark(homeFound),
 			// Recommended interval based on capture method
 			'Recommended interval': `${alt1.captureInterval}ms`,
 			// App permissions
