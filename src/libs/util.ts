@@ -1,7 +1,18 @@
 import * as A1 from 'alt1/base';
 
-// State tracking for positions
-type FoundPos = {
+/**
+ * Interface for the found positions.
+ *
+ * @interface FoundPos
+ * @property {boolean} animal - Indicates if the animal info position is found.
+ * @property {boolean} bosstimer - Indicates if the boss timer position is found.
+ * @property {boolean} buffs - Indicates if the buff bar position is found.
+ * @property {boolean} chatbox - Indicates if the chatbox position is found.
+ * @property {boolean} dialog - Indicates if the dialog position is found.
+ * @property {boolean} dropsmenu - Indicates if the drops menu position is found.
+ * @property {boolean} targetmob - Indicates if the target info position is found.
+ */
+interface FoundPos {
 	animal: boolean;
 	bosstimer: boolean;
 	buffs: boolean;
@@ -9,9 +20,13 @@ type FoundPos = {
 	dialog: boolean;
 	dropsmenu: boolean;
 	targetmob: boolean;
-	tooltip: boolean;
-};
+}
 
+/**
+ * Object representing the found positions.
+ *
+ * @type {FoundPos}
+ */
 const foundPos: FoundPos = {
 	animal: false,
 	bosstimer: false,
@@ -20,7 +35,6 @@ const foundPos: FoundPos = {
 	dialog: false,
 	dropsmenu: false,
 	targetmob: false,
-	tooltip: false,
 };
 
 /**
@@ -47,19 +61,37 @@ function highlightRect(x: number, y: number, width: number, height: number) {
 	);
 }
 
-// Output a message to a specific selector to reduce code duplication
+/**
+ * Outputs a message to a specified HTML element.
+ *
+ * @param message - The message to be displayed.
+ * @param selector - The CSS selector of the HTML element where the message will be displayed.
+ * @throws Will throw an error if the element with the specified selector is not found.
+ */
 function outputMessage(message: string, selector: string) {
 	const output = document.querySelector(selector);
 	if (!output) throw new Error(`Selector '${selector}' not found`);
 	output.textContent = message;
 }
 
-// Helper function to return checkmark or cross based on boolean value
+/**
+ * Returns a checkmark symbol based on the boolean input.
+ *
+ * @param c - A boolean value.
+ * @returns A string containing '✔' if the input is true, otherwise '✘'.
+ */
 function checkmark(c: boolean) {
 	return c ? '✔' : '✘';
 }
 
-// Calculate time difference
+/**
+ * Formats milliseconds into a relative time string.
+ *
+ * @param time - The time in milliseconds to format.
+ * @returns A string representing the time difference in a human-readable format, such as "2d 3h 4m 5s ago".
+ *          If the time difference is less than one second, it returns "just now". If the time is invalid or
+ *          the difference is less than or equal to one millisecond, it returns "Unknown".
+ */
 function timeDiff(time: number) {
 	let ms = time;
 	// Handle tick edge case
