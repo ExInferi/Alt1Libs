@@ -103,8 +103,19 @@ if (!window.alt1) {
 	const details = document.querySelectorAll(
 		'details[name="libs"] > div',
 	) as NodeListOf<HTMLDetailsElement>;
+	const implementations = {
+		animal: false,
+		bosstimer: false,
+		buffs: false,
+		chatbox: true,
+		dialog: false,
+		dropsmenu: false,
+		targetmob: true,
+		tooltip: false,
+	};
+
 	details.forEach((detail) => {
-		const implemented = detail.id === 'chatbox' || detail.id === 'targetmob';
+		const implemented = implementations[detail.id as keyof typeof implementations];
 		implemented ?
 			(detail.textContent = 'Press Start to begin reading')
 		:	(detail.textContent = 'This has not been implemented yet.');
