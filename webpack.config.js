@@ -1,12 +1,16 @@
 const path = require('path');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 /**
  * @type {import("webpack").Configuration}
  */
 module.exports = {
 	//tell webpack where to look for source files
 	context: path.resolve(__dirname, 'src'),
-	plugins: [],
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
+	],
 	entry: {
 		//each entrypoint results in an output file
 		//so this results in an output file called 'main.js' which is built from src/index.ts
@@ -28,8 +32,8 @@ module.exports = {
 		// The rules section tells webpack what to do with different file types when you import them from js/ts
 		rules: [
 			{ test: /\.tsx?$/, loader: 'ts-loader' },
-			{ test: /\.css$/, use: ['style-loader', 'css-loader'] },
-			{ test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+			{ test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] },
+			{ test: /\.scss$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'] },
 			// type:"asset" means that webpack copies the file and gives you an url to them when you import them from js
 			{
 				test: /\.(png|jpg|jpeg|gif|webp)$/,
