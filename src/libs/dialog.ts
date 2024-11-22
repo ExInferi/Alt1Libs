@@ -40,6 +40,7 @@ function dialog(imgref: A1.ImgRef | null, selector?: string) {
 	if (!window.alt1 || !imgref) {
 		// Clear the output in case this was a call to stop reading
 		if (selector) outputMessage('Press Start to begin reading', selector);
+		reader.pos = null;
 		return (foundPos.dialog = false);
 	}
 
