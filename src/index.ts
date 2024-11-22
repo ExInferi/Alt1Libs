@@ -58,6 +58,7 @@ if (!window.alt1) {
 	const run = () => {
 		chatbox(screen, '#chatbox');
 		target(screen, '#targetmob');
+		dialog(screen, '#dialog');
 
 		// Update the found state elements
 		foundState.forEach((element, index) => {
@@ -108,7 +109,7 @@ if (!window.alt1) {
 		bosstimer: false,
 		buffs: false,
 		chatbox: true,
-		dialog: false,
+		dialog: true,
 		dropsmenu: false,
 		targetmob: true,
 		tooltip: false,
