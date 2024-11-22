@@ -21,7 +21,20 @@ foundPos.dialog = false;
 // Create a type for the dialogReader return object
 type Dialog = { text: string[]; opts: DialogButton[]; title: string };
 
-// Starter function for the dialog reading
+/**
+ * Starter function for the dialog reading
+ *
+ * The function performs the following steps:
+ * 1. Checks if the Alt1 Toolkit is available and if the image reference is provided.
+ *    - If not, it clears the output message and returns.
+ * 2. If the dialog position is not found, it attempts to find it using the reader.
+ *    - If the position is not found, it updates the output message (if a selector is provided) and returns.
+ *    - If the position is found, it logs the position, updates the foundPos state, and highlights the area.
+ * 3. Reads the dialog information from the current screen.
+ *    - If the dialog is found, it updates the page with this information using the provided selector.
+ * @param imgref - The screen capture reference from Alt1 Toolkit, or null if not available.
+ * @param selector - An optional CSS selector to update the output message.
+ */
 function dialog(imgref: A1.ImgRef | null, selector?: string) {
 	// Cancel if there's no Alt1 Toolkit or no image reference
 	if (!window.alt1 || !imgref) {
@@ -33,7 +46,6 @@ function dialog(imgref: A1.ImgRef | null, selector?: string) {
 	if (!foundPos.dialog) {
 		reader.find(imgref);
 		if (reader.pos === null) {
-			console.log('end dialog');
 			const message = 'Dialog position not found, trying to find...';
 			if (selector) outputMessage(message, selector);
 			return;
