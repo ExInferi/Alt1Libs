@@ -11,6 +11,16 @@
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./assets/homebutton.data.png":
+/*!************************************!*\
+  !*** ./assets/homebutton.data.png ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports=(__webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js").ImageDetect).imageDataFromBase64("iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAAW5vUEUAYtdMlAAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAFdQTFRFAAAAtNL1nrjkcXm0cEmHXDlpqsbsZ16aZT92mJfNv93ylqjNqbnEaXSfe5G/TzVfRSpP9ff7gZfOOiJCMRs60+L1KhUxyNTtUVpnwMrohqjSUVSBIRgYJDtSxwAAAB10Uk5TAP/////////////////////////////////////jxRbPAAABSElEQVR4nFWSy3KDMAxFJcsGAnGasGg7+f9vy7Rd0BYHAvhVmbhhooUl7kH4yhghB+Ycn58xRZJTbAAVy15y5YiBjRlgvUgE4bmkwE00xhVg5XysrFy/4NSEJKeYgCAvy+nfBFSzIx8YINWmqJI0Qp3StOjRR4RG9poxQmBR8BYQzcENWKALsmYCdy+sj07IiEVtS58s8NvAXYwjzWpEcTJerz6JrfjVtSH9nUBJDEQ2FRj4+QEIH2cVfQZt1xTpsNZDiMkVLEPbcUd0ClA8XIUIViJ3vA7DQQog4HEFrxBc3zRfCHT8bnYAP3BkwCvAbTjZHuE83qwuYYvZqF194R1btPthI3NzrVyXrJzNbtrjfB8klPFa3fRl9chERTAHLnsNaJN+/7XnqyL18cbV57v1dn/ZLkP7qwseE5bFvHRPtwbanLuc/wCM850xfWAxYgAAAABJRU5ErkJggg==")
+
+/***/ }),
+
 /***/ "./styles.css":
 /*!********************!*\
   !*** ./styles.css ***!
@@ -21,6 +31,237 @@ return /******/ (() => { // webpackBootstrap
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ }),
+
+/***/ "./index.ts":
+/*!******************!*\
+  !*** ./index.ts ***!
+  \******************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _libs_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/util */ "./libs/util.ts");
+/* harmony import */ var _libs_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libs/settings */ "./libs/settings.ts");
+/* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
+/* harmony import */ var _libs_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/dialog */ "./libs/dialog.ts");
+/* harmony import */ var _libs_targetmob__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/targetmob */ "./libs/targetmob.ts");
+/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.html */ "./index.html");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
+/* harmony import */ var _assets_appconfig_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./assets/appconfig.json */ "./assets/appconfig.json");
+/* harmony import */ var _assets_icon_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/icon.png */ "./assets/icon.png");
+
+
+
+
+
+
+// Webpack imports for dist files
+
+
+
+
+// Main element
+const main = document.querySelector('main');
+// Update font size based on local storage
+window.addEventListener('load', () => {
+    // Get stored font size or default to 16
+    const storedFont = localStorage.getItem('libsFont');
+    const fontSize = storedFont ? JSON.parse(storedFont) : 16;
+    // Update root font size
+    const root = document.documentElement;
+    root.style.fontSize = `${fontSize}px`;
+    // Verify the change
+    console.log('Applied fontSize:', getComputedStyle(root).fontSize);
+});
+// If the app is not running in alt1, display a message to install the app
+if (!window.alt1) {
+    // Create a base app URL, to make it work both in development and production
+    const appURL = window.location.href.replace(/index\..*/, '');
+    main.innerHTML = `Click <a href="alt1://addapp/${appURL}appconfig.json">here</a> to add this app to Alt1 Toolkit.`;
+}
+else {
+    // Let alt1 know about the app
+    alt1_base__WEBPACK_IMPORTED_MODULE_9__.identifyApp('appconfig.json');
+    // Add the user's app skin as theme to the document
+    document.documentElement.dataset.theme = alt1.skinName;
+    // Set up a screen capture and an interval for later recapture
+    let screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
+    // Set the interval to the recommended interval based on capture method, defaults to 600ms
+    let interval = alt1.captureInterval || 600;
+    let captureInterval = null;
+    // Check if the home button is found
+    const home = alt1_base__WEBPACK_IMPORTED_MODULE_9__.webpackImages({ button: __webpack_require__(/*! ./assets/homebutton.data.png */ "./assets/homebutton.data.png") });
+    await home.promise;
+    let homePos = alt1_base__WEBPACK_IMPORTED_MODULE_9__.findSubimage(screen, home.raw.button);
+    let homeFound = homePos.length > 0;
+    // Found state elements
+    const foundState = document.querySelectorAll('[data-found]');
+    // The set of functions to run on the screen capture
+    const run = () => {
+        (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_2__["default"])(screen, '#chatbox');
+        (0,_libs_targetmob__WEBPACK_IMPORTED_MODULE_4__["default"])(screen, '#targetmob');
+        (0,_libs_dialog__WEBPACK_IMPORTED_MODULE_3__["default"])(screen, '#dialog');
+        // Update the found state elements
+        foundState.forEach((element, index) => {
+            const key = Object.keys(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos)[index];
+            element.dataset.found = (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos[key]);
+        });
+    };
+    // The buttons to start and stop the screen capture
+    const startButton = document.querySelector('#start');
+    const stopButton = document.querySelector('#stop');
+    startButton.addEventListener('click', () => {
+        if (captureInterval) {
+            clearInterval(captureInterval);
+        }
+        // First capture the screen again, and then start the interval after a delay
+        screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
+        run();
+        setTimeout(() => {
+            captureInterval = setInterval(() => {
+                screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
+                run();
+            }, interval);
+        }, 1000);
+        stopButton.disabled = false;
+        startButton.disabled = true;
+    });
+    stopButton.addEventListener('click', () => {
+        // Clear the interval and the screen capture
+        clearInterval(captureInterval);
+        captureInterval = null;
+        screen = null;
+        // A final run to let the readers know the capture has stopped
+        run();
+        stopButton.disabled = true;
+        startButton.disabled = false;
+    });
+    // Set initial libs text
+    const details = document.querySelectorAll('details[name="libs"] > div');
+    const implementations = {
+        animal: false,
+        bosstimer: false,
+        buffs: false,
+        chatbox: true,
+        dialog: true,
+        dropsmenu: false,
+        targetmob: true,
+        tooltip: false,
+    };
+    details.forEach((detail) => {
+        const implemented = implementations[detail.id];
+        implemented ?
+            (detail.textContent = 'Press Start to begin reading')
+            : (detail.textContent = 'This has not been implemented yet.');
+    });
+    // Settings for the app
+    const settingsButton = document.querySelector('#settings');
+    settingsButton.onclick = _libs_settings__WEBPACK_IMPORTED_MODULE_1__["default"];
+    // Add detected information to table
+    function buildInfo() {
+        const now = Date.now();
+        const tbody = document.querySelector('#info tbody');
+        tbody.innerHTML = '';
+        // Bools in a separate object for easier access
+        const bool = {
+            g: alt1.permissionGameState,
+            i: alt1.permissionInstalled,
+            o: alt1.permissionOverlay,
+            p: alt1.permissionPixel,
+            l: alt1.rsLinked,
+            c: alt1.permissionGameState ? alt1.currentWorld > 0 : false,
+            h: alt1.permissionGameState ? alt1.lastWorldHop > 0 : false,
+        };
+        // Recheck the home button
+        if (!captureInterval || !screen)
+            screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
+        homePos = alt1_base__WEBPACK_IMPORTED_MODULE_9__.findSubimage(screen, home.raw.button);
+        homeFound = homePos.length > 0;
+        // Information to display
+        const info = {
+            // Version of Alt1 Toolkit
+            'Alt1 version': alt1.version,
+            // Window skin selected by user in settings
+            'Preferred theme': alt1.skinName,
+            // Capture method used by Alt1
+            'Capture method': alt1.captureMethod,
+            // Capturing requires finding the home button
+            'Capture working': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(homeFound),
+            // Recommended interval based on capture method
+            'Recommended interval': `${alt1.captureInterval}ms`,
+            // App permissions
+            'App installed': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.i),
+            'GameState permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.g),
+            'Overlay permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.o),
+            'Pixel permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.p),
+            // Display how the app was opened
+            'App opened through': bool.i ? JSON.parse(alt1.openInfo).openMethod : 'App not installed',
+            // Informations about the screen(s) detected
+            'User screen(s)': `X: ${alt1.screenX}, Y: ${alt1.screenY}, Size: ${alt1.screenWidth}x${alt1.screenHeight}`,
+            // Information about the RuneScape client window
+            'RS window linked': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.l),
+            'RS window': bool.l ?
+                `X: ${alt1.rsX}, Y: ${alt1.rsY}, Size: ${alt1.rsWidth}x${alt1.rsHeight}`
+                : 'RS not linked',
+            'RS DPI scaling': bool.l ? `${alt1.rsScaling * 100}%` : 'RS not linked',
+            'RS active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(alt1.rsActive) : 'GameState required',
+            'RS last active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(alt1.rsLastActive) : 'GameState required',
+            'RS ping': bool.g ? `${alt1.rsPing}ms` : 'GameState required',
+            'RS FPS': bool.g ? Math.round(alt1.rsFps) : 'GameState required',
+            // Information about the world detection
+            'Current world': bool.g ?
+                bool.c ?
+                    `w${alt1.currentWorld}`
+                    : 'Unknown'
+                : 'GameState required',
+            'Last world hop': bool.g ?
+                bool.h ?
+                    (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(now - alt1.lastWorldHop)
+                    : 'Unknown'
+                : 'GameState required',
+        };
+        // Add the information to the table
+        for (const [key, value] of Object.entries(info)) {
+            const row = document.createElement('tr');
+            const th = document.createElement('th');
+            const td = document.createElement('td');
+            th.textContent = key;
+            td.textContent = value.toString();
+            row.appendChild(th);
+            row.appendChild(td);
+            tbody.appendChild(row);
+        }
+    }
+    // Build table on interval
+    const buildTable = setInterval(() => buildInfo(), 1000);
+    // Cleanup on closing the app
+    window.addEventListener('beforeunload', () => {
+        if (alt1.permissionInstalled)
+            alt1.clearBinds();
+        clearInterval(buildTable);
+    });
+    // Toggle details as name attribute is not supported in Chromium < 120
+    document.addEventListener('DOMContentLoaded', () => {
+        const details = document.querySelectorAll('details[name="libs"]');
+        details.forEach((detail) => {
+            detail.querySelector('summary')?.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default toggle behavior
+                // Close all other details
+                details.forEach((d) => d !== detail && d.removeAttribute('open'));
+                // Toggle current detail
+                detail.toggleAttribute('open');
+            });
+        });
+    });
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
 
 /***/ }),
 
@@ -5302,6 +5543,75 @@ module.exports = JSON.parse('{"chars":[{"width":7,"bonus":140,"chr":"a","pixels"
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -5378,219 +5688,12 @@ module.exports = JSON.parse('{"chars":[{"width":7,"bonus":140,"chr":"a","pixels"
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
-(() => {
-"use strict";
-/*!******************!*\
-  !*** ./index.ts ***!
-  \******************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
-/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _libs_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/util */ "./libs/util.ts");
-/* harmony import */ var _libs_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libs/settings */ "./libs/settings.ts");
-/* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
-/* harmony import */ var _libs_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/dialog */ "./libs/dialog.ts");
-/* harmony import */ var _libs_targetmob__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/targetmob */ "./libs/targetmob.ts");
-/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.html */ "./index.html");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
-/* harmony import */ var _assets_appconfig_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./assets/appconfig.json */ "./assets/appconfig.json");
-/* harmony import */ var _assets_icon_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/icon.png */ "./assets/icon.png");
-
-
-
-
-
-
-// Webpack imports for dist files
-
-
-
-
-// Main element
-const main = document.querySelector('main');
-// Update font size based on local storage
-window.addEventListener('load', () => {
-    // Get stored font size or default to 16
-    const storedFont = localStorage.getItem('libsFont');
-    const fontSize = storedFont ? JSON.parse(storedFont) : 16;
-    // Update root font size
-    const root = document.documentElement;
-    root.style.fontSize = `${fontSize}px`;
-    // Verify the change
-    console.log('Applied fontSize:', getComputedStyle(root).fontSize);
-});
-// If the app is not running in alt1, display a message to install the app
-if (!window.alt1) {
-    // Create a base app URL, to make it work both in development and production
-    const appURL = window.location.href.replace(/index\..*/, '');
-    main.innerHTML = `Click <a href="alt1://addapp/${appURL}appconfig.json">here</a> to add this app to Alt1 Toolkit.`;
-}
-else {
-    // Let alt1 know about the app
-    alt1_base__WEBPACK_IMPORTED_MODULE_9__.identifyApp('appconfig.json');
-    // Add the user's app skin as theme to the document
-    document.documentElement.dataset.theme = alt1.skinName;
-    // Set up a screen capture at an interval, based on a button click
-    let screen = null;
-    // Set the interval to the recommended interval based on capture method, defaults to 600ms
-    let interval = alt1.captureInterval || 600;
-    let captureInterval = null;
-    // Found state elements
-    const foundState = document.querySelectorAll('[data-found]');
-    // The set of functions to run on the screen capture
-    const run = () => {
-        (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_2__["default"])(screen, '#chatbox');
-        (0,_libs_targetmob__WEBPACK_IMPORTED_MODULE_4__["default"])(screen, '#targetmob');
-        (0,_libs_dialog__WEBPACK_IMPORTED_MODULE_3__["default"])(screen, '#dialog');
-        // Update the found state elements
-        foundState.forEach((element, index) => {
-            const key = Object.keys(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos)[index];
-            element.dataset.found = (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos[key]);
-        });
-    };
-    // The buttons to start and stop the screen capture
-    const startButton = document.querySelector('#start');
-    const stopButton = document.querySelector('#stop');
-    startButton.addEventListener('click', () => {
-        if (captureInterval) {
-            clearInterval(captureInterval);
-        }
-        // First capture the screen, and then start the interval after a delay
-        screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
-        run();
-        setTimeout(() => {
-            captureInterval = setInterval(() => {
-                screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
-                run();
-            }, interval);
-        }, 1000);
-        stopButton.disabled = false;
-        startButton.disabled = true;
-    });
-    stopButton.addEventListener('click', () => {
-        // Clear the interval and the screen capture
-        screen = null;
-        clearInterval(captureInterval);
-        // A final run to let the readers know the capture has stopped
-        run();
-        stopButton.disabled = true;
-        startButton.disabled = false;
-    });
-    // Set initial libs text
-    const details = document.querySelectorAll('details[name="libs"] > div');
-    const implementations = {
-        animal: false,
-        bosstimer: false,
-        buffs: false,
-        chatbox: true,
-        dialog: true,
-        dropsmenu: false,
-        targetmob: true,
-        tooltip: false,
-    };
-    details.forEach((detail) => {
-        const implemented = implementations[detail.id];
-        implemented ?
-            (detail.textContent = 'Press Start to begin reading')
-            : (detail.textContent = 'This has not been implemented yet.');
-    });
-    // Settings for the app
-    const settingsButton = document.querySelector('#settings');
-    settingsButton.onclick = _libs_settings__WEBPACK_IMPORTED_MODULE_1__["default"];
-    // Add detected information to table
-    function buildInfo() {
-        const now = Date.now();
-        const tbody = document.querySelector('#info tbody');
-        tbody.innerHTML = '';
-        // Bools in a separate object for easier access
-        const bool = {
-            g: alt1.permissionGameState,
-            i: alt1.permissionInstalled,
-            o: alt1.permissionOverlay,
-            p: alt1.permissionPixel,
-            l: alt1.rsLinked,
-            c: alt1.permissionGameState ? alt1.currentWorld > 0 : false,
-            h: alt1.permissionGameState ? alt1.lastWorldHop > 0 : false,
-        };
-        const info = {
-            // Version of Alt1 Toolkit
-            'Alt1 version': alt1.version,
-            // Window skin selected by user in settings
-            'Preferred theme': alt1.skinName,
-            // Capture method used by Alt1
-            'Capture method': alt1.captureMethod,
-            // Recommended interval based on capture method
-            'Recommended interval': `${alt1.captureInterval}ms`,
-            // App permissions
-            'App installed': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.i),
-            'GameState permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.g),
-            'Overlay permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.o),
-            'Pixel permission': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.p),
-            // Display how the app was opened
-            'App opened through': bool.i ? JSON.parse(alt1.openInfo).openMethod : 'App not installed',
-            // Informations about the screen(s) detected
-            'User screen(s)': `X: ${alt1.screenX}, Y: ${alt1.screenY}, Size: ${alt1.screenWidth}x${alt1.screenHeight}`,
-            // Information about the RuneScape client window
-            'RS window linked': (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(bool.l),
-            'RS window': bool.l ?
-                `X: ${alt1.rsX}, Y: ${alt1.rsY}, Size: ${alt1.rsWidth}x${alt1.rsHeight}`
-                : 'RS not linked',
-            'RS DPI scaling': bool.l ? `${alt1.rsScaling * 100}%` : 'RS not linked',
-            'RS active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.checkmark)(alt1.rsActive) : 'GameState required',
-            'RS last active': bool.g ? (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(alt1.rsLastActive) : 'GameState required',
-            'RS ping': bool.g ? `${alt1.rsPing}ms` : 'GameState required',
-            'RS FPS': bool.g ? Math.round(alt1.rsFps) : 'GameState required',
-            // Information about the world detection
-            'Current world': bool.g ?
-                bool.c ?
-                    `w${alt1.currentWorld}`
-                    : 'Unknown'
-                : 'GameState required',
-            'Last world hop': bool.g ?
-                bool.h ?
-                    (0,_libs_util__WEBPACK_IMPORTED_MODULE_0__.timeDiff)(now - alt1.lastWorldHop)
-                    : 'Unknown'
-                : 'GameState required',
-        };
-        // Add the information to the table
-        for (const [key, value] of Object.entries(info)) {
-            const row = document.createElement('tr');
-            const th = document.createElement('th');
-            const td = document.createElement('td');
-            th.textContent = key;
-            td.textContent = value.toString();
-            row.appendChild(th);
-            row.appendChild(td);
-            tbody.appendChild(row);
-        }
-    }
-    // Build table on interval
-    const buildTable = setInterval(() => buildInfo(), 1000);
-    // Cleanup on closing the app
-    window.addEventListener('beforeunload', () => {
-        if (alt1.permissionInstalled)
-            alt1.clearBinds();
-        clearInterval(buildTable);
-    });
-    // Toggle details as name attribute is not supported in Chromium < 120
-    document.addEventListener('DOMContentLoaded', () => {
-        const details = document.querySelectorAll('details[name="libs"]');
-        details.forEach((detail) => {
-            detail.querySelector('summary')?.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent default toggle behavior
-                // Close all other details
-                details.forEach((d) => d !== detail && d.removeAttribute('open'));
-                // Toggle current detail
-                detail.toggleAttribute('open');
-            });
-        });
-    });
-}
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module used 'module' so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./index.ts");
+/******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;
