@@ -199,11 +199,13 @@ summary::marker {
 	text-transform: uppercase;
 }
 
-.nisbutton:disabled {
+.nisbutton:disabled,
+.nissmallimagebutton:disabled {
 	filter: grayscale(1);
 }
 
-.nisbutton:disabled:hover {
+.nisbutton:disabled:hover,
+.nissmallimagebutton:disabled:hover {
 	background-position: 0px -100%;
 	cursor: not-allowed;
 }
@@ -233,6 +235,7 @@ table caption {
 	font-weight: 500;
 	font-size: 1rem;
 	padding: 0.5em;
+	position: relative;
 }
 
 .nistable {
@@ -242,4 +245,10 @@ table caption {
 
 .nistable th {
 	color: var(--nis-col-url);
+}
+
+#stop-info {
+	position: absolute;
+	top: 0.6rem;
+	left: 0.5rem;
 }

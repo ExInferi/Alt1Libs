@@ -214,6 +214,14 @@ if (!window.alt1) {
 	// Build table on interval
 	const buildTable = setInterval(() => buildInfo(), 1000);
 
+	// Stop button for buildTable
+	const stopInfo = document.querySelector('#stop-info') as HTMLButtonElement;
+	stopInfo.onclick = () => {
+		stopInfo.disabled = true;
+		stopInfo.title = 'Reload the app to enable this feature again';
+		clearInterval(buildTable);
+	};
+
 	// Cleanup on closing the app
 	window.addEventListener('beforeunload', () => {
 		if (alt1.permissionInstalled) alt1.clearBinds();
