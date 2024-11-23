@@ -2,7 +2,7 @@
 	"author": "Ex Inferi <dev@exinferi.nl>",
 	"name": "alt1libs",
 	"description": "Example & docs for developing with the alt1 library",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"scripts": {
 		"lint": "prettier . -w",
 		"build": "webpack",
