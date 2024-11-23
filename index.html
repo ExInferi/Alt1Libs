@@ -16,14 +16,21 @@
 				<h1>Alt1Libs Example app</h1>
 				<p>Click the buttons below to toggle output for the libraries.</p>
 			</hgroup>
-			<button class="nisbutton nissmallbutton" id="start"><span>Start</span></button>
-			<button class="nisbutton nissmallbutton" id="stop" disabled><span>Stop</span></button>
+			<button class="nisbutton nissmallbutton" id="start" title="Start capturing the screen">
+				<span>Start</span>
+			</button>
+			<button class="nisbutton nissmallbutton" id="stop" title="Stop capturing the screen" disabled>
+				<span>Stop</span>
+			</button>
 		</header>
 		<div class="nisseperator"></div>
 		<main>
-			<button id="settings" class="nissmallimagebutton" title="Open settings">&#x2699;</button>
+			<button id="settings" class="nissmallimagebutton" title="Open settings">⚙</button>
 			<table id="info" class="nistable">
-				<caption>Detected information</caption>
+				<caption>
+					Detected information
+					<button class="nissmallimagebutton" title="Stop detection" id="stop-info">⏻</button>
+				</caption>
 				<tbody></tbody>
 			</table>
 			<div id="libs">

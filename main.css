@@ -27,25 +27,12 @@
 		U+FFFD;
 }
 
-@font-face {
-	font-family: 'Symbols';
-	font-style: normal;
-	font-display: swap;
-	font-weight: 400;
-	src: url(0918e108330b53ace9d0.woff2) format('woff2');
-	unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF, U+2100-214F, U+2150-218F,
-		U+2190-21FF, U+2200-22FF, U+2300-23FF, U+2500-257F, U+2580-259F, U+25A0-25FF, U+2600-26FF,
-		U+2700-27BF, U+27F0-27FF, U+2900-297F, U+2B00-2BFF, U+2E00-2E7F, U+1F300-1F5FF, U+1F600-1F64F,
-		U+1F680-1F6FF, U+1F900-1F9FF;
-}
-
 /* Base styling */
 :root {
 	--nis-col-gold: #e1b305;
 	--nis-col-goldhover: #f0c808;
 	--heading: 'Cinzel', trajan-pro-3, serif;
 	--font: 'Noto Sans', sans-serif;
-	--symbol: 'Symbols', sans-serif;
 	--height-body: 100vh;
 	--height-header: 10rem;
 	--height-footer: 6rem;
@@ -122,7 +109,6 @@ h1 {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 0;
 	margin: 12px 6px;
 }
 
@@ -216,11 +202,13 @@ summary::marker {
 	text-transform: uppercase;
 }
 
-.nisbutton:disabled {
+.nisbutton:disabled,
+.nissmallimagebutton:disabled {
 	filter: grayscale(1);
 }
 
-.nisbutton:disabled:hover {
+.nisbutton:disabled:hover,
+.nissmallimagebutton:disabled:hover {
 	background-position: 0px -100%;
 	cursor: not-allowed;
 }
@@ -234,11 +222,11 @@ summary::marker {
 }
 
 .nissmallimagebutton {
-	font-family: var(--symbol);
 	color: var(--nis-col-gold);
 	border: none;
+	padding: 0;
 	font-size: 18px;
-	line-height: 21px;
+	line-height: 18px;
 }
 
 .nissmallimagebutton:hover {
@@ -250,6 +238,7 @@ table caption {
 	font-weight: 500;
 	font-size: 1rem;
 	padding: 0.5em;
+	position: relative;
 }
 
 .nistable {
@@ -259,6 +248,12 @@ table caption {
 
 .nistable th {
 	color: var(--nis-col-url);
+}
+
+#stop-info {
+	position: absolute;
+	top: 0.6rem;
+	left: 0.5rem;
 }
 
 
