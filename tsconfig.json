@@ -6,6 +6,7 @@
 		"noImplicitAny": true,
 		"moduleResolution": "bundler",
 		"module": "ESNext",
-		"target": "ES2022"
+		"target": "ES2022",
+		"sourceMap": true
 	}
 }

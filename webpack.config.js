@@ -19,9 +19,9 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		// library means that the exports from the entry file can be accessed from outside, in this case from the global scope as window.TestApp
-		library: { type: 'umd', name: 'TestApp' },
+		library: { type: 'umd', name: 'Alt1Libs' },
 	},
-	devtool: false,
+	devtool: 'source-map',
 	mode: 'development',
 	// prevent webpack from bundling these imports (alt1 libs can use them when running in nodejs)
 	externals: ['sharp', 'canvas', 'electron/common'],
