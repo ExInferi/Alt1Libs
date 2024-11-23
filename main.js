@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["canvas", "electron/common", "sharp"], factory);
 	else if(typeof exports === 'object')
-		exports["TestApp"] = factory((function webpackLoadOptionalExternalModule() { try { return require("canvas"); } catch(e) {} }()), (function webpackLoadOptionalExternalModule() { try { return require("electron/common"); } catch(e) {} }()), (function webpackLoadOptionalExternalModule() { try { return require("sharp"); } catch(e) {} }()));
+		exports["Alt1Libs"] = factory((function webpackLoadOptionalExternalModule() { try { return require("canvas"); } catch(e) {} }()), (function webpackLoadOptionalExternalModule() { try { return require("electron/common"); } catch(e) {} }()), (function webpackLoadOptionalExternalModule() { try { return require("sharp"); } catch(e) {} }()));
 	else
-		root["TestApp"] = factory(root["canvas"], root["electron/common"], root["sharp"]);
+		root["Alt1Libs"] = factory(root["canvas"], root["electron/common"], root["sharp"]);
 })(self, (__WEBPACK_EXTERNAL_MODULE_canvas__, __WEBPACK_EXTERNAL_MODULE_electron_common__, __WEBPACK_EXTERNAL_MODULE_sharp__) => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
@@ -5701,3 +5701,4 @@ module.exports = JSON.parse('{"chars":[{"width":7,"bonus":140,"chr":"a","pixels"
 /******/ })()
 ;
 });
+//# sourceMappingURL=main.js.map
