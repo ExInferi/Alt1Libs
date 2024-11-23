@@ -27,6 +27,7 @@
 /* Base styling */
 :root {
 	--nis-col-gold: #e1b305;
+	--nis-col-goldhover: #f0c808;
 	--heading: 'Cinzel', trajan-pro-3, serif;
 	--font: 'Noto Sans', sans-serif;
 	--height-body: 100vh;
@@ -105,12 +106,7 @@ h1 {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding: 0;
 	margin: 12px 6px;
-	color: var(--nis-col-gold);
-	border: none;
-	font-size: 18px;
-	line-height: 18px;
 }
 
 a {
@@ -129,6 +125,7 @@ details > div {
 	max-height: 16rem;
 	contain: layout;
 	overflow-y: auto;
+	padding-inline: 0.5em;
 }
 
 details select {
@@ -217,6 +214,18 @@ summary::marker {
 
 .nisbutton:disabled:hover::after {
 	background-position: -12px 0px;
+}
+
+.nissmallimagebutton {
+	color: var(--nis-col-gold);
+	border: none;
+	padding: 0;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+.nissmallimagebutton:hover {
+	color: var(--nis-col-goldhover);
 }
 
 /* Tables */
