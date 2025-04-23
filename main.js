@@ -5733,8 +5733,6 @@ function dialog(imgref, selector) {
     const read = reader.read(imgref);
     // Update the page with the read dialog information
     if (read)
-        console.log('Dialog read:', read.text.join(' '));
-    if (read)
         updatePage(read, selector);
 }
 function updatePage(dialog, selector = 'body') {
