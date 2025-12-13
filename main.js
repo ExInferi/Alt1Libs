@@ -2133,448 +2133,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_sharp__;
 
 /***/ }),
 
-/***/ "../node_modules/alt1/dist/buffs/index.js":
-/*!************************************************!*\
-  !*** ../node_modules/alt1/dist/buffs/index.js ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory(__webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js"), __webpack_require__(/*! alt1/ocr */ "../node_modules/alt1/dist/ocr/index.js"));
-	else {}
-})(globalThis, (__WEBPACK_EXTERNAL_MODULE_alt1_base__, __WEBPACK_EXTERNAL_MODULE_alt1_ocr__) => {
-return /******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
-
-/***/ "./src/buffs/imgs/buffborder.data.png":
-/*!********************************************!*\
-  !*** ./src/buffs/imgs/buffborder.data.png ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_885__) => {
-
-module.exports=(__nested_webpack_require_885__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABCSURBVEhL7daxDQAgDANBwxasxmCsS4jECE8K5JdcX+s219iqKrGTXi+dfs2SjCEZQzKGZAzJGJIxJGNI/2KFj1gK6ntTCO2Nfp8AAAAASUVORK5CYII=")
-
-/***/ }),
-
-/***/ "./src/buffs/imgs/debuffborder.data.png":
-/*!**********************************************!*\
-  !*** ./src/buffs/imgs/debuffborder.data.png ***!
-  \**********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_1504__) => {
-
-module.exports=(__nested_webpack_require_1504__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABFSURBVEhL7daxDQAgDANBm5XYfwOYyUgoI5gUyFc51bfhAoQmNzYl1v3MJjVqt0jMIjGLxCwSs0jMIjGLxCz+jTV+xMAB3/oJlYh5IBUAAAAASUVORK5CYII=")
-
-/***/ }),
-
-/***/ "./src/buffs/index.ts":
-/*!****************************!*\
-  !*** ./src/buffs/index.ts ***!
-  \****************************/
-/***/ (function(__unused_webpack_module, exports, __nested_webpack_require_2063__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BuffInfo = exports.Buff = void 0;
-const a1lib = __importStar(__nested_webpack_require_2063__(/*! alt1/base */ "alt1/base"));
-const OCR = __importStar(__nested_webpack_require_2063__(/*! alt1/ocr */ "alt1/ocr"));
-const base_1 = __nested_webpack_require_2063__(/*! alt1/base */ "alt1/base");
-var imgs = (0, base_1.webpackImages)({
-    buff: __nested_webpack_require_2063__(/*! ./imgs/buffborder.data.png */ "./src/buffs/imgs/buffborder.data.png"),
-    debuff: __nested_webpack_require_2063__(/*! ./imgs/debuffborder.data.png */ "./src/buffs/imgs/debuffborder.data.png"),
-});
-var font = __nested_webpack_require_2063__(/*! ../fonts/pixel_8px_digits.fontmeta.json */ "./src/fonts/pixel_8px_digits.fontmeta.json");
-function negmod(a, b) {
-    return ((a % b) + b) % b;
-}
-class Buff {
-    constructor(buffer, x, y, isdebuff) {
-        this.buffer = buffer;
-        this.bufferx = x;
-        this.buffery = y;
-        this.isdebuff = isdebuff;
-    }
-    readArg(type) {
-        return BuffReader.readArg(this.buffer, this.bufferx + 2, this.buffery + 23, type);
-    }
-    readTime() {
-        return BuffReader.readTime(this.buffer, this.bufferx + 2, this.buffery + 23);
-    }
-    compareBuffer(img) {
-        return BuffReader.compareBuffer(this.buffer, this.bufferx + 1, this.buffery + 1, img);
-    }
-    countMatch(img, aggressive) {
-        return BuffReader.countMatch(this.buffer, this.bufferx + 1, this.buffery + 1, img, aggressive);
-    }
-}
-exports.Buff = Buff;
-class BuffReader {
-    constructor() {
-        this.pos = null;
-        this.debuffs = false;
-    }
-    find(img) {
-        if (!img) {
-            img = a1lib.captureHoldFullRs();
-        }
-        if (!img) {
-            return null;
-        }
-        var poslist = img.findSubimage(this.debuffs ? imgs.debuff : imgs.buff);
-        if (poslist.length == 0) {
-            return null;
-        }
-        var grids = [];
-        for (var a in poslist) {
-            var ongrid = false;
-            for (var b in grids) {
-                if (negmod(grids[b].x - poslist[a].x, BuffReader.gridsize) == 0 && negmod(grids[b].x - poslist[a].x, BuffReader.gridsize) == 0) {
-                    grids[b].x = Math.min(grids[b].x, poslist[a].x);
-                    grids[b].y = Math.min(grids[b].y, poslist[a].y);
-                    grids[b].n++;
-                    ongrid = true;
-                    break;
-                }
-            }
-            if (!ongrid) {
-                grids.push({ x: poslist[a].x, y: poslist[a].y, n: 1 });
-            }
-        }
-        var max = 0;
-        var above2 = 0;
-        var best = null;
-        for (var a in grids) {
-            console.log("buff grid [" + grids[a].x + "," + grids[a].y + "], n:" + grids[a].n);
-            if (grids[a].n > max) {
-                max = grids[a].n;
-                best = grids[a];
-            }
-            if (grids[a].n >= 2) {
-                above2++;
-            }
-        }
-        if (above2 > 1) {
-            console.log("Warning, more than one possible buff bar location");
-        }
-        if (!best) {
-            return null;
-        }
-        this.pos = { x: best.x, y: best.y, maxhor: 5, maxver: 1 };
-        return true;
-    }
-    getCaptRect() {
-        if (!this.pos) {
-            return null;
-        }
-        return new a1lib.Rect(this.pos.x, this.pos.y, (this.pos.maxhor + 1) * BuffReader.gridsize, (this.pos.maxver + 1) * BuffReader.gridsize);
-    }
-    read(buffer) {
-        if (!this.pos) {
-            throw new Error("no pos");
-        }
-        var r = [];
-        var rect = this.getCaptRect();
-        if (!rect) {
-            return null;
-        }
-        if (!buffer) {
-            buffer = a1lib.capture(rect.x, rect.y, rect.width, rect.height);
-        }
-        var maxhor = 0;
-        var maxver = 0;
-        for (var ix = 0; ix <= this.pos.maxhor; ix++) {
-            for (var iy = 0; iy <= this.pos.maxver; iy++) {
-                var x = ix * BuffReader.gridsize;
-                var y = iy * BuffReader.gridsize;
-                //Have to require exact match here as we get transparency bs otherwise
-                var match = buffer.pixelCompare((this.debuffs ? imgs.debuff : imgs.buff), x, y) == 0;
-                if (!match) {
-                    break;
-                }
-                r.push(new Buff(buffer, x, y, this.debuffs));
-                maxhor = Math.max(maxhor, ix);
-                maxver = Math.max(maxver, iy);
-            }
-        }
-        this.pos.maxhor = Math.max(5, maxhor + 2);
-        this.pos.maxver = Math.max(1, maxver + 1);
-        return r;
-    }
-    static compareBuffer(buffer, ox, oy, buffimg) {
-        var r = BuffReader.countMatch(buffer, ox, oy, buffimg, true);
-        if (r.failed > 0) {
-            return false;
-        }
-        if (r.tested < 50) {
-            return false;
-        }
-        return true;
-    }
-    static countMatch(buffer, ox, oy, buffimg, agressive) {
-        var r = { tested: 0, failed: 0, skipped: 0, passed: 0 };
-        var data1 = buffer.data;
-        var data2 = buffimg.data;
-        //var debug = new ImageData(buffimg.width, buffimg.height);
-        for (var y = 0; y < buffimg.height; y++) {
-            for (var x = 0; x < buffimg.width; x++) {
-                var i1 = buffer.pixelOffset(ox + x, oy + y);
-                var i2 = buffimg.pixelOffset(x, y);
-                //debug.data[i2] = 255; debug.data[i2 + 1] = debug.data[i2 + 2] = 0; debug.data[i2 + 3] = 255;
-                if (data2[i2 + 3] != 255) {
-                    r.skipped++;
-                    continue;
-                } //transparent buff pixel
-                if (data1[i1] == 255 && data1[i1 + 1] == 255 && data1[i1 + 2] == 255) {
-                    r.skipped++;
-                    continue;
-                } //white pixel - part of buff time text
-                if (data1[i1] == 0 && data1[i1 + 1] == 0 && data1[i1 + 2] == 0) {
-                    r.skipped++;
-                    continue;
-                } //black pixel - part of buff time text
-                var d = a1lib.ImageDetect.coldif(data1[i1], data1[i1 + 1], data1[i1 + 2], data2[i2], data2[i2 + 1], data2[i2 + 2], 255);
-                r.tested++;
-                //debug.data[i2] = debug.data[i2 + 1] = debug.data[i2 + 2] = d * 10;
-                if (d > 35) {
-                    //qw(pixelschecked); debug.show();
-                    r.failed++;
-                    if (agressive) {
-                        return r;
-                    }
-                }
-                else {
-                    r.passed++;
-                }
-            }
-        }
-        //debug.show(); qw(pixelschecked);
-        return r;
-    }
-    static isolateBuffer(buffer, ox, oy, buffimg) {
-        var count = BuffReader.countMatch(buffer, ox, oy, buffimg);
-        if (count.passed < 50) {
-            return;
-        }
-        var removed = 0;
-        var data1 = buffer.data;
-        var data2 = buffimg.data;
-        //var debug = new ImageData(buffimg.width, buffimg.height);
-        for (var y = 0; y < buffimg.height; y++) {
-            for (var x = 0; x < buffimg.width; x++) {
-                var i1 = buffer.pixelOffset(ox + x, oy + y);
-                var i2 = buffimg.pixelOffset(x, y);
-                //debug.data[i2] = 255; debug.data[i2 + 1] = debug.data[i2 + 2] = 0; debug.data[i2 + 3] = 255;
-                if (data2[i2 + 3] != 255) {
-                    continue;
-                } //transparent buff pixel
-                //==== new buffer has text on it ====
-                if (data1[i1] == 255 && data1[i1 + 1] == 255 && data1[i1 + 2] == 255 || data1[i1] == 0 && data1[i1 + 1] == 0 && data1[i1 + 2] == 0) {
-                    continue;
-                }
-                //==== old buf has text on it, use the new one ====
-                if (data2[i2] == 255 && data2[i2 + 1] == 255 && data2[i2 + 2] == 255 || data2[i2] == 0 && data2[i2 + 1] == 0 && data2[i2 + 2] == 0) {
-                    data2[i2 + 0] = data1[i1 + 0];
-                    data2[i2 + 1] = data1[i1 + 1];
-                    data2[i2 + 2] = data1[i1 + 2];
-                    data2[i2 + 3] = data1[i1 + 3];
-                    removed++;
-                }
-                var d = a1lib.ImageDetect.coldif(data1[i1], data1[i1 + 1], data1[i1 + 2], data2[i2], data2[i2 + 1], data2[i2 + 2], 255);
-                //debug.data[i2] = debug.data[i2 + 1] = debug.data[i2 + 2] = d * 10;
-                if (d > 5) {
-                    //qw(pixelschecked); debug.show();
-                    data2[i2 + 0] = data2[i2 + 1] = data2[i2 + 2] = data2[i2 + 3] = 0;
-                    removed++;
-                }
-            }
-        }
-        //debug.show(); qw(pixelschecked);
-        if (removed > 0) {
-            console.log(removed + " pixels remove from buff template image");
-        }
-    }
-    static readArg(buffer, ox, oy, type) {
-        var lines = [];
-        for (var dy = -10; dy < 10; dy += 10) { //the timer can be spread to a second line at certain times (229m)
-            var result = OCR.readLine(buffer, font, [255, 255, 255], ox, oy + dy, true);
-            if (result.text) {
-                lines.push(result.text);
-            }
-        }
-        var r = { time: 0, arg: "" };
-        if (type == "timearg" && lines.length > 1) {
-            r.arg = lines.pop();
-        }
-        var str = lines.join("");
-        if (type == "arg") {
-            r.arg = str;
-        }
-        else {
-            var m;
-            if (m = str.match(/^(\d+)hr($|\s?\()/i)) {
-                r.time = +m[1] * 60 * 60;
-            }
-            else if (m = str.match(/^(\d+)m($|\s?\()/i)) {
-                r.time = +m[1] * 60;
-            }
-            else if (m = str.match(/^(\d+)($|\s?\()/)) {
-                r.time = +m[1];
-            }
-        }
-        return r;
-    }
-    static readTime(buffer, ox, oy) {
-        return this.readArg(buffer, ox, oy, "time").time;
-    }
-    static matchBuff(state, buffimg) {
-        for (var a in state) {
-            if (state[a].compareBuffer(buffimg)) {
-                return state[a];
-            }
-        }
-        return null;
-    }
-    static matchBuffMulti(state, buffinfo) {
-        if (buffinfo.final) { //cheap way if we known exactly what we're searching for
-            return BuffReader.matchBuff(state, buffinfo.imgdata);
-        }
-        else { //expensive way if we are not sure the template is final
-            var bestindex = -1;
-            var bestscore = 0;
-            if (buffinfo.imgdata) {
-                for (var a = 0; a < state.length; a++) {
-                    var count = BuffReader.countMatch(state[a].buffer, state[a].bufferx + 1, state[a].buffery + 1, buffinfo.imgdata, false);
-                    if (count.passed > bestscore) {
-                        bestscore = count.passed;
-                        bestindex = a;
-                    }
-                }
-            }
-            if (bestscore < 50) {
-                return null;
-            }
-            //update the isolated buff
-            if (buffinfo.canimprove) {
-                BuffReader.isolateBuffer(state[bestindex].buffer, state[bestindex].bufferx + 1, state[bestindex].buffery + 1, buffinfo.imgdata);
-            }
-            return state[bestindex];
-        }
-    }
-}
-BuffReader.buffsize = 27;
-BuffReader.gridsize = 30;
-exports["default"] = BuffReader;
-class BuffInfo {
-    constructor(imgdata, debuff, id, canimprove) {
-        this.imgdata = imgdata;
-        this.isdebuff = debuff;
-        this.buffid = id;
-        this.final = !!id && !canimprove;
-        this.canimprove = canimprove;
-    }
-}
-exports.BuffInfo = BuffInfo;
-
-
-/***/ }),
-
-/***/ "alt1/base":
-/*!**************************************************************************************************!*\
-  !*** external {"root":"A1lib","commonjs2":"alt1/base","commonjs":"alt1/base","amd":"alt1/base"} ***!
-  \**************************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = __WEBPACK_EXTERNAL_MODULE_alt1_base__;
-
-/***/ }),
-
-/***/ "alt1/ocr":
-/*!*********************************************************************************************!*\
-  !*** external {"root":"OCR","commonjs2":"alt1/ocr","commonjs":"alt1/ocr","amd":"alt1/ocr"} ***!
-  \*********************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = __WEBPACK_EXTERNAL_MODULE_alt1_ocr__;
-
-/***/ }),
-
-/***/ "./src/fonts/pixel_8px_digits.fontmeta.json":
-/*!**************************************************!*\
-  !*** ./src/fonts/pixel_8px_digits.fontmeta.json ***!
-  \**************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = JSON.parse('{"chars":[{"width":7,"bonus":120,"chr":"0","pixels":[0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,1,1,255,255,1,3,255,0,1,4,255,0,1,5,255,0,1,6,255,255,2,0,255,255,2,2,255,0,2,7,255,255,3,1,255,255,3,6,255,255,3,8,255,0,4,2,255,255,4,3,255,255,4,4,255,255,4,5,255,255,4,7,255,0,5,3,255,0,5,4,255,0,5,5,255,0,5,6,255,0],"secondary":false},{"width":4,"bonus":95,"chr":"1","pixels":[0,1,255,255,0,7,255,255,1,0,255,255,1,1,255,255,1,2,255,255,1,3,255,255,1,4,255,255,1,5,255,255,1,6,255,255,1,7,255,255,1,8,255,0,2,1,255,0,2,2,255,0,2,3,255,0,2,4,255,0,2,5,255,0,2,6,255,0,2,7,255,255,2,8,255,0],"secondary":false},{"width":7,"bonus":140,"chr":"2","pixels":[0,1,255,255,0,6,255,255,0,7,255,255,1,0,255,255,1,2,255,0,1,5,255,255,1,7,255,255,1,8,255,0,2,0,255,255,2,1,255,0,2,4,255,255,2,6,255,0,2,7,255,255,2,8,255,0,3,0,255,255,3,1,255,0,3,3,255,255,3,5,255,0,3,7,255,255,3,8,255,0,4,1,255,255,4,2,255,255,4,4,255,0,4,7,255,255,4,8,255,0,5,2,255,0,5,3,255,0,5,8,255,0],"secondary":false},{"width":6,"bonus":115,"chr":"3","pixels":[0,1,255,255,0,6,255,255,1,0,255,255,1,2,255,0,1,3,255,255,1,7,255,255,2,0,255,255,2,1,255,0,2,3,255,255,2,4,255,0,2,7,255,255,2,8,255,0,3,1,255,255,3,2,255,255,3,4,255,255,3,5,255,255,3,6,255,255,3,8,255,0,4,2,255,0,4,3,255,0,4,5,255,0,4,6,255,0,4,7,255,0],"secondary":false},{"width":5,"bonus":110,"chr":"4","pixels":[0,0,255,255,0,1,255,255,0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,1,1,255,0,1,2,255,0,1,3,255,0,1,4,255,0,1,5,255,255,1,6,255,0,2,3,255,255,2,4,255,255,2,5,255,255,2,6,255,255,2,7,255,255,3,4,255,0,3,5,255,255,3,6,255,0,3,7,255,0,3,8,255,0],"secondary":false},{"width":6,"bonus":135,"chr":"5","pixels":[0,0,255,255,0,1,255,255,0,2,255,255,0,3,255,255,0,6,255,255,1,0,255,255,1,1,255,0,1,2,255,0,1,3,255,255,1,4,255,0,1,7,255,255,2,0,255,255,2,1,255,0,2,3,255,255,2,4,255,0,2,7,255,255,2,8,255,0,3,0,255,255,3,1,255,0,3,4,255,255,3,5,255,255,3,6,255,255,3,8,255,0,4,1,255,0,4,5,255,0,4,6,255,0,4,7,255,0],"secondary":false},{"width":7,"bonus":160,"chr":"6","pixels":[0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,0,6,255,255,1,1,255,255,1,3,255,0,1,4,255,255,1,5,255,0,1,6,255,0,1,7,255,255,2,0,255,255,2,2,255,0,2,3,255,255,2,5,255,0,2,7,255,255,2,8,255,0,3,0,255,255,3,1,255,0,3,3,255,255,3,4,255,0,3,7,255,255,3,8,255,0,4,1,255,255,4,4,255,255,4,5,255,255,4,6,255,255,4,8,255,0,5,2,255,0,5,5,255,0,5,6,255,0,5,7,255,0],"secondary":false},{"width":6,"bonus":105,"chr":"7","pixels":[0,0,255,255,0,6,255,255,0,7,255,255,1,0,255,255,1,1,255,0,1,4,255,255,1,5,255,255,1,7,255,0,1,8,255,0,2,0,255,255,2,1,255,0,2,2,255,255,2,3,255,255,2,5,255,0,2,6,255,0,3,0,255,255,3,1,255,255,3,3,255,0,3,4,255,0,4,1,255,0,4,2,255,0],"secondary":false},{"width":7,"bonus":170,"chr":"8","pixels":[0,1,255,255,0,2,255,255,0,4,255,255,0,5,255,255,0,6,255,255,1,0,255,255,1,2,255,0,1,3,255,255,1,5,255,0,1,6,255,0,1,7,255,255,2,0,255,255,2,1,255,0,2,3,255,255,2,4,255,0,2,7,255,255,2,8,255,0,3,0,255,255,3,1,255,0,3,3,255,255,3,4,255,0,3,7,255,255,3,8,255,0,4,1,255,255,4,2,255,255,4,4,255,255,4,5,255,255,4,6,255,255,4,8,255,0,5,2,255,0,5,3,255,0,5,5,255,0,5,6,255,0,5,7,255,0],"secondary":false},{"width":7,"bonus":130,"chr":"9","pixels":[0,1,255,255,0,2,255,255,1,0,255,255,1,2,255,0,1,3,255,255,2,0,255,255,2,1,255,0,2,4,255,255,3,0,255,255,3,1,255,0,3,4,255,255,3,5,255,0,4,1,255,255,4,2,255,255,4,3,255,255,4,4,255,255,4,5,255,255,4,6,255,255,4,7,255,255,5,2,255,0,5,3,255,0,5,4,255,0,5,5,255,0,5,6,255,0,5,7,255,0,5,8,255,0],"secondary":false},{"width":7,"bonus":130,"chr":"m","pixels":[0,4,255,255,0,5,255,255,0,6,255,255,0,7,255,255,1,3,255,255,1,5,255,0,1,6,255,0,1,7,255,0,1,8,255,0,2,4,255,255,2,5,255,255,2,6,255,255,2,7,255,255,3,3,255,255,3,5,255,0,3,6,255,0,3,7,255,0,3,8,255,0,4,4,255,255,4,5,255,255,4,6,255,255,4,7,255,255,5,5,255,0,5,6,255,0,5,7,255,0,5,8,255,0],"secondary":false},{"width":3,"bonus":80,"chr":"(","pixels":[0,1,255,255,0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,0,6,255,255,0,7,255,255,1,0,255,255,1,2,255,0,1,3,255,0,1,4,255,0,1,5,255,0,1,6,255,0,1,7,255,0,1,8,255,255,2,1,255,0],"secondary":false},{"width":2,"bonus":70,"chr":")","pixels":[0,1,255,255,0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,0,6,255,255,0,7,255,255,1,2,255,0,1,3,255,0,1,4,255,0,1,5,255,0,1,6,255,0,1,7,255,0,1,8,255,0],"secondary":false},{"width":6,"bonus":135,"chr":"h","pixels":[0,0,255,255,0,1,255,255,0,2,255,255,0,3,255,255,0,4,255,255,0,5,255,255,0,6,255,255,0,7,255,255,1,1,255,0,1,2,255,0,1,3,255,255,1,4,255,0,1,5,255,0,1,6,255,0,1,7,255,0,1,8,255,0,2,3,255,255,2,4,255,0,2,5,255,0,3,4,255,255,3,5,255,255,3,6,255,255,3,7,255,255,4,5,255,0,4,6,255,0,4,7,255,0,4,8,255,0],"secondary":false},{"width":5,"bonus":65,"chr":"r","pixels":[0,3,255,255,0,4,255,255,0,5,255,255,0,6,255,255,0,7,255,255,1,4,255,255,1,5,255,0,1,6,255,0,1,7,255,0,1,8,255,0,2,3,255,255,2,5,255,0,3,4,255,0],"secondary":false}],"width":7,"spacewidth":3,"shadow":true,"height":9,"basey":7}');
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __nested_webpack_require_21006__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_21006__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __nested_webpack_exports__ = __nested_webpack_require_21006__("./src/buffs/index.ts");
-/******/ 	
-/******/ 	return __nested_webpack_exports__;
-/******/ })()
-;
-});
-
-/***/ }),
-
 /***/ "../node_modules/alt1/dist/chatbox/index.js":
 /*!**************************************************!*\
   !*** ../node_modules/alt1/dist/chatbox/index.js ***!
@@ -2589,113 +2147,173 @@ module.exports = JSON.parse('{"chars":[{"width":7,"bonus":120,"chr":"0","pixels"
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/chatbox/imgs/badge_broadcast_bronze.data.png":
-/*!**********************************************************!*\
-  !*** ./src/chatbox/imgs/badge_broadcast_bronze.data.png ***!
-  \**********************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_945__) => {
+/***/ "./src/chatbox/imgs/badges/broadcast_bronze.data.png":
+/*!***********************************************************!*\
+  !*** ./src/chatbox/imgs/badges/broadcast_bronze.data.png ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_949__) => {
 
-module.exports=(__nested_webpack_require_945__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACW5vUEUAAAAAAAAAAAChinLVAAAA/UlEQVQYlZ2Qv0vDUBDHPy81cMgDpyZIhiB0skPGQkqXSmdXNzfRxcHFqf+EDopOboJQFzcR0cnRpSIi2A6lrToYyPAkkOegKfXH5G3H3efL505Za/lXaRGrRX7RarqplH17vLkOwMrOPo8vY/VjUdmt5YjIjxk9dSdgN+vTuRmRGqMcLWKP1jaI/JjVgz1UvYWqt9g+v6bqhrQbNbSIdQq6c3UGQLOU0SxlAJz0HibpM6kxavfy1AaOS6XssbgQfPl6BI7L4e09qTFKFZe2GzXGswmvyRvJMGdu3iEZ5lz0nz8dp8UjP+Zu8M4gz6i64d/v0SJ2KfS+DYs0gA/Ek1ie1JEnzAAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_949__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAkUExURQAAATAgF+N9dyAYG2c/NqN7aIdJK4CEikcnF/akmmshIgAAAH1jQFMAAAAMdFJOU///////////////ABLfzs4AAAAJbm9QRQAAAAAAAAAAAKGKctUAAABESURBVBhXPYtBEoAwDAKXmtDY/P+/ajsjh2UPQP9h47C7Nca1lUjbQUMmc2IDWYyBDK3Sfav0bR2xYnFukrc2q6refgCVfAJ5XE9XGQAAAABJRU5ErkJggg==")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badge_broadcast_death.data.png":
+/***/ "./src/chatbox/imgs/badges/broadcast_death.data.png":
+/*!**********************************************************!*\
+  !*** ./src/chatbox/imgs/badges/broadcast_death.data.png ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_1716__) => {
+
+module.exports=(__nested_webpack_require_1716__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAASUExURV8/HPj29f/mxQAAAeCoTgAAAMGSybwAAAAGdFJOU///////ALO/pL8AAAAJbm9QRQAAAAAAAAAAAKGKctUAAAA9SURBVBhXZc0xEsAwCAPB81n6/5cTYncRM7CVoOWkpazlhILXAu6ts4BcZ5wYk0CJbg2dqltz/M3P5/F7H0MEARhczoqWAAAAAElFTkSuQmCC")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/broadcast_gold.data.png":
 /*!*********************************************************!*\
-  !*** ./src/chatbox/imgs/badge_broadcast_death.data.png ***!
+  !*** ./src/chatbox/imgs/badges/broadcast_gold.data.png ***!
   \*********************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_1820__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_2435__) => {
 
-module.exports=(__nested_webpack_require_1820__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALBAMAAABbgmoVAAAAAW5vUEUAYtdMlAAAAAlub1BFAAAAAAAAAAAAoYpy1QAAABJQTFRFAAAAXkAg/////+bFAAAB26VSQcM5ewAAAAZ0Uk5TAP//////enng/gAAAExJREFUeJxjZBBkYPj/gZFRUZDh33lGYX4g9y6jsOF7Rv6zjKL67xkFTzOKOjxgUNjNyBj08L/cekYGYQWGux+AFAPDXwTFKMDwngEAJCwVTOO24P0AAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_2435__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAABG5vUEUAAAAAQSCOIgAAACBub1BFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEOk4TAAAKL25vUEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACJvvhGAAAAKlBMVEUAAAGje2hqZFowIBdnPzaQaTVyVDs/KjJfPxzgqE7MlSZHJxcgGBsAAACGBKNEAAAADnRSTlP/////////////////AEXA3MgAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABISURBVBhXPcwxEsMwDAPBQ2AilGX+/7sZqwiKQ7fMf8wgSe8P+thXMRB/JbsBRWtVFxBq3aFhuquSvYd5Ytv9HGwnPtiLn/4AkBgCt6HRQeMAAAAASUVORK5CYII=")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badge_broadcast_gold.data.png":
+/***/ "./src/chatbox/imgs/badges/broadcast_silver.data.png":
+/*!***********************************************************!*\
+  !*** ./src/chatbox/imgs/badges/broadcast_silver.data.png ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_6754__) => {
+
+module.exports=(__nested_webpack_require_6754__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAABG5vUEUAAAAAQSCOIgAAACBub1BFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEOk4TAAAKL25vUEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACJvvhGAAAALVBMVEUAAAEgGBunpqaTlJZOSElqZFpWVlg8OjxxcGeAhIrZ4N7E0M0tKi4/KjIAAAAQdIrsAAAAD3RSTlP//////////////////wDU3JihAAAACW5vUEUAAAAAAAAAAAChinLVAAAAR0lEQVQYVz2KQQ7AIAzDUqAthSz/f+4Ek+aD5YOhH1x9lmSt200Md4+EgNnQOyoATG9rVw5AzGdt0s4bkZnnFaJIvylLkpBewTUDTKYLhxcAAAAASUVORK5CYII=")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/gim.data.png":
+/*!**********************************************!*\
+  !*** ./src/chatbox/imgs/badges/gim.data.png ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_11025__) => {
+
+module.exports=(__nested_webpack_require_11025__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAkAAAALCAMAAACah1cpAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAbUExURSAYGwAAAT8qMpOUlnFwZ1ZWWP/mxU5ISQAAAKa2sHkAAAAJdFJOU///////////AFNPeBIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABBSURBVBhXHcwxDgAwCAJAUKj8/8WNEoYLA0gAkAmCarkQoJ7GXQSfZsZDUK9bWjU3JujlbXZTs6pTcf/E+0vIbT5K1wFcwmYrGQAAAABJRU5ErkJggg==")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/hcim.data.png":
+/*!***********************************************!*\
+  !*** ./src/chatbox/imgs/badges/hcim.data.png ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_11728__) => {
+
+module.exports=(__nested_webpack_require_11728__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAASUExURVwAAP8AAON9d9YAAAAAAQAAALUmqoEAAAAGdFJOU///////ALO/pL8AAAAJbm9QRQAAAAAAAAAAAKGKctUAAAA/SURBVBhXZY1BDsAACMKoyP+/vKmXJcMDNRFRolOiiCqwFYnlWSS6ge5hf9mm8NxENn3ZREx0f0bs/PiKX38APzABBFk0CpIAAAAASUVORK5CYII=")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/ironman.data.png":
+/*!**************************************************!*\
+  !*** ./src/chatbox/imgs/badges/ironman.data.png ***!
+  \**************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_12423__) => {
+
+module.exports=(__nested_webpack_require_12423__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAAJCAMAAADepFZYAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAYUExURVZWWDAgF8TQzQAAATw6PCAYGy0qLgAAAMvi27oAAAAIdFJOU/////////8A3oO9WQAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAD1JREFUGFddzEEOwDAMAsFNMOb/P67c5FAVyULjA+QbfmKdD6yQfbVHKhBzhY4mRy7U3aIs4r4r7RDbr6Yfi9kCGPI/QGwAAAAASUVORK5CYII=")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/league_addy.data.png":
+/*!******************************************************!*\
+  !*** ./src/chatbox/imgs/badges/league_addy.data.png ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_13142__) => {
+
+module.exports=(__nested_webpack_require_13142__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAbUExURQAAAQ8/NkPUczeZV1//kyxkRvAfPmoNFwAAAE4odwcAAAAJdFJOU///////////AFNPeBIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABJSURBVBhXRY5bDgAxCALHsrTc/8Sb2n34gU6AREJxpggMoXG1QgmsKYO2KyzLiJDgjXifSaqpcqjts1vXXD918qWyhvz0vl+SG5aVAlYkRottAAAAAElFTkSuQmCC")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/league_dragon.data.png":
 /*!********************************************************!*\
-  !*** ./src/chatbox/imgs/badge_broadcast_gold.data.png ***!
+  !*** ./src/chatbox/imgs/badges/league_dragon.data.png ***!
   \********************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_2535__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_13889__) => {
 
-module.exports=(__nested_webpack_require_2535__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABG5vUEUAAAAAQSCOIgAACktub1BFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM0mDyUAAAAgbm9QRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxDpOEwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAQpJREFUGJWNkDtLwwAUhb8rSiN0ElOpWJEqaHErLmYScZQ6uamTLg4iOPkLnERw0MGtDg6dBH9A6RCXIJniW2iG0vgiSMGC0OsQU5rNA5d74X7DOUdUlf9I4iNtGHp2sJ54bu2f02q3pQcUvTja5Np+wXY9wrBDycoyPjrA7qkDqAiI7qwuYrseAHvbywAcnlwRhh2s2UHK1Tr9APNWnnjPZT4AWFsa4+b2jWLBjMC0kSJ4cDmuOOSHvyCTI2g+4Tf6KFfrf/5TkceNhQkFKBZMAPzGDwDPd58AXN77IgBT5oiWrCw1L+gmjv1VXlt8e+/SrQdEV6ZzTM4MAVDzApzHJqA9TLJajSapX1xkW1Tn4drcAAAAAElFTkSuQmCC")
-
-/***/ }),
-
-/***/ "./src/chatbox/imgs/badge_broadcast_silver.data.png":
-/*!**********************************************************!*\
-  !*** ./src/chatbox/imgs/badge_broadcast_silver.data.png ***!
-  \**********************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_7038__) => {
-
-module.exports=(__nested_webpack_require_7038__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABG5vUEUAAAAAQSCOIgAACktub1BFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM0mDyUAAAAgbm9QRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxDpOEwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAPJJREFUGJWdj71KA1EQhb8RwStcBWG1E3YrNQoq+hQGTCOxEV9AsLZUsLL29v6QcluDWOwb2AvqKooBDSTsXuN2Y+MuprFwmlPMOTPnE1XlX2ONUWvM3+kwitQ5p845DaNoyCw/opv1OjOzYbXIen3u39+4TRJABRDdPzjSOI7VGlNdBNGTw2Ntbu8oiI5aMwZA+ybhvNViaW2Vjs9x7pTrq/bw68Xask4GFoCzi0s6PmevuQvA51fGU5qKlKQbjS0ACt/nI+8xPTHF62BQdRz5Tba+MM9D+kLW9RVYWU1K03gt0JVgjqzrq+Dz4x2+KATgGwttYvJ5rvvrAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_13889__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAeUExURQAAATw6PPj29cTQzWoNF6knPfAfPmshIoCEigAAANDLe+YAAAAKdFJOU////////////wCyzCzPAAAACW5vUEUAAAAAAAAAAAChinLVAAAATUlEQVQYV0WOSQ7AMAwCx1ti/v/hKktbDuARQjLCODIEHoT7drCArFEJsdpg1qxJICSarKTXKclWiemQRN7cniN/2ruXrMOj7+77RXoAqOACn1yTuJMAAAAASUVORK5CYII=")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badgegim.data.png":
-/*!********************************************!*\
-  !*** ./src/chatbox/imgs/badgegim.data.png ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_11453__) => {
+/***/ "./src/chatbox/imgs/badges/league_mith.data.png":
+/*!******************************************************!*\
+  !*** ./src/chatbox/imgs/badges/league_mith.data.png ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_14640__) => {
 
-module.exports=(__nested_webpack_require_11453__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAkAAAALCAYAAACtWacbAAAACW5vUEUAAAAAAAAAAAChinLVAAAA+klEQVQYlWWQMUsCYRiAn/dUaDCuJaNCkHDpPyT+ixpaHJocxMGchbaaaq4/ETgFDVnjTS1eZ3J4kNbV4Qd2SFKfQ3eG1wMvPMMD78srRBTXN3TsPf8tMi0AEgcFM0+5VkX1OwyGMwKri6s8ev6rGHFwc3eO6nd4cnwAyrUqBTMPiBYQrV/uOT69XAQAK9k1ppMx1+02KZDW5/cPZ80jnr9ybBd3yRrvmKspPoIQ23FIA5g7JWRrjyT7B4cAGACPD7ecXFwtBY16helk/Bclw0a9snSfARBY3X+rAEJ7BEAatLjK01igNjMADIYzQnuEq7zFQyNE/07SYQ5ojWXiETiVvgAAAABJRU5ErkJggg==")
-
-/***/ }),
-
-/***/ "./src/chatbox/imgs/badgehcim.data.png":
-/*!*********************************************!*\
-  !*** ./src/chatbox/imgs/badgehcim.data.png ***!
-  \*********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_12276__) => {
-
-module.exports=(__nested_webpack_require_12276__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAACW5vUEUAAAAAAAAAAAChinLVAAAAdklEQVQYlY2R0Q2AIAxEX4nLsJOuwCcfrqMz4Tj1g9Y0IomXXOCacnBUMKygTHCCEBsVVGvpNN2MbrSsoMfEMQMXsHepjyuIgjyusebuCTv9B8k3DaV5xlrGWgzoYfz6r4DjjwS+GxMvbGHNszf/gUTxNcU4vRugtlCi8k6MwAAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_14640__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAeUExURQAAATw6PHR51lZTm9OI/zosYfAfPjlCgmoNFwAAAMuvGa0AAAAKdFJOU////////////wCyzCzPAAAACW5vUEUAAAAAAAAAAAChinLVAAAATElEQVQYV0WOSQ7AMAwCx6GOw/8/XGVrOYBHCMmYYCswNKH2LIcQpLoSNFtRKhXC2BSppOZpO2ZJeJNNnlw++vhp7S5FqanO7vvFfgGnpQKezGNZVgAAAABJRU5ErkJggg==")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badgeironman.data.png":
-/*!************************************************!*\
-  !*** ./src/chatbox/imgs/badgeironman.data.png ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_12935__) => {
+/***/ "./src/chatbox/imgs/badges/league_rune.data.png":
+/*!******************************************************!*\
+  !*** ./src/chatbox/imgs/badges/league_rune.data.png ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_15391__) => {
 
-module.exports=(__nested_webpack_require_12935__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAAJCAYAAADpeqZqAAAACW5vUEUAAAAAAAAAAAChinLVAAAAtElEQVQYlWP8//8/A6mAiWQdMBAWHvPfRFXyf1h4DFZrw8Jj/sPUwG3Kqi3Fayi6PAsDA+P/yqwsBik1Y6gQ438/b2+4gk1btzJMa+5mePz8PkTN7a3/WbCZvGnrVrw2szAwMDA8f/yMgUGWgUGWR4CBgYGBQVtLD67g6rVLcPala1dhmv4zMjAw/P/94TcDgyQDAwPDf8ar1y6iGw6RhzAZ4c578/k1w5tTr7E659Spoyh8AJR3PqIS2PMJAAAAAElFTkSuQmCC")
-
-/***/ }),
-
-/***/ "./src/chatbox/imgs/badgepmod.data.png":
-/*!*********************************************!*\
-  !*** ./src/chatbox/imgs/badgepmod.data.png ***!
-  \*********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_13662__) => {
-
-module.exports=(__nested_webpack_require_13662__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAASUExURZaWlgAAAODg4KKiogAAAQAAAJ/NAioAAAAGdFJOU///////ALO/pL8AAAAJbm9QRQAAAAAAAAAAAKGKctUAAAA3SURBVBhXbYxJDgAwCAKJy/+/XMT20FYwZOYikJW9sAJz7WcEc9e+JuyAz26jRtQR29TJcJK5AISjAaw7YIwNAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_15391__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAbUExURQAAAQ8/Nivg3SKtqkb/+xNoc/AfPmoNFwAAABoj4CMAAAAJdFJOU///////////AFNPeBIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAABJSURBVBhXRY5bDgAxCALHsrTc/8Sb2n34gU6AREJxpggMoXG1QgmsKYO2KyzLiJDgjXifSaqpcqjts1vXXD918qWyhvz0vl+SG5aVAlYkRottAAAAAElFTkSuQmCC")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badgepmodvip.data.png":
-/*!************************************************!*\
-  !*** ./src/chatbox/imgs/badgepmodvip.data.png ***!
-  \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_14337__) => {
+/***/ "./src/chatbox/imgs/badges/league_steel.data.png":
+/*!*******************************************************!*\
+  !*** ./src/chatbox/imgs/badges/league_steel.data.png ***!
+  \*******************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_16134__) => {
 
-module.exports=(__nested_webpack_require_14337__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAPUExURQAAAJaWlq2trQAAAQAAAIuYQeUAAAAFdFJOU/////8A+7YOUwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAEJJREFUGFc1jYkNADEIwzB0/5kvjy5FFIsA8yL6ldhiCFFwiETWuHHnUFtOEOzZ6zkuz3Ndsl0Tp+qiSVWT6L/M8j52yAF52AYCBwAAAABJRU5ErkJggg==")
-
-/***/ }),
-
-/***/ "./src/chatbox/imgs/badgergim.data.png":
-/*!*********************************************!*\
-  !*** ./src/chatbox/imgs/badgergim.data.png ***!
-  \*********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_15012__) => {
-
-module.exports=(__nested_webpack_require_15012__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAACW5vUEUAAAAAAAAAAAChinLVAAABWUlEQVQokW2SP0tCYRTGfzeEoCEXowgMkaBNGrpbIugHaMkaWhpabsRFyvoCNRnCTQIX6wsUfYHIQXNKh2rxz+UiOigZ0g0Ro+FtqPvirR544T3w/HjOORz4kXgIC0NTxeLMrHygCFCEoaniPh0SjldxgLPLEefXLQJePxF9F9sq0up80q9Uadpt9tYXWFn8YPXgSZm4T4dEqWBL4LZwhm0VqTd6AET0XQJeP4lsmbI5iaGpwuNEmr0XGo83HKZyEhgN3ngu5ZlamgMTKQ9A2ZwE4DCV4/Roh5PrGgC2VQSg3vg2W6/TBH3veBiTNxhGmV/ltzY2t1z1xHjxXMpznLlwGZKJbUaDNzfktPYfmExsy/kcWa/T7qR+pfqnNYBhretOSmQfFAA9HqVpt+lXqnIBrc4nw1qXpt1Gj0cJ+t7JXN0pkjY0VejxmLyC/bVl+dfjMWFoqryIL5m9mkOjusTLAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_16134__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAeUExURQAAATw6PKemppOUltng3lZWWPAfPmpkWmoNFwAAALsQwvoAAAAKdFJOU////////////wCyzCzPAAAACW5vUEUAAAAAAAAAAAChinLVAAAATElEQVQYV0WOSQ7AMAwCx6GOw/8/XGVrOYBHCMmYYCswNKH2LIcQpLoSNFtRKhXC2BSppOZpO2ZJeJNNnlw++vhp7S5FqanO7vvFfgGnpQKezGNZVgAAAABJRU5ErkJggg==")
 
 /***/ }),
 
-/***/ "./src/chatbox/imgs/badgevip.data.png":
-/*!********************************************!*\
-  !*** ./src/chatbox/imgs/badgevip.data.png ***!
-  \********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_15955__) => {
+/***/ "./src/chatbox/imgs/badges/link.data.png":
+/*!***********************************************!*\
+  !*** ./src/chatbox/imgs/badges/link.data.png ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_16857__) => {
 
-module.exports=(__nested_webpack_require_15955__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAACW5vUEUAAAAAAAAAAAChinLVAAAAaElEQVQokXWQURXAMAgDw5ysJmatEmoNE6uU7YuWAskvHLkHQHKP92OziwLKwQTFxQoUqqEAnlpPjmtaLwH7wOxNJGlUoANWUwILPQMA8r3VRnQXlPSsRbPF2eSA2ZtE0LK/p245JM5/n7U13r3PcvMAAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_16857__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAeUExURS0qLjw6PJOUloCEij8qMnFwZ1ZWWE5ISWpkWgAAAEBECUsAAAAKdFJOU////////////wCyzCzPAAAACW5vUEUAAAAAAAAAAAChinLVAAAATUlEQVQYVzWOUQ7AMAhCn6W09v4XXtg6PkyeEJHziehwoYZGEcpaQiPE9FqJKQMvghLEYbOxCnCDjW+OQ9munIjX/baFpt3zr71ffHoArlECViT5nVcAAAAASUVORK5CYII=")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/pmod.data.png":
+/*!***********************************************!*\
+  !*** ./src/chatbox/imgs/badges/pmod.data.png ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_17580__) => {
+
+module.exports=(__nested_webpack_require_17580__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAPUExURZOUltng3qempgAAAQAAAMurcboAAAAFdFJOU/////8A+7YOUwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAADVJREFUGFdtjUEOACAMwoDx/zeboV6msDT0NMCdQ7AHFT4mmFI4LXMHnmaqqg95RFX6M9zYC2GrATppjc7qAAAAAElFTkSuQmCC")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/pmodvip.data.png":
+/*!**************************************************!*\
+  !*** ./src/chatbox/imgs/badges/pmodvip.data.png ***!
+  \**************************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_18255__) => {
+
+module.exports=(__nested_webpack_require_18255__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAMUExURZOUlqempgAAAQAAAPvznR0AAAAEdFJOU////wBAKqn0AAAACW5vUEUAAAAAAAAAAAChinLVAAAAPElEQVQYV02OAQoAMAgCPff/Pw8t2CxUUCKdQr+I1ZLQmoLVBHY2PrExTjd1ubNXJJgzbUJ2mnFDJ/o+uEvFAOoBH6NnAAAAAElFTkSuQmCC")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/rgim.data.png":
+/*!***********************************************!*\
+  !*** ./src/chatbox/imgs/badges/rgim.data.png ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_18922__) => {
+
+module.exports=(__nested_webpack_require_18922__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAqUExUReCoTpBpNSAYGwAAAcyVJj8qMpOUlnFwZ1ZWWP/mxU5ISXJUO2c/NgAAAGqgL4AAAAAOdFJOU/////////////////8ARcDcyAAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAFlJREFUGFctyUkOAzAIBEGGYTOE/383spO+lVp2BapKwnblwiPLFbZipn6yK5yAmPFkd1c/gXkiMpvzFLzVX3X5ewCrgtnNmSt/8qvFqCfLdbCyiyE/5GD3C+ZqAytjNxrGAAAAAElFTkSuQmCC")
+
+/***/ }),
+
+/***/ "./src/chatbox/imgs/badges/vip.data.png":
+/*!**********************************************!*\
+  !*** ./src/chatbox/imgs/badges/vip.data.png ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_19677__) => {
+
+module.exports=(__nested_webpack_require_19677__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAMAAACTbPdTAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJUExURSGI3iFR3gAAAGLDZxUAAAADdFJOU///ANfKDUEAAAAJbm9QRQAAAAAAAAAAAKGKctUAAAA4SURBVBhXTY4BCgAwCAK1/z96nDk2iVSySBPoJ7mcJqsicJnBAp1cTfaa7JUMr8NQm0RtG/h9cAAyuQCepdP/FAAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2703,19 +2321,9 @@ module.exports=(__nested_webpack_require_15955__(/*! alt1/base */ "alt1/base").I
 /*!****************************************************!*\
   !*** ./src/chatbox/imgs/chatLegacyBorder.data.png ***!
   \****************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_16610__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_20356__) => {
 
-module.exports=(__nested_webpack_require_16610__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAQAAAAPCAIAAABMVPnqAAAAIUlEQVQYV2P4jwRAnNk92RA0mDjzJuRCOUAWlAMF//8DAJmOfBu3Ydq7AAAAAElFTkSuQmCC")
-
-/***/ }),
-
-/***/ "./src/chatbox/imgs/chat_link.data.png":
-/*!*********************************************!*\
-  !*** ./src/chatbox/imgs/chat_link.data.png ***!
-  \*********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_17113__) => {
-
-module.exports=(__nested_webpack_require_17113__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAPUExURT08PFI0UU1MTG49QAAAAF99wrkAAAAFdFJOU/////8A+7YOUwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAAD5JREFUGFc1zQEOwDAIAkCg/P/NA3UmNZcWLbyF4AwSZ9Fmn+r3m1TZDADldBbJimm5nN6hdbLjXX2eL1P2B1fHAVK6b6twAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_20356__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAQAAAAPCAIAAABMVPnqAAAAIUlEQVQYV2P4jwRAnNk92RA0mDjzJuRCOUAWlAMF//8DAJmOfBu3Ydq7AAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2723,9 +2331,9 @@ module.exports=(__nested_webpack_require_17113__(/*! alt1/base */ "alt1/base").I
 /*!**********************************************!*\
   !*** ./src/chatbox/imgs/chatbubble.data.png ***!
   \**********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_17784__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_20863__) => {
 
-module.exports=(__nested_webpack_require_17784__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAACW5vUEUAAAAAAAAAAAChinLVAAAAfklEQVQYlX2Quw2AUAhFD0ZnsbEwcQFXcTIncgALo50DaGu0AcUP3oIE3uHyQEBQ7cQSDQKw99PwSc3rQl2UACIgv6CpLkqSaK4HTZ/wExyz7YLndTmBCAS3YNt30Y9o8gp0Qaudp7NGhdQUUmcgvsncuAO33E94PUSne4EABza8K521cSgfAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_20863__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAPUExURQAAAdng3sTQzZ/ZzgAAAIXb17AAAAAFdFJOU/////8A+7YOUwAAAAlub1BFAAAAAAAAAAAAoYpy1QAAADhJREFUGFdFzDEOADEIA8E9s/9/cwTkFBdm5AKUjSLfJMjPhOs8NwtIlgVSG+xXMGNbqT1T09dDDzNqAP7Svpx8AAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2733,9 +2341,9 @@ module.exports=(__nested_webpack_require_17784__(/*! alt1/base */ "alt1/base").I
 /*!****************************************!*\
   !*** ./src/chatbox/imgs/clan.data.png ***!
   \****************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_18419__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_21502__) => {
 
-module.exports=(__nested_webpack_require_18419__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABsAAAAJCAYAAADDylfFAAAACW5vUEUAAAAAAAAAAAChinLVAAAAnklEQVQoka1TwQ3EIAxzTh0BvgzBm3GuD3bpO52KJfgyhO9FhShUujss5RNbJIqNkESP8zyvZoxRboJfQXJYAAiAIQTONN/W3w+oKlV1ulDLrdkY4HEc04Hee773ndsKK1T1kU8pCQC8VgyLMUrOGdbae9oaLBkGAM45lFKekzu6dTV9ZHzb6zXGmMfkyuifAYCIXARJ6bnaq7peM8IHaltXKPxAmD0AAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_21502__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABsAAAAJCAYAAADDylfFAAAACW5vUEUAAAAAAAAAAAChinLVAAAAnklEQVQoka1TwQ3EIAxzTh0BvgzBm3GuD3bpO52KJfgyhO9FhShUujss5RNbJIqNkESP8zyvZoxRboJfQXJYAAiAIQTONN/W3w+oKlV1ulDLrdkY4HEc04Hee773ndsKK1T1kU8pCQC8VgyLMUrOGdbae9oaLBkGAM45lFKekzu6dTV9ZHzb6zXGmMfkyuifAYCIXARJ6bnaq7peM8IHaltXKPxAmD0AAAAASUVORK5CYII=")
 
 /***/ }),
 
@@ -2743,9 +2351,9 @@ module.exports=(__nested_webpack_require_18419__(/*! alt1/base */ "alt1/base").I
 /*!***********************************************!*\
   !*** ./src/chatbox/imgs/entertochat.data.png ***!
   \***********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_19126__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_22209__) => {
 
-module.exports=(__nested_webpack_require_19126__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABgAAAAJCAYAAAAo/ezGAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAAB5SURBVDhPY5w2bdp/BijIyspihDKpDkCW/LexsYFbRjcA8iGyL5EBLjl8enCB/01NTbg0/O/p6cGQExERAYmRZAlWQI5rSQYVFRX/oS7GAExQmiIgJyfH8ObNG6wpkOxkCtMH0wPyATZLYALI3iPaEiCA6cOhh4EBAK3yO+ASYtdMAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_22209__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABgAAAAJCAYAAAAo/ezGAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAAB5SURBVDhPY5w2bdp/BijIyspihDKpDkCW/LexsYFbRjcA8iGyL5EBLjl8enCB/01NTbg0/O/p6cGQExERAYmRZAlWQI5rSQYVFRX/oS7GAExQmiIgJyfH8ObNG6wpkOxkCtMH0wPyATZLYALI3iPaEiCA6cOhh4EBAK3yO+ASYtdMAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2753,9 +2361,9 @@ module.exports=(__nested_webpack_require_19126__(/*! alt1/base */ "alt1/base").I
 /*!************************************************!*\
   !*** ./src/chatbox/imgs/filterbutton.data.png ***!
   \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_19825__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_22908__) => {
 
-module.exports=(__nested_webpack_require_19825__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAPCAYAAADUFP50AAAAaElEQVQ4T9XLsQ2AMAxEUc+BxBysySTsQcEI7EF36JAcORdHoUMUv8jFz65jgXZuU2lf5zQD0OARonkg4+Eb6PcFMgc9GG8ryHpQ76qHp1D/WTOwCPXPS8fvINM/Lx1/CHWPpeMIAbAba/5W9dGOZAMAAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_22908__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAPCAYAAADUFP50AAAAaElEQVQ4T9XLsQ2AMAxEUc+BxBysySTsQcEI7EF36JAcORdHoUMUv8jFz65jgXZuU2lf5zQD0OARonkg4+Eb6PcFMgc9GG8ryHpQ76qHp1D/WTOwCPXPS8fvINM/Lx1/CHWPpeMIAbAba/5W9dGOZAMAAAAASUVORK5CYII=")
 
 /***/ }),
 
@@ -2763,9 +2371,9 @@ module.exports=(__nested_webpack_require_19825__(/*! alt1/base */ "alt1/base").I
 /*!*******************************************!*\
   !*** ./src/chatbox/imgs/friends.data.png ***!
   \*******************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_20416__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_23499__) => {
 
-module.exports=(__nested_webpack_require_20416__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACkAAAAJCAYAAACvzAXAAAAACW5vUEUAAAAAAAAAAAChinLVAAAAk0lEQVQ4jc1TyQ3AIAxz+mQchmASPgzDO+O6jwqU0qKWHhKW8sDGkpVDSKJAVesjpSSYBGJDAoCIVILkFEGXliAppSxvu9xCVXmlj/gKXzWSt2v73tdCCF3de3+qAWCM8aABIAA657gb95OdbDvxxy5/spPWM+K7i0PIGbHknF+nvDqcUV97OJ91sox8dNQ9n12hFbcv1iTAIoVRAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_23499__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACkAAAAJCAYAAACvzAXAAAAACW5vUEUAAAAAAAAAAAChinLVAAAAk0lEQVQ4jc1TyQ3AIAxz+mQchmASPgzDO+O6jwqU0qKWHhKW8sDGkpVDSKJAVesjpSSYBGJDAoCIVILkFEGXliAppSxvu9xCVXmlj/gKXzWSt2v73tdCCF3de3+qAWCM8aABIAA657gb95OdbDvxxy5/spPWM+K7i0PIGbHknF+nvDqcUV97OJ91sox8dNQ9n12hFbcv1iTAIoVRAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2773,9 +2381,9 @@ module.exports=(__nested_webpack_require_20416__(/*! alt1/base */ "alt1/base").I
 /*!*******************************************!*\
   !*** ./src/chatbox/imgs/gameall.data.png ***!
   \*******************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_21091__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_24174__) => {
 
-module.exports=(__nested_webpack_require_21091__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVQ4T6XMsQkCQRAF0KnA5DA0MDG3A2uwlQuN7cVY07vgAkPBTA3FAixA5esXvuyeC+O6Cw+Gv/PH7oc5Hsf/sGupjxx2289Ar2c51LNrNwX1FzzqRQc0e6ID580YxFCzJ9y1y3oIYphDPTutBiCGmj3hbvmB3XICYphDveiA5hQVRfnXge1i9KY8/A9p7zP0FzzqlR9o6wolrEmEv2rqCk/yGcSB9N78JQAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_24174__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVQ4T6XMsQkCQRAF0KnA5DA0MDG3A2uwlQuN7cVY07vgAkPBTA3FAixA5esXvuyeC+O6Cw+Gv/PH7oc5Hsf/sGupjxx2289Ar2c51LNrNwX1FzzqRQc0e6ID580YxFCzJ9y1y3oIYphDPTutBiCGmj3hbvmB3XICYphDveiA5hQVRfnXge1i9KY8/A9p7zP0FzzqlR9o6wolrEmEv2rqCk/yGcSB9N78JQAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2783,9 +2391,9 @@ module.exports=(__nested_webpack_require_21091__(/*! alt1/base */ "alt1/base").I
 /*!**********************************************!*\
   !*** ./src/chatbox/imgs/gamefilter.data.png ***!
   \**********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_21774__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_24857__) => {
 
-module.exports=(__nested_webpack_require_21774__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAqUlEQVQ4T63MsQrCQBAE0P1LSzs7Sy3tBEvtFDFNwMYurVhY2lgKfkHyBXbJ6AQm3AnHcaeBB3ubnbGiaVE0XZZD3cI2jxd+MRR8Pkvxv4LVrQa5yxjeKucVaI7xChaXJ4jLFMp5BZpjvIJ5dQdxqTnGvbXZ6QriMoVyNi3PIC41E3+6bwVFe69gsq8QoqAMBaGDGOVsvD5mFzDbF7jUHPJ9b6PlDvm2eAMxAQErxoTm+QAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_24857__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAqUlEQVQ4T63MsQrCQBAE0P1LSzs7Sy3tBEvtFDFNwMYurVhY2lgKfkHyBXbJ6AQm3AnHcaeBB3ubnbGiaVE0XZZD3cI2jxd+MRR8Pkvxv4LVrQa5yxjeKucVaI7xChaXJ4jLFMp5BZpjvIJ5dQdxqTnGvbXZ6QriMoVyNi3PIC41E3+6bwVFe69gsq8QoqAMBaGDGOVsvD5mFzDbF7jUHPJ9b6PlDvm2eAMxAQErxoTm+QAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2793,9 +2401,9 @@ module.exports=(__nested_webpack_require_21774__(/*! alt1/base */ "alt1/base").I
 /*!*******************************************!*\
   !*** ./src/chatbox/imgs/gameoff.data.png ***!
   \*******************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_22453__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_25536__) => {
 
-module.exports=(__nested_webpack_require_22453__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAdUlEQVQ4T62MsQrAIAxE/bwOhS7tkMHBLi79/zVthAvaCjZq4MFx5J6jePEI8wTPOQsq2M/YJcAuBQHlH/LfuQILVQFyi0Kw+cCClMgt8t9CYEEFK3kVINfAEKBPI0FK5BoYAvSFwIIKloNYeD+0+Ah6GRQQ30BWZJSYN2VIAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_25536__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAdUlEQVQ4T62MsQrAIAxE/bwOhS7tkMHBLi79/zVthAvaCjZq4MFx5J6jePEI8wTPOQsq2M/YJcAuBQHlH/LfuQILVQFyi0Kw+cCClMgt8t9CYEEFK3kVINfAEKBPI0FK5BoYAvSFwIIKloNYeD+0+Ah6GRQQ30BWZJSYN2VIAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2803,9 +2411,9 @@ module.exports=(__nested_webpack_require_22453__(/*! alt1/base */ "alt1/base").I
 /*!*****************************************!*\
   !*** ./src/chatbox/imgs/group.data.png ***!
   \*****************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_23052__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_26135__) => {
 
-module.exports=(__nested_webpack_require_23052__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAEEAAAAJCAYAAABt/EFEAAAACW5vUEUAAAAAAAAAAAChinLVAAAA6ElEQVRIib1VORKEMAyTt6U1H6HmQ34CLbShhf/xEW2zYWCTcAY840bElidyhJDEf4zjOINmJsGBl+PxeUhGEwABsKoqps68mX6euq6zz3OpaBiGYJAYttfjbM2VXqlvS/yWMkewrUsEQFWlc+7yZTRNM/dq2zbaB0CUQ1UJ4JrqOXJ5YU9x7G2Dz8+eZ5iZdF0Xuud9L1oZXFEU2Tl8mJlM04SyLOMcTyqQ2qqYKjj4lO5yR7cy9lbOmpZzjqka1/crXFW5rDmzznfN13MvZyMJ+akQhIh4eQ7/l7dqRIRn8FTvnDP5+AIifJTAV+ThlQAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_26135__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAEEAAAAJCAYAAABt/EFEAAAACW5vUEUAAAAAAAAAAAChinLVAAAA6ElEQVRIib1VORKEMAyTt6U1H6HmQ34CLbShhf/xEW2zYWCTcAY840bElidyhJDEf4zjOINmJsGBl+PxeUhGEwABsKoqps68mX6euq6zz3OpaBiGYJAYttfjbM2VXqlvS/yWMkewrUsEQFWlc+7yZTRNM/dq2zbaB0CUQ1UJ4JrqOXJ5YU9x7G2Dz8+eZ5iZdF0Xuud9L1oZXFEU2Tl8mJlM04SyLOMcTyqQ2qqYKjj4lO5yR7cy9lbOmpZzjqka1/crXFW5rDmzznfN13MvZyMJ+akQhIh4eQ7/l7dqRIRn8FTvnDP5+AIifJTAV+ThlQAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2813,9 +2421,9 @@ module.exports=(__nested_webpack_require_23052__(/*! alt1/base */ "alt1/base").I
 /*!************************************************!*\
   !*** ./src/chatbox/imgs/groupironman.data.png ***!
   \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_23863__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_26946__) => {
 
-module.exports=(__nested_webpack_require_23863__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAFMAAAAJCAYAAABOpxCRAAAACW5vUEUAAAAAAAAAAAChinLVAAABMklEQVRIicVVq5aEMAxN1mKLHY3mm3ZEHT+Aqq1uvwqNx+Kxd8VuOV3oc4aZuefE5NGbpknKAOgIa+2ulFLyyeFNsNbik/zVABAUIgIRoe97xHxeLcYY/Kb4Gf5a+UoUmQHwNE2nzvA7N6VLwVqL2phHuVN23xbzy+W62x59BQp0TEgX6zjnL4SA1joYF+vMUp1SatelJszl4/y+7/fg+bE8XVzxxa8W//IxjneOedd1SR5jDHK1iI65g5SSlVLV45gDgH/ro2mayzlqMM9z8qOTUvKyLNS2bTTPbDGJiMZxvORHdbvluH+klLxt2xUUL8XtdqN1XeO1CO2Bkpb2RWuNVIyvF0LAj8mN1jAMSZ8c97NyPNvlHxL+218nMLNbbMVdmYphZtToS+3P5FuK0rN/AOEVJJ5y5tKyAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_26946__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAFMAAAAJCAYAAABOpxCRAAAACW5vUEUAAAAAAAAAAAChinLVAAABMklEQVRIicVVq5aEMAxN1mKLHY3mm3ZEHT+Aqq1uvwqNx+Kxd8VuOV3oc4aZuefE5NGbpknKAOgIa+2ulFLyyeFNsNbik/zVABAUIgIRoe97xHxeLcYY/Kb4Gf5a+UoUmQHwNE2nzvA7N6VLwVqL2phHuVN23xbzy+W62x59BQp0TEgX6zjnL4SA1joYF+vMUp1SatelJszl4/y+7/fg+bE8XVzxxa8W//IxjneOedd1SR5jDHK1iI65g5SSlVLV45gDgH/ro2mayzlqMM9z8qOTUvKyLNS2bTTPbDGJiMZxvORHdbvluH+klLxt2xUUL8XtdqN1XeO1CO2Bkpb2RWuNVIyvF0LAj8mN1jAMSZ8c97NyPNvlHxL+218nMLNbbMVdmYphZtToS+3P5FuK0rN/AOEVJJ5y5tKyAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2823,9 +2431,9 @@ module.exports=(__nested_webpack_require_23863__(/*! alt1/base */ "alt1/base").I
 /*!*********************************************!*\
   !*** ./src/chatbox/imgs/guestclan.data.png ***!
   \*********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_24758__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_27841__) => {
 
-module.exports=(__nested_webpack_require_24758__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAD4AAAAJCAYAAABqvp9RAAAACW5vUEUAAAAAAAAAAAChinLVAAAA7ElEQVRIicWUPQ6DMAyFn6VOzDlJZmbukhswM9OO5lSchEO8DiVVCnGKKBRLXvynF39JhCSWNgzDOxhCkFXBn+0UPSSzDoAA6L2nVfNPj3rquj5Ej+SI77VIZknFImbVn6EhzYcQ5BQyTdOsqGAmVlXVR845RwCH3ioA7PvenOm9523LBrcQiZtW1VXu/niQZHbGNE2H/yE5DamN47iNeNd1m4hgphr9yj+hbVs650wNPw1X1UsP94s25N6CqrLUmObSrVp9Mb53UaX+NLasKRE3f3URed1d422KCHM5qy/GSzNLVupPtXzTHe0JdtDHDLnNhzQAAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_27841__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAD4AAAAJCAYAAABqvp9RAAAACW5vUEUAAAAAAAAAAAChinLVAAAA7ElEQVRIicWUPQ6DMAyFn6VOzDlJZmbukhswM9OO5lSchEO8DiVVCnGKKBRLXvynF39JhCSWNgzDOxhCkFXBn+0UPSSzDoAA6L2nVfNPj3rquj5Ej+SI77VIZknFImbVn6EhzYcQ5BQyTdOsqGAmVlXVR845RwCH3ioA7PvenOm9523LBrcQiZtW1VXu/niQZHbGNE2H/yE5DamN47iNeNd1m4hgphr9yj+hbVs650wNPw1X1UsP94s25N6CqrLUmObSrVp9Mb53UaX+NLasKRE3f3URed1d422KCHM5qy/GSzNLVupPtXzTHe0JdtDHDLnNhzQAAAAASUVORK5CYII=")
 
 /***/ }),
 
@@ -2833,9 +2441,9 @@ module.exports=(__nested_webpack_require_24758__(/*! alt1/base */ "alt1/base").I
 /*!************************************************!*\
   !*** ./src/chatbox/imgs/legacyreport.data.png ***!
   \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_25573__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_28656__) => {
 
-module.exports=(__nested_webpack_require_25573__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACEAAAALCAYAAADx0+Q/AAAAlElEQVQ4T72OCQ4AIQgD/f+nXYuUgGLiukeTQVq8Sp2F7FdQWi2GKmz6CEh6Mfq4DQf/FfaO1EFt1ocKRX+SQ35lD/ErPcOafICfgp7kEGe9tF6gwYKiK/GaLrjbOx/mwSiQ9Ty8uuCgJ5YFo0zeKc0W+30+3kkgmYyXpJ5oZt5lRpZn+4DszQYbpI+fkoY7vPeJWi767hYjK0Ud6gAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_28656__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACEAAAALCAYAAADx0+Q/AAAAlElEQVQ4T72OCQ4AIQgD/f+nXYuUgGLiukeTQVq8Sp2F7FdQWi2GKmz6CEh6Mfq4DQf/FfaO1EFt1ocKRX+SQ35lD/ErPcOafICfgp7kEGe9tF6gwYKiK/GaLrjbOx/mwSiQ9Ty8uuCgJ5YFo0zeKc0W+30+3kkgmYyXpJ5oZt5lRpZn+4DszQYbpI+fkoY7vPeJWi767hYjK0Ud6gAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2843,9 +2451,9 @@ module.exports=(__nested_webpack_require_25573__(/*! alt1/base */ "alt1/base").I
 /*!***********************************************!*\
   !*** ./src/chatbox/imgs/minusbutton.data.png ***!
   \***********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_26240__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_29323__) => {
 
-module.exports=(__nested_webpack_require_26240__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAIAAACQKrqGAAABL0lEQVQoU2PIzMk01hbUVGDDg4AKgMoYgFRLCPOOOtbdLWxAtLeTHYIgXKA4EAEVAJUxaMizbilju75E9u4mNUx0Y7UqUGp3MzdQGYOKLCuQ9XCH7qPdxg+2Gt3aYgQkgWw4AqoGKgAqQ1EKVIep9NY2LRSlt5ZrXV6tc3axNgRdXgbiQhDQ1J1VfDClNcJAuSBTJjjy1GNy1WSyUWI0kWa8PE8JRem9VcaYirRFGIAIaOHmIhEUpQ9X2D1e74WGgIK3ZhluzRWFKt1VKXNvjgYE3exVujNZFYiQGViUQuSudCkD0bkGJSAJVAckUZQC+demaMBJoDpktClVEqRUVY6jOYRvR5HsznoVILklUxpIQhCQDUE1LtxAZQw6JgZAHfKSLLLi2BFQCqhAx8QAACI62b/ivxHFAAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_29323__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAIAAACQKrqGAAABL0lEQVQoU2PIzMk01hbUVGDDg4AKgMoYgFRLCPOOOtbdLWxAtLeTHYIgXKA4EAEVAJUxaMizbilju75E9u4mNUx0Y7UqUGp3MzdQGYOKLCuQ9XCH7qPdxg+2Gt3aYgQkgWw4AqoGKgAqQ1EKVIep9NY2LRSlt5ZrXV6tc3axNgRdXgbiQhDQ1J1VfDClNcJAuSBTJjjy1GNy1WSyUWI0kWa8PE8JRem9VcaYirRFGIAIaOHmIhEUpQ9X2D1e74WGgIK3ZhluzRWFKt1VKXNvjgYE3exVujNZFYiQGViUQuSudCkD0bkGJSAJVAckUZQC+demaMBJoDpktClVEqRUVY6jOYRvR5HsznoVILklUxpIQhCQDUE1LtxAZQw6JgZAHfKSLLLi2BFQCqhAx8QAACI62b/ivxHFAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2853,9 +2461,9 @@ module.exports=(__nested_webpack_require_26240__(/*! alt1/base */ "alt1/base").I
 /*!**********************************************!*\
   !*** ./src/chatbox/imgs/plusbutton.data.png ***!
   \**********************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_27107__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_30190__) => {
 
-module.exports=(__nested_webpack_require_27107__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAIAAACQKrqGAAABT0lEQVQoU2PIzMk01hbUVGDDg4AKgMoYgFRLCPOOOtbdLWxAtLeTHYIgXKA4EAEVAJUxaMizbilju75E9u4mNSC6sVoVguBcoNTuZm6gMgYVWVYg6+EO3Ue7jYHo3irjIFOmYAumWztBXCC6tVwLqACoDEXprS1GQARUCkQQdSDBbahKgVovr9Y5u1j78jItTz0mIAJyIQjohp1VfDClNcJwFa6a6OjyPCUUpUAnAkUd1BiByEYJBQEt3FwkgqL04Qq7x+u9gCRQ2kKOEc69NcsQoXRXpcy9ORoQdKVL2USaEYhu9irdmawKREDG1lxRdKVACaAZ2iIMQHS1UweoDYJQlAL516aAjAQqvTLJBogutBmca1CCoE2pkiClqnIczSF8O4pkd9arAMktmdJAEoKAKoBcIKpx4QYqY9AxMQDqkJdkkRXHjoBSQAU6JgYAwvDKbZkKUHAAAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_30190__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAIAAACQKrqGAAABT0lEQVQoU2PIzMk01hbUVGDDg4AKgMoYgFRLCPOOOtbdLWxAtLeTHYIgXKA4EAEVAJUxaMizbilju75E9u4mNSC6sVoVguBcoNTuZm6gMgYVWVYg6+EO3Ue7jYHo3irjIFOmYAumWztBXCC6tVwLqACoDEXprS1GQARUCkQQdSDBbahKgVovr9Y5u1j78jItTz0mIAJyIQjohp1VfDClNcJwFa6a6OjyPCUUpUAnAkUd1BiByEYJBQEt3FwkgqL04Qq7x+u9gCRQ2kKOEc69NcsQoXRXpcy9ORoQdKVL2USaEYhu9irdmawKREDG1lxRdKVACaAZ2iIMQHS1UweoDYJQlAL516aAjAQqvTLJBogutBmca1CCoE2pkiClqnIczSF8O4pkd9arAMktmdJAEoKAKoBcIKpx4QYqY9AxMQDqkJdkkRXHjoBSQAU6JgYAwvDKbZkKUHAAAAAASUVORK5CYII=")
 
 /***/ }),
 
@@ -2863,9 +2471,9 @@ module.exports=(__nested_webpack_require_27107__(/*! alt1/base */ "alt1/base").I
 /*!*******************************************!*\
   !*** ./src/chatbox/imgs/private.data.png ***!
   \*******************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_28006__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_31089__) => {
 
-module.exports=(__nested_webpack_require_28006__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACgAAAAJCAYAAABADm7+AAAACW5vUEUAAAAAAAAAAAChinLVAAAAwElEQVQ4jc2SwQ2DMAxFX6qOEM5sw5k1sgFDAEdnSIb4vTRVUqAlCKn9kg9xbP/v5DtJJMQYX4cQguMfIKkIQID6vtf73S+iqtjMqkWbmbb6jubrN4JqkYDGcVz1ee+1NQ9Q13WSxD3/7iMelFTtTTPbzC/LUsxK/EX9ngfPvNQnCwzDIO/915k5P3CdmZO4vcXO+FcSt2maxEVo21a5BWKMSt8WQnBN0xRc0zyvuPMeAPfc+hI45wqBKQd13s17HtIubhmwKYH7AAAAAElFTkSuQmCC")
+module.exports=(__nested_webpack_require_31089__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACgAAAAJCAYAAABADm7+AAAACW5vUEUAAAAAAAAAAAChinLVAAAAwElEQVQ4jc2SwQ2DMAxFX6qOEM5sw5k1sgFDAEdnSIb4vTRVUqAlCKn9kg9xbP/v5DtJJMQYX4cQguMfIKkIQID6vtf73S+iqtjMqkWbmbb6jubrN4JqkYDGcVz1ee+1NQ9Q13WSxD3/7iMelFTtTTPbzC/LUsxK/EX9ngfPvNQnCwzDIO/915k5P3CdmZO4vcXO+FcSt2maxEVo21a5BWKMSt8WQnBN0xRc0zyvuPMeAPfc+hI45wqBKQd13s17HtIubhmwKYH7AAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -2873,9 +2481,9 @@ module.exports=(__nested_webpack_require_28006__(/*! alt1/base */ "alt1/base").I
 /*!*************************************************!*\
   !*** ./src/chatbox/imgs/privateRecent.data.png ***!
   \*************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_28765__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_31848__) => {
 
-module.exports=(__nested_webpack_require_28765__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAJCAYAAAACTR1pAAAACW5vUEUAAAAAAAAAAAChinLVAAAAUElEQVQokb2QuQ3AMAwDj15F+6+kFTQCUzhKZRd2EQJqBPCVbbOGNn8ABiBJRASZiaS+neBU3Rsu4U4yTlhvOt84fjh1/JFYVWaOc9exx3kAqNgZ4Q1XRz4AAAAASUVORK5CYII=")
+module.exports=(__nested_webpack_require_31848__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA4AAAAJCAYAAAACTR1pAAAACW5vUEUAAAAAAAAAAAChinLVAAAAUElEQVQokb2QuQ3AMAwDj15F+6+kFTQCUzhKZRd2EQJqBPCVbbOGNn8ABiBJRASZiaS+neBU3Rsu4U4yTlhvOt84fjh1/JFYVWaOc9exx3kAqNgZ4Q1XRz4AAAAASUVORK5CYII=")
 
 /***/ }),
 
@@ -2883,9 +2491,9 @@ module.exports=(__nested_webpack_require_28765__(/*! alt1/base */ "alt1/base").I
 /*!******************************************!*\
   !*** ./src/chatbox/imgs/public.data.png ***!
   \******************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_29348__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_32431__) => {
 
-module.exports=(__nested_webpack_require_29348__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACEAAAAJCAYAAAC8G0U0AAAACW5vUEUAAAAAAAAAAAChinLVAAAAi0lEQVQ4jcWTwQ3EIAwEd68GF0YRfOiFN5S7eRkBIdJxSnIr+YHXlswYKAmuWms7pJSItyRpCAACoBCCZu+pYE/iVznBHXpDz123AaAY4xY9ADIzDST+9SZO6yDZEpJeGeQzJyTR46qpJ3aLcs5f77GU0mrNTH2+91b1K8/97d9BUitKvsbZu6rvew6661SBlfK4XgAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_32431__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAACEAAAAJCAYAAAC8G0U0AAAACW5vUEUAAAAAAAAAAAChinLVAAAAi0lEQVQ4jcWTwQ3EIAwEd68GF0YRfOiFN5S7eRkBIdJxSnIr+YHXlswYKAmuWms7pJSItyRpCAACoBCCZu+pYE/iVznBHXpDz123AaAY4xY9ADIzDST+9SZO6yDZEpJeGeQzJyTR46qpJ3aLcs5f77GU0mrNTH2+91b1K8/97d9BUitKvsbZu6rvew6661SBlfK4XgAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2893,9 +2501,9 @@ module.exports=(__nested_webpack_require_29348__(/*! alt1/base */ "alt1/base").I
 /*!************************************************!*\
   !*** ./src/chatbox/imgs/reportbutton.data.png ***!
   \************************************************/
-/***/ ((module, __unused_webpack_exports, __nested_webpack_require_30035__) => {
+/***/ ((module, __unused_webpack_exports, __nested_webpack_require_33118__) => {
 
-module.exports=(__nested_webpack_require_30035__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAQCAYAAADJViUEAAABAElEQVQ4T6WSvwtBURTHj0V+FknyB6AMZCH8ATbxByijwb9gsFsMBrvJaFAGu00sJilltlp0+N7Xua7rySuvPr1z7z2f77m9Ht0PdQbPR9cm2P8G3TZlBli4yUCabd5kqUG/W+FmI+8aJtB1lWUAWWrIvXaSS8WsCpHA9cg5E1xlQQJOi5y6RToVVQHST8d5nAEWUguXpSNDAoOOswc+5P0sxgL2MNkUzV4lo3E7DaoNvAWIkbCfC5moYtIL6OCfcqsWUqDGVATZAVqwZbAeJ/QbVyfy8WyYesnm5G+gBwG4gUwG+iPZgs3OkATPshuEHwDYB16g86LKwD7wwh8y0wNntoLFjD8QsQAAAABJRU5ErkJggg==")
+module.exports=(__nested_webpack_require_33118__(/*! alt1/base */ "alt1/base").ImageDetect.imageDataFromBase64)("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAQCAYAAADJViUEAAABAElEQVQ4T6WSvwtBURTHj0V+FknyB6AMZCH8ATbxByijwb9gsFsMBrvJaFAGu00sJilltlp0+N7Xua7rySuvPr1z7z2f77m9Ht0PdQbPR9cm2P8G3TZlBli4yUCabd5kqUG/W+FmI+8aJtB1lWUAWWrIvXaSS8WsCpHA9cg5E1xlQQJOi5y6RToVVQHST8d5nAEWUguXpSNDAoOOswc+5P0sxgL2MNkUzV4lo3E7DaoNvAWIkbCfC5moYtIL6OCfcqsWUqDGVATZAVqwZbAeJ/QbVyfy8WyYesnm5G+gBwG4gUwG+iPZgs3OkATPshuEHwDYB16g86LKwD7wwh8y0wNntoLFjD8QsQAAAABJRU5ErkJggg==")
 
 /***/ }),
 
@@ -2903,7 +2511,7 @@ module.exports=(__nested_webpack_require_30035__(/*! alt1/base */ "alt1/base").I
 /*!******************************!*\
   !*** ./src/chatbox/index.ts ***!
   \******************************/
-/***/ (function(__unused_webpack_module, exports, __nested_webpack_require_30786__) {
+/***/ (function(__unused_webpack_module, exports, __nested_webpack_require_33869__) {
 
 "use strict";
 
@@ -2932,42 +2540,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.defaultcolors = void 0;
-const a1lib = __importStar(__nested_webpack_require_30786__(/*! alt1/base */ "alt1/base"));
-const base_1 = __nested_webpack_require_30786__(/*! alt1/base */ "alt1/base");
-const OCR = __importStar(__nested_webpack_require_30786__(/*! alt1/ocr */ "alt1/ocr"));
-const base_2 = __nested_webpack_require_30786__(/*! alt1/base */ "alt1/base");
-let chatfont = __nested_webpack_require_30786__(/*! ../fonts/aa_8px.fontmeta.json */ "./src/fonts/aa_8px.fontmeta.json");
+const a1lib = __importStar(__nested_webpack_require_33869__(/*! alt1/base */ "alt1/base"));
+const base_1 = __nested_webpack_require_33869__(/*! alt1/base */ "alt1/base");
+const OCR = __importStar(__nested_webpack_require_33869__(/*! alt1/ocr */ "alt1/ocr"));
+const base_2 = __nested_webpack_require_33869__(/*! alt1/base */ "alt1/base");
+let chatfont = __nested_webpack_require_33869__(/*! ../fonts/aa_8px.fontmeta.json */ "./src/fonts/aa_8px.fontmeta.json");
 let fonts = [
-    { name: "10pt", lineheight: 14, badgey: -9, dy: 2, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/10pt.fontmeta.json */ "./src/fonts/chatbox/10pt.fontmeta.json") },
-    { name: "12pt", lineheight: 16, badgey: -9, dy: -1, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/12pt.fontmeta.json */ "./src/fonts/chatbox/12pt.fontmeta.json") },
-    { name: "14pt", lineheight: 18, badgey: -10, dy: -3, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/14pt.fontmeta.json */ "./src/fonts/chatbox/14pt.fontmeta.json") },
-    { name: "16pt", lineheight: 21, badgey: -10, dy: -6, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/16pt.fontmeta.json */ "./src/fonts/chatbox/16pt.fontmeta.json") },
-    { name: "18pt", lineheight: 23, badgey: -11, dy: -8, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/18pt.fontmeta.json */ "./src/fonts/chatbox/18pt.fontmeta.json") },
-    { name: "20pt", lineheight: 25, badgey: -11, dy: -11, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/20pt.fontmeta.json */ "./src/fonts/chatbox/20pt.fontmeta.json") },
-    { name: "22pt", lineheight: 27, badgey: -12, dy: -13, def: __nested_webpack_require_30786__(/*! ../fonts/chatbox/22pt.fontmeta.json */ "./src/fonts/chatbox/22pt.fontmeta.json") },
+    { name: "10pt", lineheight: 14, badgey: -9, dy: 2, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/10pt.fontmeta.json */ "./src/fonts/chatbox/10pt.fontmeta.json") },
+    { name: "12pt", lineheight: 16, badgey: -9, dy: -1, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/12pt.fontmeta.json */ "./src/fonts/chatbox/12pt.fontmeta.json") },
+    { name: "14pt", lineheight: 18, badgey: -10, dy: -3, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/14pt.fontmeta.json */ "./src/fonts/chatbox/14pt.fontmeta.json") },
+    { name: "16pt", lineheight: 21, badgey: -10, dy: -6, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/16pt.fontmeta.json */ "./src/fonts/chatbox/16pt.fontmeta.json") },
+    { name: "18pt", lineheight: 23, badgey: -11, dy: -8, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/18pt.fontmeta.json */ "./src/fonts/chatbox/18pt.fontmeta.json") },
+    { name: "20pt", lineheight: 25, badgey: -11, dy: -11, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/20pt.fontmeta.json */ "./src/fonts/chatbox/20pt.fontmeta.json") },
+    { name: "22pt", lineheight: 27, badgey: -12, dy: -13, def: __nested_webpack_require_33869__(/*! ../fonts/chatbox/22pt.fontmeta.json */ "./src/fonts/chatbox/22pt.fontmeta.json") },
 ];
 const imgs = (0, base_2.webpackImages)({
-    plusbutton: __nested_webpack_require_30786__(/*! ./imgs/plusbutton.data.png */ "./src/chatbox/imgs/plusbutton.data.png"),
-    minusbutton: __nested_webpack_require_30786__(/*! ./imgs/minusbutton.data.png */ "./src/chatbox/imgs/minusbutton.data.png"),
-    filterbutton: __nested_webpack_require_30786__(/*! ./imgs/filterbutton.data.png */ "./src/chatbox/imgs/filterbutton.data.png"),
-    chatbubble: __nested_webpack_require_30786__(/*! ./imgs/chatbubble.data.png */ "./src/chatbox/imgs/chatbubble.data.png"),
-    chatLegacyBorder: __nested_webpack_require_30786__(/*! ./imgs/chatLegacyBorder.data.png */ "./src/chatbox/imgs/chatLegacyBorder.data.png"),
-    entertochat: __nested_webpack_require_30786__(/*! ./imgs/entertochat.data.png */ "./src/chatbox/imgs/entertochat.data.png"),
-    gameoff: __nested_webpack_require_30786__(/*! ./imgs/gameoff.data.png */ "./src/chatbox/imgs/gameoff.data.png"),
-    gamefilter: __nested_webpack_require_30786__(/*! ./imgs/gamefilter.data.png */ "./src/chatbox/imgs/gamefilter.data.png"),
-    gameall: __nested_webpack_require_30786__(/*! ./imgs/gameall.data.png */ "./src/chatbox/imgs/gameall.data.png"),
-    legacyreport: __nested_webpack_require_30786__(/*! ./imgs/legacyreport.data.png */ "./src/chatbox/imgs/legacyreport.data.png"),
-    reportbutton: __nested_webpack_require_30786__(/*! ./imgs/reportbutton.data.png */ "./src/chatbox/imgs/reportbutton.data.png"),
+    plusbutton: __nested_webpack_require_33869__(/*! ./imgs/plusbutton.data.png */ "./src/chatbox/imgs/plusbutton.data.png"),
+    minusbutton: __nested_webpack_require_33869__(/*! ./imgs/minusbutton.data.png */ "./src/chatbox/imgs/minusbutton.data.png"),
+    filterbutton: __nested_webpack_require_33869__(/*! ./imgs/filterbutton.data.png */ "./src/chatbox/imgs/filterbutton.data.png"),
+    chatbubble: __nested_webpack_require_33869__(/*! ./imgs/chatbubble.data.png */ "./src/chatbox/imgs/chatbubble.data.png"),
+    chatLegacyBorder: __nested_webpack_require_33869__(/*! ./imgs/chatLegacyBorder.data.png */ "./src/chatbox/imgs/chatLegacyBorder.data.png"),
+    entertochat: __nested_webpack_require_33869__(/*! ./imgs/entertochat.data.png */ "./src/chatbox/imgs/entertochat.data.png"),
+    gameoff: __nested_webpack_require_33869__(/*! ./imgs/gameoff.data.png */ "./src/chatbox/imgs/gameoff.data.png"),
+    gamefilter: __nested_webpack_require_33869__(/*! ./imgs/gamefilter.data.png */ "./src/chatbox/imgs/gamefilter.data.png"),
+    gameall: __nested_webpack_require_33869__(/*! ./imgs/gameall.data.png */ "./src/chatbox/imgs/gameall.data.png"),
+    legacyreport: __nested_webpack_require_33869__(/*! ./imgs/legacyreport.data.png */ "./src/chatbox/imgs/legacyreport.data.png"),
+    reportbutton: __nested_webpack_require_33869__(/*! ./imgs/reportbutton.data.png */ "./src/chatbox/imgs/reportbutton.data.png"),
 });
 const chatimgs = (0, base_2.webpackImages)({
-    public: __nested_webpack_require_30786__(/*! ./imgs/public.data.png */ "./src/chatbox/imgs/public.data.png"),
-    private: __nested_webpack_require_30786__(/*! ./imgs/private.data.png */ "./src/chatbox/imgs/private.data.png"),
-    privateRecent: __nested_webpack_require_30786__(/*! ./imgs/privateRecent.data.png */ "./src/chatbox/imgs/privateRecent.data.png"),
-    clan: __nested_webpack_require_30786__(/*! ./imgs/clan.data.png */ "./src/chatbox/imgs/clan.data.png"),
-    guestclan: __nested_webpack_require_30786__(/*! ./imgs/guestclan.data.png */ "./src/chatbox/imgs/guestclan.data.png"),
-    friends: __nested_webpack_require_30786__(/*! ./imgs/friends.data.png */ "./src/chatbox/imgs/friends.data.png"),
-    group: __nested_webpack_require_30786__(/*! ./imgs/group.data.png */ "./src/chatbox/imgs/group.data.png"),
-    groupironman: __nested_webpack_require_30786__(/*! ./imgs/groupironman.data.png */ "./src/chatbox/imgs/groupironman.data.png"),
+    public: __nested_webpack_require_33869__(/*! ./imgs/public.data.png */ "./src/chatbox/imgs/public.data.png"),
+    private: __nested_webpack_require_33869__(/*! ./imgs/private.data.png */ "./src/chatbox/imgs/private.data.png"),
+    privateRecent: __nested_webpack_require_33869__(/*! ./imgs/privateRecent.data.png */ "./src/chatbox/imgs/privateRecent.data.png"),
+    clan: __nested_webpack_require_33869__(/*! ./imgs/clan.data.png */ "./src/chatbox/imgs/clan.data.png"),
+    guestclan: __nested_webpack_require_33869__(/*! ./imgs/guestclan.data.png */ "./src/chatbox/imgs/guestclan.data.png"),
+    friends: __nested_webpack_require_33869__(/*! ./imgs/friends.data.png */ "./src/chatbox/imgs/friends.data.png"),
+    group: __nested_webpack_require_33869__(/*! ./imgs/group.data.png */ "./src/chatbox/imgs/group.data.png"),
+    groupironman: __nested_webpack_require_33869__(/*! ./imgs/groupironman.data.png */ "./src/chatbox/imgs/groupironman.data.png"),
 });
 const chatmap = {
     public: "main",
@@ -2980,18 +2588,23 @@ const chatmap = {
     privateRecent: "pc", // needs to be last to not mess with the buf
 };
 const chatbadges = (0, base_2.webpackImages)({
-    vip: __nested_webpack_require_30786__(/*! ./imgs/badgevip.data.png */ "./src/chatbox/imgs/badgevip.data.png"),
-    pmod: __nested_webpack_require_30786__(/*! ./imgs/badgepmod.data.png */ "./src/chatbox/imgs/badgepmod.data.png"),
-    pmodvip: __nested_webpack_require_30786__(/*! ./imgs/badgepmodvip.data.png */ "./src/chatbox/imgs/badgepmodvip.data.png"),
-    broadcast_gold: __nested_webpack_require_30786__(/*! ./imgs/badge_broadcast_gold.data.png */ "./src/chatbox/imgs/badge_broadcast_gold.data.png"),
-    broadcast_silver: __nested_webpack_require_30786__(/*! ./imgs/badge_broadcast_silver.data.png */ "./src/chatbox/imgs/badge_broadcast_silver.data.png"),
-    broadcast_bronze: __nested_webpack_require_30786__(/*! ./imgs/badge_broadcast_bronze.data.png */ "./src/chatbox/imgs/badge_broadcast_bronze.data.png"),
-    broadcast_death: __nested_webpack_require_30786__(/*! ./imgs/badge_broadcast_death.data.png */ "./src/chatbox/imgs/badge_broadcast_death.data.png"),
-    ironman: __nested_webpack_require_30786__(/*! ./imgs/badgeironman.data.png */ "./src/chatbox/imgs/badgeironman.data.png"),
-    hcim: __nested_webpack_require_30786__(/*! ./imgs/badgehcim.data.png */ "./src/chatbox/imgs/badgehcim.data.png"),
-    rgim: __nested_webpack_require_30786__(/*! ./imgs/badgergim.data.png */ "./src/chatbox/imgs/badgergim.data.png"),
-    gim: __nested_webpack_require_30786__(/*! ./imgs/badgegim.data.png */ "./src/chatbox/imgs/badgegim.data.png"),
-    chatlink: __nested_webpack_require_30786__(/*! ./imgs/chat_link.data.png */ "./src/chatbox/imgs/chat_link.data.png"),
+    vip: __nested_webpack_require_33869__(/*! ./imgs/badges/vip.data.png */ "./src/chatbox/imgs/badges/vip.data.png"),
+    pmod: __nested_webpack_require_33869__(/*! ./imgs/badges/pmod.data.png */ "./src/chatbox/imgs/badges/pmod.data.png"),
+    pmodvip: __nested_webpack_require_33869__(/*! ./imgs/badges/pmodvip.data.png */ "./src/chatbox/imgs/badges/pmodvip.data.png"),
+    broadcast_gold: __nested_webpack_require_33869__(/*! ./imgs/badges/broadcast_gold.data.png */ "./src/chatbox/imgs/badges/broadcast_gold.data.png"),
+    broadcast_silver: __nested_webpack_require_33869__(/*! ./imgs/badges/broadcast_silver.data.png */ "./src/chatbox/imgs/badges/broadcast_silver.data.png"),
+    broadcast_bronze: __nested_webpack_require_33869__(/*! ./imgs/badges/broadcast_bronze.data.png */ "./src/chatbox/imgs/badges/broadcast_bronze.data.png"),
+    broadcast_death: __nested_webpack_require_33869__(/*! ./imgs/badges/broadcast_death.data.png */ "./src/chatbox/imgs/badges/broadcast_death.data.png"),
+    ironman: __nested_webpack_require_33869__(/*! ./imgs/badges/ironman.data.png */ "./src/chatbox/imgs/badges/ironman.data.png"),
+    hcim: __nested_webpack_require_33869__(/*! ./imgs/badges/hcim.data.png */ "./src/chatbox/imgs/badges/hcim.data.png"),
+    rgim: __nested_webpack_require_33869__(/*! ./imgs/badges/rgim.data.png */ "./src/chatbox/imgs/badges/rgim.data.png"),
+    gim: __nested_webpack_require_33869__(/*! ./imgs/badges/gim.data.png */ "./src/chatbox/imgs/badges/gim.data.png"),
+    chatlink: __nested_webpack_require_33869__(/*! ./imgs/badges/link.data.png */ "./src/chatbox/imgs/badges/link.data.png"),
+    league_steel: __nested_webpack_require_33869__(/*! ./imgs/badges/league_steel.data.png */ "./src/chatbox/imgs/badges/league_steel.data.png"),
+    league_mith: __nested_webpack_require_33869__(/*! ./imgs/badges/league_mith.data.png */ "./src/chatbox/imgs/badges/league_mith.data.png"),
+    league_addy: __nested_webpack_require_33869__(/*! ./imgs/badges/league_addy.data.png */ "./src/chatbox/imgs/badges/league_addy.data.png"),
+    league_rune: __nested_webpack_require_33869__(/*! ./imgs/badges/league_rune.data.png */ "./src/chatbox/imgs/badges/league_rune.data.png"),
+    league_dragon: __nested_webpack_require_33869__(/*! ./imgs/badges/league_dragon.data.png */ "./src/chatbox/imgs/badges/league_dragon.data.png"),
 });
 const badgemap = {
     vip: "\u2730",
@@ -3005,7 +2618,12 @@ const badgemap = {
     hcim: "\u{1F480}",
     rgim: "\u328F",
     gim: "\u3289",
-    chatlink: "\u{1F517}", //LINK SYMBOL
+    chatlink: "\u{1F517}",
+    league_steel: "\u{1F3C6}",
+    league_mith: "\u{1F3C6}",
+    league_addy: "\u{1F3C6}",
+    league_rune: "\u{1F3C6}",
+    league_dragon: "\u{1F3C6}", //TROPHY
 };
 exports.defaultcolors = [
     [0, 255, 0],
@@ -3456,7 +3074,8 @@ let defaultforwardnudges = [
     {
         //fix for "[" first char
         match: /^$/,
-        name: "timestampopen", fn: (ctx) => {
+        name: "timestampopen",
+        fn: (ctx) => {
             let timestampopen = OCR.readChar(ctx.imgdata, ctx.font, [255, 255, 255], ctx.rightx, ctx.baseliney, false, false);
             if ((timestampopen === null || timestampopen === void 0 ? void 0 : timestampopen.chr) == "[") {
                 ctx.addfrag({ color: [255, 255, 255], index: -1, text: "[", xstart: ctx.rightx, xend: ctx.rightx + timestampopen.basechar.width });
@@ -3465,12 +3084,14 @@ let defaultforwardnudges = [
         }
     },
     {
-        match: /(\] ?|news: ?|^)$/i,
-        name: "badge", fn: checkchatbadge
+        match: /(\]( [^\x00-\x7F]?)*|news: ?|^)$/i,
+        name: "badge",
+        fn: checkchatbadge
     },
     {
         match: /.*/,
-        name: "body", fn: ctx => {
+        name: "body",
+        fn: ctx => {
             var data = OCR.readLine(ctx.imgdata, ctx.font, ctx.colors, ctx.rightx, ctx.baseliney, true, false);
             if (data.text) {
                 data.fragments.forEach(f => ctx.addfrag(f));
@@ -3480,7 +3101,8 @@ let defaultforwardnudges = [
     },
     {
         match: /\[[\w: ]+$/,
-        name: "timestampclose", fn: ctx => {
+        name: "timestampclose",
+        fn: ctx => {
             let closebracket = OCR.readChar(ctx.imgdata, ctx.font, [255, 255, 255], ctx.rightx, ctx.baseliney, false, false);
             if ((closebracket === null || closebracket === void 0 ? void 0 : closebracket.chr) == "]") {
                 ctx.addfrag({ color: [255, 255, 255], text: "] ", index: -1, xstart: ctx.rightx, xend: ctx.rightx + closebracket.basechar.width + ctx.font.spacewidth });
@@ -3490,7 +3112,8 @@ let defaultforwardnudges = [
     },
     {
         match: /(^|\]|:)( ?)$/i,
-        name: "startline", fn: (ctx, match) => {
+        name: "startline",
+        fn: (ctx, match) => {
             let addspace = !match[2];
             let x = ctx.rightx + (addspace ? ctx.font.spacewidth : 0);
             let best = null;
@@ -3517,7 +3140,8 @@ let defaultforwardnudges = [
     },
     {
         match: /\w$/,
-        name: "whitecolon", fn: ctx => {
+        name: "whitecolon",
+        fn: ctx => {
             let startx = ctx.rightx;
             let colonchar = OCR.readChar(ctx.imgdata, ctx.font, [255, 255, 255], startx, ctx.baseliney, false, true);
             if ((colonchar === null || colonchar === void 0 ? void 0 : colonchar.chr) == ":") {
@@ -3529,12 +3153,14 @@ let defaultforwardnudges = [
 ];
 let defaultbackwardnudges = [
     {
-        match: /^(news: |[\w\-_]{1,12}: )/i,
-        name: "badge", fn: checkchatbadge
+        match: /^(news: |[\w\-_]{1,12}(): )/i,
+        name: "badge",
+        fn: checkchatbadge
     },
     {
         match: /.*/,
-        name: "body", fn: ctx => {
+        name: "body",
+        fn: ctx => {
             var data = OCR.readLine(ctx.imgdata, ctx.font, ctx.colors, ctx.leftx, ctx.baseliney, false, true);
             if (data.text) {
                 data.fragments.reverse().forEach(f => ctx.addfrag(f));
@@ -3544,7 +3170,8 @@ let defaultbackwardnudges = [
     },
     {
         match: /^\w/,
-        name: "whitecolon", fn: ctx => {
+        name: "whitecolon",
+        fn: ctx => {
             let startx = ctx.leftx - ctx.font.spacewidth;
             let colonchar = OCR.readChar(ctx.imgdata, ctx.font, [255, 255, 255], startx, ctx.baseliney, false, true);
             if ((colonchar === null || colonchar === void 0 ? void 0 : colonchar.chr) == ":") {
@@ -3675,7 +3302,7 @@ module.exports = JSON.parse('{"chars":[{"width":13,"bonus":455,"chr":"a","pixels
 /******/ 	var __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
-/******/ 	function __nested_webpack_require_517563__(moduleId) {
+/******/ 	function __nested_webpack_require_521582__(moduleId) {
 /******/ 		// Check if module is in cache
 /******/ 		var cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
@@ -3689,7 +3316,7 @@ module.exports = JSON.parse('{"chars":[{"width":13,"bonus":455,"chr":"a","pixels
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_517563__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_521582__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -3700,7 +3327,7 @@ module.exports = JSON.parse('{"chars":[{"width":13,"bonus":455,"chr":"a","pixels
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __nested_webpack_exports__ = __nested_webpack_require_517563__("./src/chatbox/index.ts");
+/******/ 	var __nested_webpack_exports__ = __nested_webpack_require_521582__("./src/chatbox/index.ts");
 /******/ 	
 /******/ 	return __nested_webpack_exports__;
 /******/ })()
@@ -5206,19 +4833,17 @@ module.exports = __webpack_require__.p + "index.html";
 "use strict";
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
-/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js");
+/* harmony import */ var alt1_base__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(alt1_base__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _libs_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./libs/util */ "./libs/util.ts");
 /* harmony import */ var _libs_settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./libs/settings */ "./libs/settings.ts");
-/* harmony import */ var _libs_buffs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/buffs */ "./libs/buffs.ts");
-/* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
-/* harmony import */ var _libs_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/dialog */ "./libs/dialog.ts");
-/* harmony import */ var _libs_targetmob__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./libs/targetmob */ "./libs/targetmob.ts");
-/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index.html */ "./index.html");
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
-/* harmony import */ var _assets_appconfig_json__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/appconfig.json */ "./assets/appconfig.json");
-/* harmony import */ var _assets_icon_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./assets/icon.png */ "./assets/icon.png");
-
+/* harmony import */ var _libs_chatbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./libs/chatbox */ "./libs/chatbox.ts");
+/* harmony import */ var _libs_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./libs/dialog */ "./libs/dialog.ts");
+/* harmony import */ var _libs_targetmob__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./libs/targetmob */ "./libs/targetmob.ts");
+/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./index.html */ "./index.html");
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
+/* harmony import */ var _assets_appconfig_json__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./assets/appconfig.json */ "./assets/appconfig.json");
+/* harmony import */ var _assets_icon_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/icon.png */ "./assets/icon.png");
 
 
 
@@ -5251,27 +4876,26 @@ if (!window.alt1) {
 }
 else {
     // Let alt1 know about the app
-    alt1_base__WEBPACK_IMPORTED_MODULE_10__.identifyApp('appconfig.json');
+    alt1_base__WEBPACK_IMPORTED_MODULE_9__.identifyApp('appconfig.json');
     // Add the user's app skin as theme to the document
     document.documentElement.dataset.theme = alt1.skinName;
     // Set up a screen capture and an interval for later recapture
-    let screen = alt1_base__WEBPACK_IMPORTED_MODULE_10__.captureHoldFullRs();
+    let screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
     // Set the interval to the recommended interval based on capture method, defaults to 600ms
     let interval = alt1.captureInterval || 600;
     let captureInterval = null;
     // Check if the home button is found
-    const home = alt1_base__WEBPACK_IMPORTED_MODULE_10__.webpackImages({ button: __webpack_require__(/*! ./assets/homebutton.data.png */ "./assets/homebutton.data.png") });
+    const home = alt1_base__WEBPACK_IMPORTED_MODULE_9__.webpackImages({ button: __webpack_require__(/*! ./assets/homebutton.data.png */ "./assets/homebutton.data.png") });
     await home.promise;
-    let homePos = alt1_base__WEBPACK_IMPORTED_MODULE_10__.findSubimage(screen, home.raw.button);
+    let homePos = alt1_base__WEBPACK_IMPORTED_MODULE_9__.findSubimage(screen, home.raw.button);
     let homeFound = homePos.length > 0;
     // Found state elements
     const foundState = document.querySelectorAll('[data-found]');
     // The set of functions to run on the screen capture
     const run = () => {
-        (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_3__["default"])(screen, '#chatbox');
-        (0,_libs_targetmob__WEBPACK_IMPORTED_MODULE_5__["default"])(screen, '#targetmob');
-        (0,_libs_dialog__WEBPACK_IMPORTED_MODULE_4__["default"])(screen, '#dialog');
-        (0,_libs_buffs__WEBPACK_IMPORTED_MODULE_2__["default"])(screen, '#buffs');
+        (0,_libs_chatbox__WEBPACK_IMPORTED_MODULE_2__["default"])(screen, '#chatbox');
+        (0,_libs_targetmob__WEBPACK_IMPORTED_MODULE_4__["default"])(screen, '#targetmob');
+        (0,_libs_dialog__WEBPACK_IMPORTED_MODULE_3__["default"])(screen, '#dialog');
         // Update the found state elements
         foundState.forEach((element, index) => {
             const key = Object.keys(_libs_util__WEBPACK_IMPORTED_MODULE_0__.foundPos)[index];
@@ -5286,11 +4910,11 @@ else {
             clearInterval(captureInterval);
         }
         // First capture the screen again, and then start the interval after a delay
-        screen = alt1_base__WEBPACK_IMPORTED_MODULE_10__.captureHoldFullRs();
+        screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
         run();
         setTimeout(() => {
             captureInterval = setInterval(() => {
-                screen = alt1_base__WEBPACK_IMPORTED_MODULE_10__.captureHoldFullRs();
+                screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
                 run();
             }, interval);
         }, 1000);
@@ -5345,8 +4969,8 @@ else {
         };
         // Recheck the home button
         if (!captureInterval || !screen)
-            screen = alt1_base__WEBPACK_IMPORTED_MODULE_10__.captureHoldFullRs();
-        homePos = alt1_base__WEBPACK_IMPORTED_MODULE_10__.findSubimage(screen, home.raw.button);
+            screen = alt1_base__WEBPACK_IMPORTED_MODULE_9__.captureHoldFullRs();
+        homePos = alt1_base__WEBPACK_IMPORTED_MODULE_9__.findSubimage(screen, home.raw.button);
         homeFound = homePos.length > 0;
         // Information to display
         const info = {
@@ -5435,65 +5059,6 @@ else {
 
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);
-
-/***/ }),
-
-/***/ "./libs/buffs.ts":
-/*!***********************!*\
-  !*** ./libs/buffs.ts ***!
-  \***********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var alt1_buffs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alt1/buffs */ "../node_modules/alt1/dist/buffs/index.js");
-/* harmony import */ var alt1_buffs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alt1_buffs__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./libs/util.ts");
-
-
-const buffReader = new (alt1_buffs__WEBPACK_IMPORTED_MODULE_1___default())();
-const debuffReader = new (alt1_buffs__WEBPACK_IMPORTED_MODULE_1___default())();
-debuffReader.debuffs = true;
-_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.buffs = false;
-function buffs(imgref, selector) {
-    // Cancel if there's no Alt1 Toolkit or no image reference
-    if (!window.alt1 || !imgref) {
-        // Clear the output in case this was a call to stop reading
-        if (selector)
-            (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)('Press Start to begin reading', selector);
-        buffReader.pos = null;
-        debuffReader.pos = null;
-        return (_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.buffs = false);
-    }
-    if (!_util__WEBPACK_IMPORTED_MODULE_0__.foundPos.buffs) {
-        buffReader.find(imgref);
-        if (buffReader.pos === null) {
-            const message = 'Buffs position not found, trying to find...';
-            if (selector)
-                (0,_util__WEBPACK_IMPORTED_MODULE_0__.outputMessage)(message, selector);
-            return;
-        }
-        else {
-            console.log('Buffs position found:', buffReader.pos);
-            _util__WEBPACK_IMPORTED_MODULE_0__.foundPos.buffs = true;
-            const { x, y, maxhor, maxver } = buffReader.pos;
-            (0,_util__WEBPACK_IMPORTED_MODULE_0__.highlightRect)(x, y, maxhor, maxver);
-        }
-    }
-    if (buffReader.pos) {
-        const read = buffReader.read();
-        // if (read) console.log('Buffs read:', read);
-    }
-    if (debuffReader.pos) {
-        const readDebuff = debuffReader.read();
-        //if (readDebuff) console.log('Debuffs read:', readDebuff);
-    }
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (buffs);
-
 
 /***/ }),
 
