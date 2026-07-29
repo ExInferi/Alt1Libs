@@ -53,10 +53,22 @@ if (!window.alt1) {
 	let captureInterval: ReturnType<typeof setInterval> | null = null;
 
 	// Check if the home button is found
-	const home = A1.webpackImages({ button: require('./assets/homebutton.data.png') });
+	const home = A1.webpackImages({
+		button1: require('./assets/homebutton.data.png'),
+		button2: require('./assets/homebuttoncompact.data.png'),
+	});
 	await home.promise;
-	let homePos = A1.findSubimage(screen, home.raw.button);
-	let homeFound = homePos.length > 0;
+
+	function checkHomeButton() {
+		if (!screen) return false;
+		let homePos = [
+			...A1.findSubimage(screen, home.raw.button1),
+			...A1.findSubimage(screen, home.raw.button2),
+		];
+		return homePos.length > 0;
+	}
+
+	let homeFound = checkHomeButton();
 
 	// Found state elements
 	const foundState = document.querySelectorAll('[data-found]') as NodeListOf<HTMLElement>;
@@ -150,8 +162,7 @@ if (!window.alt1) {
 		};
 		// Recheck the home button
 		if (!captureInterval || !screen) screen = A1.captureHoldFullRs();
-		homePos = A1.findSubimage(screen, home.raw.button);
-		homeFound = homePos.length > 0;
+		homeFound = checkHomeButton();
 		// Information to display
 		const info = {
 			// Version of Alt1 Toolkit
