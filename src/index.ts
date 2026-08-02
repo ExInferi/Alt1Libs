@@ -55,7 +55,7 @@ if (!window.alt1) {
 	// Check if the home button is found
 	const home = A1.webpackImages({
 		button1: require('./assets/homebutton.data.png'),
-		button2: require('./assets/homebuttoncompact.data.png'),
+		button2: require('./assets/homebutton_pre.data.png'),
 	});
 	await home.promise;
 
