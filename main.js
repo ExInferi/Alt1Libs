@@ -4861,13 +4861,13 @@ module.exports=(__webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/
 
 /***/ }),
 
-/***/ "./assets/homebuttoncompact.data.png":
-/*!*******************************************!*\
-  !*** ./assets/homebuttoncompact.data.png ***!
-  \*******************************************/
+/***/ "./assets/homebutton_pre.data.png":
+/*!****************************************!*\
+  !*** ./assets/homebutton_pre.data.png ***!
+  \****************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports=(__webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js").ImageDetect).imageDataFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAACkklEQVQozzXQPYsdVRyA8WfOmZd7595d90UW31hMXKIkBAzBFCaCGPET2Nn6ASwtxULESlIIdn6AQIo0KkpSSLCNYLBIXNfVqLt7986dl3POzJlz/hbRp36qX/LpJ9/Iwx/u0puGPC9xU4uuEwBUTIlqRGlFDBGRSDnf4oWrr/PGu9fQO27tI9Mv6dqOxycHhDYwm5YMtidKxHvPYnXCn3//QZoo8ixl+etDGpehPBZnB168tMuXN2/w2vV3OF0uEA2JFlpbc/29N/nq9hc8d+5lFqdHdHXFg9u3UC2exqw4e26PvfNnufLWLierIzrb0dqO1lVcu3qFl86fYe/C0zR2BYB1BiXNiCCslksAqqqiKHKa1NBkLTqd8Gh/H4C2M0QJ+DAyhEAqCXSDZVTjEyStWdU1k76A9QmuqynnMwCSPENEcOMAJKiyKJAhYjsLwHRaYMeKEEdU0uBNR73aBsCZBmMcAMNoSa3rGYNjPt/CWM+ZVy7x3f079FbIC8EZSyTH9h6tUqIEAEQiKQiDOEJISBLN4Hqs7nFGI5KTKKFpe4JoynIDE2pMPwcgNX2Nlpy/Dk6YThR3v/+aG599zla6Sa5TVnbB+x98zKsf7nL4+DdmegOAGAXFf82e8gBsrl1Emp5h7HGxJ6Vge+f5/zeG8YmNcz3KjgMika5KGYJwevwzG2vblNN1yqRAq5SjwwecuoCvM3y01F1HkIgaYyAMPflkQq4TTD7HNBVIIBAZmgq1/gxbE41kET96YhKISSD1xhCD5+D3+3z740/8s/8LRZqDBLwIyaxg/9E97tx7luPjQ7KgiH4ky2YkF3YuC0DjKobBo5Vmc76NIEQiCsWyXRDDQF5MWZts4MVy+eLb/AsJtnnLTvPKCQAAAABJRU5ErkJggg==")
+module.exports=(__webpack_require__(/*! alt1/base */ "../node_modules/alt1/dist/base/index.js").ImageDetect).imageDataFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAW5vUEUAYtdMlAAAAARub1BFAAAAAEEgjiIAAAAJbm9QRQAAAAAAAAAAAKGKctUAAAKkSURBVDhPZZJbSFNxHMfPQw/1EIROXWbppit3O9vO3DXXNm9zKjZD3BRTsZpUowul886akoS3JAwyI0rKl0jLsh6CiCh7KkgjZw6xUKKnQpNI5Rvnt7SHHr6cc77f7+f3v3CYurbn8Oa1otJZT6rIrUOFoxblGWcj345a8ih3nUJZfiuaA4/xIvwTjNtQA16FGjdsUgcKOQ+qChrJ41WiP0ZZmtiOLL0HboOX/JbAowhcpD2MM0cbMT35CX3BLhRpy1Gsqya5uDL0XBrA9NQs/NV+ZBo85JWm+8DwUzPlTvR2DmJ1fQ0Px57BlGRFPudBlqkcdpkDb16/payjvR92RR7t5CBXGoEzZLloaeqiwtDdEdgUTjhZFxwqF0yGIvL4rKWpGzZpDgo1JTSAYK3ChubWDircGR6FKk5Hq9skuWAVFtx/ME5ZINgLa2o2wXajJwJzO43wn/ZTYWR0HCKBDNpEM/QKI5TCNNwcukeZv76dujycqSz4Bwf8nVhaXsGHUBhfFr9hdm4enxe+IhwKIRSex/elFTSfu7gJW9l8MBazG5I4Fk3nu/Fj5TdeTSzi40yYFJqdo+e7yRnK2hu6IBYq6dy8GFtqNlQxOviORLbd138Lolg5VGITuD0mJApSceXqbcr4Dic0EnhgX9b/8MDgMERRMkjFepJCwOH6jeFNmO/yl6aNN4HRKexk1FTVYXl1DW3BIbowNsEEnSgd8hiOvIVf69Thu6rdRmh2GcGoWSukAjVOei9EfoTgGJKipFAnm6EXWej98rVRyipLAkjeLqFMnbIfDD9JHC1HXo4bT1++h8/bg5RYJQyJFqjEZlrpRE0DnkxM4VD2cUgESqjiDdAk/IV57Y1msWNrDJ13w9sQ7yVsEUK0LSnixepQ7PDhDyhZ72DssqpwAAAAAElFTkSuQmCC")
 
 /***/ }),
 
@@ -4956,7 +4956,7 @@ else {
     // Check if the home button is found
     const home = alt1_base__WEBPACK_IMPORTED_MODULE_9__.webpackImages({
         button1: __webpack_require__(/*! ./assets/homebutton.data.png */ "./assets/homebutton.data.png"),
-        button2: __webpack_require__(/*! ./assets/homebuttoncompact.data.png */ "./assets/homebuttoncompact.data.png"),
+        button2: __webpack_require__(/*! ./assets/homebutton_pre.data.png */ "./assets/homebutton_pre.data.png"),
     });
     await home.promise;
     function checkHomeButton() {
